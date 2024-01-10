@@ -10,7 +10,7 @@
   # You can import other NixOS modules here
   imports = [
     # If you want to use modules from other flakes (such as nixos-hardware):
-    # inputs.hardware.nixosModules.common-cpu-amd
+    inputs.hardware.nixosModules.lenovo-legion-16achg6-hybrid
     # inputs.hardware.nixosModules.common-ssd
 
     # You can also split up your configuration and import pieces of it here:
@@ -157,6 +157,8 @@
     wget
     git
     github-desktop
+
+    firefox
   ];
 
 
