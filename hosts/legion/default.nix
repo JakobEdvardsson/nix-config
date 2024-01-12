@@ -74,7 +74,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
-  security.polkit.enable = true;
 
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
@@ -109,10 +108,13 @@
 
     firefox
 
-    polkit
-    polkit_gnome
+  
   ];
 
+  security.polkit.enable = true;
+  # security with gnome-kering
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.greetd.enableGnomeKeyring = true;
 
   fonts = {
     packages = with pkgs; [
