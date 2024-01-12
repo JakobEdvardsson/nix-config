@@ -9,9 +9,11 @@
 }: {
   # You can import other NixOS modules here
   imports = [
-    # If you want to use modules from other flakes (such as nixos-hardware):
-    inputs.hardware.nixosModules.lenovo-legion-16achg6-hybrid
+    # Nixos-hardware
+  #  inputs.hardware.nixosModules.lenovo-legion-16achg6-hybrid
     # inputs.hardware.nixosModules.common-ssd
+    ../../modules/system.nix
+    ../../modules/i3.nix
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
@@ -40,27 +42,6 @@
     };
   };
 
-  # This will add each flake input as a registry
-  # To make nix3 commands consistent with your flake
-  nix.registry = (lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (_: lib.isType "flake")) inputs);
-
-  # This will additionally add your inputs to the system's legacy channels
-  # Making legacy nix commands consistent as well, awesome!
-  nix.nixPath = ["/etc/nix/path"];
-  environment.etc =
-    lib.mapAttrs'
-    (name: value: {
-      name = "nix/path/${name}";
-      value.source = value.flake;
-    })
-    config.nix.registry;
-
-  nix.settings = {
-    # Enable flakes and new 'nix' command
-    experimental-features = "nix-command flakes";
-    # Deduplicate and optimize nix store
-    auto-optimise-store = true;
-  };
 
   # Hostname.
   networking.hostName = "legion";
@@ -70,47 +51,6 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
-
-  # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Stockholm";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "sv_SE.UTF-8";
-    LC_IDENTIFICATION = "sv_SE.UTF-8";
-    LC_MEASUREMENT = "sv_SE.UTF-8";
-    LC_MONETARY = "sv_SE.UTF-8";
-    LC_NAME = "sv_SE.UTF-8";
-    LC_NUMERIC = "sv_SE.UTF-8";
-    LC_PAPER = "sv_SE.UTF-8";
-    LC_TELEPHONE = "sv_SE.UTF-8";
-    LC_TIME = "sv_SE.UTF-8";
-  };
-
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "se";
-    xkbVariant = "";
-  };
-
-  # Configure console keymap
-  console.keyMap = "sv-latin1";
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -133,7 +73,8 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.xserver.libinput.enable = true;
+  security.polkit.enable = true;
 
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
@@ -151,15 +92,55 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # Development stuff
     vim
-    vscode
     wget
+    curl
     git
+    sysstat
+    lm_sensors # for `sensors` command
+    # minimal screen capture tool, used by i3 blur lock to take a screenshot
+    # print screen key is also bound to this tool in i3 config
+    scrot
+    neofetch
+    xfce.thunar # xfce4's file manager
+    nnn # terminal file manager
+    vscode
     github-desktop
 
     firefox
+
+    polkit
+    polkit_gnome
   ];
+
+
+  fonts = {
+    packages = with pkgs; [
+      # icon fonts
+      material-design-icons
+
+      # normal fonts
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+
+      # nerdfonts
+      (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
+    ];
+
+    # use fonts specified by user rather than default ones
+    enableDefaultPackages = false;
+
+    # user defined fonts
+    # the reason there's Noto Color Emoji everywhere is to override DejaVu's
+    # B&W emojis that would sometimes show instead of some Color emojis
+    fontconfig.defaultFonts = {
+      serif = ["Noto Serif" "Noto Color Emoji"];
+      sansSerif = ["Noto Sans" "Noto Color Emoji"];
+      monospace = ["JetBrainsMono Nerd Font" "Noto Color Emoji"];
+      emoji = ["Noto Color Emoji"];
+    };
+  };
 
 
 

@@ -9,6 +9,13 @@
 }: {
   # You can import other home-manager modules here
   imports = [
+    ../../home/i3
+    ../../home/programs
+    ../../home/rofi
+    ../../home/shell
+
+
+    
     # If you want to use home-manager modules from other flakes (such as nix-colors):
     # inputs.nix-colors.homeManagerModule
 
