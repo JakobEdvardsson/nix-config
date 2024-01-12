@@ -57,7 +57,14 @@
 
   # Enable home-manager and git
   programs.home-manager.enable = true;
+  programs.gh.enable = true;
+  # make sure to use gh auth setup-git otherwise it will ask for username
   programs.git.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    defaultCacheTtl = 1800;
+    enableSshSupport = true;
+  };
 
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
