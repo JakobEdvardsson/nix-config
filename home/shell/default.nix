@@ -29,5 +29,6 @@ in {
 
   home.shellAliases = {
     k = "kubectl";
+    switch = "sudo nixos-rebuild switch --flake .";
   };
 }
