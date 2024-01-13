@@ -71,8 +71,6 @@ done
 launch_rofi=(rofi "${rofi_options[@]}")
 selection="$(printf '%s\n' "${!menu[@]}" | sort | "${launch_rofi[@]}")"
 
-echo $launch_rofi + "test"
-echo $selection + "test"
 
 
 # Apply selected wallpaper
