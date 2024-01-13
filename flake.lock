@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "hardware": {
-      "locked": {
-        "lastModified": 1704786394,
-        "narHash": "sha256-aJM0ln9fMGWw1+tjyl5JZWZ3ahxAA2gw2ZpZY/hkEMs=",
-        "owner": "nixos",
-        "repo": "nixos-hardware",
-        "rev": "b34a6075e9e298c4124e35c3ccaf2210c1f3a43b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "master",
-        "repo": "nixos-hardware",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -23,16 +7,32 @@
         ]
       },
       "locked": {
-        "lastModified": 1704980804,
-        "narHash": "sha256-lPNNKdPqIYcjhhYIVwlajNt/HqVWbMOoSdNnwCvOP04=",
+        "lastModified": 1705104164,
+        "narHash": "sha256-pllCu3Hcm1wP/B0SUxgUXvHeEd4w8s2aVrEQRdIL1yo=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "93e804e7f8a1eb88bde6117cd5046501e66aa4bd",
+        "rev": "0912d26b30332ae6a90e1b321ff88e80492127dd",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1705144849,
+        "narHash": "sha256-TL8O3Y7b7c5Bs2Q9VSHhPqfUW+Zz1+6g/GRt9AB1RL4=",
+        "owner": "JakobEdvardsson",
+        "repo": "nixos-hardware",
+        "rev": "5cb7e65b6c726d4453db47a4da72f27eca8df27a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "JakobEdvardsson",
+        "ref": "master",
+        "repo": "nixos-hardware",
         "type": "github"
       }
     },
@@ -54,8 +54,8 @@
     },
     "root": {
       "inputs": {
-        "hardware": "hardware",
         "home-manager": "home-manager",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs"
       }
     }

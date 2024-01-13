@@ -39,6 +39,7 @@
         sysstat       # get system information
         autotiling    # auto tilingcd
         pywal         # generate colorprofile
+        networkmanagerapplet
      ];
     };
   };

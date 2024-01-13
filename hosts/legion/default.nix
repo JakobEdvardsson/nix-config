@@ -15,6 +15,7 @@
     ../../modules/system.nix
     ../../modules/i3.nix
 
+
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
 
@@ -105,6 +106,7 @@
     nnn # terminal file manager
     vscode
     github-desktop
+    powertop
 
     firefox
 
@@ -115,6 +117,8 @@
   # security with gnome-kering
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
+  programs.dconf.enable = true;
+
 
   fonts = {
     packages = with pkgs; [
