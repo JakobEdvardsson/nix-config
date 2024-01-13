@@ -10,7 +10,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     # TODO: Add any other flake you might need
-    hardware.url = "github:nixos/nixos-hardware/master";
+    nixos-hardware.url = "github:JakobEdvardsson/nixos-hardware/master";
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
     # nix-colors.url = "github:misterio77/nix-colors";
@@ -21,6 +21,7 @@
     self,
     nixpkgs,
     home-manager,
+    nixos-hardware,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -34,6 +35,7 @@
         modules = [
           ./hosts/legion
           home-manager.nixosModules.home-manager
+          nixos-hardware.nixosModules.lenovo-legion-16achg6-hybrid
           {
             #home-manager.useGlobalPkgs = true;
             #home-manager.useUserPackages = true;
