@@ -10,11 +10,10 @@
   # You can import other NixOS modules here
   imports = [
     # Nixos-hardware
-  #  inputs.hardware.nixosModules.lenovo-legion-16achg6-hybrid
+    #  inputs.hardware.nixosModules.lenovo-legion-16achg6-hybrid
     # inputs.hardware.nixosModules.common-ssd
     ../../modules/system.nix
     ../../modules/i3.nix
-
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
@@ -43,7 +42,6 @@
     };
   };
 
-
   # Hostname.
   networking.hostName = "legion";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -51,7 +49,6 @@
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -73,16 +70,17 @@
     #media-session.enable = true;
   };
 
+  services.power-profiles-daemon.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
-
 
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
   users.users = {
     jakobe = {
       isNormalUser = true;
       description = "Jakob Edvardsson";
-      extraGroups = [ "networkmanager" "wheel" ];
+      extraGroups = ["networkmanager" "wheel"];
       openssh.authorizedKeys.keys = [
         # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
       ];
@@ -109,8 +107,6 @@
     powertop
 
     firefox
-
-  
   ];
 
   security.polkit.enable = true;
@@ -118,7 +114,6 @@
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.greetd.enableGnomeKeyring = true;
   programs.dconf.enable = true;
-
 
   fonts = {
     packages = with pkgs; [
@@ -147,8 +142,6 @@
       emoji = ["Noto Color Emoji"];
     };
   };
-
-
 
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.

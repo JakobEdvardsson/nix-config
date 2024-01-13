@@ -4,9 +4,8 @@
   config,
   pkgs,
   ...
-}:{
-  
-# This will add each flake input as a registry
+}: {
+  # This will add each flake input as a registry
   # To make nix3 commands consistent with your flake
   nix.registry = (lib.mapAttrs (_: flake: {inherit flake;})) ((lib.filterAttrs (_: lib.isType "flake")) inputs);
 
@@ -28,7 +27,8 @@
     auto-optimise-store = true;
   };
 
-
+  # Get battery info
+  services.upower.enable = true;
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -55,38 +55,34 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
-
   services.xserver = {
     libinput.touchpad.naturalScrolling = true;
     layout = "se";
     xkbVariant = "";
   };
-    # Configure console keymap
+  # Configure console keymap
   console.keyMap = "sv-latin1";
 
-
-   # do garbage collection weekly to keep disk usage low
+  # do garbage collection weekly to keep disk usage low
   nix.gc = {
     automatic = lib.mkDefault true;
     dates = lib.mkDefault "weekly";
     options = lib.mkDefault "--delete-older-than 10d";
   };
 
-
-
   systemd = {
-  user.services.polkit-gnome-authentication-agent-1 = {
-    description = "polkit-gnome-authentication-agent-1";
-    wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-    serviceConfig = {
+    user.services.polkit-gnome-authentication-agent-1 = {
+      description = "polkit-gnome-authentication-agent-1";
+      wantedBy = ["graphical-session.target"];
+      wants = ["graphical-session.target"];
+      after = ["graphical-session.target"];
+      serviceConfig = {
         Type = "simple";
         ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
         Restart = "on-failure";
         RestartSec = 1;
         TimeoutStopSec = 10;
       };
-  };
+    };
   };
 }

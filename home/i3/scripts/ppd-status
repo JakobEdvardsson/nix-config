@@ -7,5 +7,5 @@
 
 # script to show current power profile
 
-current_profile=$(/usr/bin/powerprofilesctl get)
+current_profile=$(/usr/bin/env powerprofilesctl get)
 echo "$current_profile"
