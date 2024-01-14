@@ -73,7 +73,8 @@
     # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
-
+  hardware.bluetooth.enable = true; # enables support for Bluetooth
+  services.blueman.enable = true;
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
   users.users = {
     jakobe = {
