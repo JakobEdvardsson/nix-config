@@ -9,6 +9,7 @@
       governor = "powersave";
       turbo = "never";
       scaling_max_freq = 1500000;
+      energy_performance_preference = "power";
     };
     charger = {
       governor = "performance";
