@@ -14,7 +14,7 @@
     # inputs.hardware.nixosModules.common-ssd
     ../../modules/system.nix
     ../../modules/i3.nix
-    ../../modules/auto-cpufreq.nix
+    ../../modules/power/tlp.nix
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
@@ -42,8 +42,6 @@
       allowUnfree = true;
     };
   };
-
-  hardware.nvidia.powerManagement.finegrained = true;
 
   # Hostname.
   networking.hostName = "legion";
