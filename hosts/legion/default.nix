@@ -43,12 +43,15 @@
     };
   };
 
+  hardware.nvidia.powerManagement.finegrained = true;
+
   # Hostname.
   networking.hostName = "legion";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Kernel
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.extraModulePackages = [config.boot.kernelPackages.lenovo-legion-module];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -100,6 +103,7 @@
     powertop
 
     firefox
+    lenovo-legion
   ];
 
   # This setups a SSH server. Very important if you're setting up a headless system.
