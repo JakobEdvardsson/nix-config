@@ -36,6 +36,8 @@
         autotiling # auto tilingcd
         pywal # generate colorprofile
         networkmanagerapplet
+        xorg.xkill
+        killall
       ];
     };
   };
