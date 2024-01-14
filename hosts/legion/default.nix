@@ -14,6 +14,7 @@
     # inputs.hardware.nixosModules.common-ssd
     ../../modules/system.nix
     ../../modules/i3.nix
+    ../../modules/auto-cpufreq.nix
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
@@ -73,8 +74,6 @@
     #media-session.enable = true;
   };
 
-  services.power-profiles-daemon.enable = true;
-
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
   users.users = {
     jakobe = {
@@ -97,9 +96,6 @@
     scrot
     neofetch
     xfce.thunar # xfce4's file manager
-    nnn # terminal file manager
-    vscode
-    github-desktop
     powertop
 
     firefox
@@ -108,7 +104,7 @@
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.
   services.openssh = {
-    enable = true;
+    enable = false;
     settings = {
       # Forbid root login through SSH.
       PermitRootLogin = "no";

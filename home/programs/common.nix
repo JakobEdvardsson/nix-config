@@ -5,6 +5,8 @@
   ...
 }: {
   home.packages = with pkgs; [
+    spotify
+
     # archives
     zip
     unzip
