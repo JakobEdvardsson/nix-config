@@ -46,6 +46,9 @@
   networking.hostName = "legion";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
+  # Kernel
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -72,9 +75,6 @@
 
   services.power-profiles-daemon.enable = true;
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
-
   # TODO: Configure your system-wide user settings (groups, etc), add more users as needed.
   users.users = {
     jakobe = {
@@ -90,10 +90,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim
-    wget
-    curl
-    git
     sysstat
     lm_sensors # for `sensors` command
     # minimal screen capture tool, used by i3 blur lock to take a screenshot
@@ -108,40 +104,6 @@
 
     firefox
   ];
-
-  security.polkit.enable = true;
-  # security with gnome-kering
-  services.gnome.gnome-keyring.enable = true;
-  security.pam.services.greetd.enableGnomeKeyring = true;
-  programs.dconf.enable = true;
-
-  fonts = {
-    packages = with pkgs; [
-      # icon fonts
-      material-design-icons
-
-      # normal fonts
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-
-      # nerdfonts
-      (nerdfonts.override {fonts = ["FiraCode" "JetBrainsMono"];})
-    ];
-
-    # use fonts specified by user rather than default ones
-    enableDefaultPackages = false;
-
-    # user defined fonts
-    # the reason there's Noto Color Emoji everywhere is to override DejaVu's
-    # B&W emojis that would sometimes show instead of some Color emojis
-    fontconfig.defaultFonts = {
-      serif = ["Noto Serif" "Noto Color Emoji"];
-      sansSerif = ["Noto Sans" "Noto Color Emoji"];
-      monospace = ["JetBrainsMono Nerd Font" "Noto Color Emoji"];
-      emoji = ["Noto Color Emoji"];
-    };
-  };
 
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.
