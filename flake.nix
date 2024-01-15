@@ -53,17 +53,28 @@
           }
         ];
       };
-    };
 
-    # Standalone home-manager configuration entrypoint
-    # Available through 'home-manager --flake .#your-username@your-hostname'
-    homeConfigurations = {
-      # FIXME replace with your username@hostname
-      "jakobe@legion" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
-        extraSpecialArgs = {inherit inputs outputs;};
-        # > Our main home-manager configuration file <
-        modules = [./hosts/legion/home.nix];
+      laptopserver = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs outputs;};
+        # > Our main nixos configuration file <
+        modules = [
+          ./hosts/legion
+          nixos-hardware.nixosModules.lenovo-legion-16achg6-hybrid
+
+          home-manager.nixosModules.home-manager
+          {
+            #home-manager.useGlobalPkgs = true;
+            #home-manager.useUserPackages = true;
+            home-manager.users.jakobe = {
+              imports = [
+                nur.nixosModules.nur
+                ./hosts/legion/home.nix
+              ];
+            };
+
+            home-manager.extraSpecialArgs = {inherit inputs outputs;};
+          }
+        ];
       };
     };
   };
