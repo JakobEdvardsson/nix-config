@@ -54,6 +54,13 @@
     ];
   };
 
+  # Disable suspend on lid close
+  services.logind = {
+    lidSwitch = "ignore";
+    lidSwitchDocked = "ignore";
+    lidSwitchExternalPower = "ignore";
+  };
+
   environment.systemPackages = with pkgs; [
   ];
 
