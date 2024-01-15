@@ -58,7 +58,7 @@
         specialArgs = {inherit inputs outputs;};
         # > Our main nixos configuration file <
         modules = [
-          ./hosts/legion
+          ./hosts/laptopserver
           nixos-hardware.nixosModules.lenovo-legion-16achg6-hybrid
 
           home-manager.nixosModules.home-manager
@@ -68,7 +68,7 @@
             home-manager.users.jakobe = {
               imports = [
                 nur.nixosModules.nur
-                ./hosts/legion/home.nix
+                ./hosts/laptopserver/home.nix
               ];
             };
 
