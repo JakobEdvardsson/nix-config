@@ -59,8 +59,6 @@
         # > Our main nixos configuration file <
         modules = [
           ./hosts/laptopserver
-          nixos-hardware.nixosModules.lenovo-legion-16achg6-hybrid
-
           home-manager.nixosModules.home-manager
           {
             #home-manager.useGlobalPkgs = true;
