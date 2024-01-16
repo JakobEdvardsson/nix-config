@@ -22,10 +22,18 @@
     ./hardware-configuration.nix
   ];
 
+  # Specialised boot entry
+  # No Nvidia GPU
   specialisation = {
-    # No Nvidia GPU
     IGPU.configuration = {
       system.nixos.tags = ["IGPU"];
+
+      # Probably not needed
+      hardware.nvidia = {
+        package = null;
+        nvidiaSettings = false;
+      };
+
       imports = [
         inputs.nixos-hardware.nixosModules.common-gpu-nvidia-disable
         # auto cpufreq breaks with gpu
