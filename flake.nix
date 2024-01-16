@@ -36,7 +36,7 @@
         # > Our main nixos configuration file <
         modules = [
           ./hosts/legion
-          nixos-hardware.nixosModules.lenovo-legion-16achg6-hybrid
+          #nixos-hardware.nixosModules.lenovo-legion-16achg6-hybrid
 
           home-manager.nixosModules.home-manager
           {
