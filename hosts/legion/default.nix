@@ -43,6 +43,8 @@
     };
   };
 
+  services.power-profiles-daemon.enable = true;
+
   # Hostname.
   networking.hostName = "legion";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
