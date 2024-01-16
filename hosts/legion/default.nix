@@ -14,7 +14,6 @@
     # inputs.hardware.nixosModules.common-ssd
     ../../modules/system.nix
     ../../modules/i3.nix
-    #../../modules/power/tlp.nix
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
@@ -27,7 +26,11 @@
     # No Nvidia GPU
     IGPU.configuration = {
       system.nixos.tags = ["IGPU"];
-      imports = [inputs.nixos-hardware.nixosModules.common-gpu-nvidia-disable];
+      imports = [
+        inputs.nixos-hardware.nixosModules.common-gpu-nvidia-disable
+        # auto cpufreq breaks with gpu
+        ../../modules/power/auto-cpufreq.nix
+      ];
     };
   };
 
@@ -51,7 +54,7 @@
     };
   };
 
-  services.power-profiles-daemon.enable = true;
+  services.power-profiles-daemon.enable = lib.mkDefault true;
 
   # Hostname.
   networking.hostName = "legion";
