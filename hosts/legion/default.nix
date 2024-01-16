@@ -10,7 +10,7 @@
   # You can import other NixOS modules here
   imports = [
     # Nixos-hardware
-    #  inputs.hardware.nixosModules.lenovo-legion-16achg6-hybrid
+    inputs.nixos-hardware.nixosModules.lenovo-legion-16achg6-hybrid
     # inputs.hardware.nixosModules.common-ssd
     ../../modules/system.nix
     ../../modules/i3.nix
@@ -22,6 +22,14 @@
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
   ];
+
+  specialisation = {
+    # No Nvidia GPU
+    IGPU.configuration = {
+      system.nixos.tags = ["IGPU"];
+      imports = [inputs.nixos-hardware.nixosModules.common-gpu-nvidia-disable];
+    };
+  };
 
   nixpkgs = {
     # You can add overlays here
