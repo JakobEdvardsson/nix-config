@@ -5,7 +5,7 @@
     libinput = {
       enable = true;
       mouse.accelProfile = "flat";
-      mouse.accelSpeed = "1.0";
+      mouse.accelSpeed = "-0.1";
     };
   };
 }
