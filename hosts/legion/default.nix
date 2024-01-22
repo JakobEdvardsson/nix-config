@@ -20,6 +20,8 @@
 
     # Import your generated (nixos-generate-config) hardware configuration
     ./hardware-configuration.nix
+
+    ../../common/programs/virtualbox.nix
   ];
 
   # Specialised boot entry
@@ -69,8 +71,11 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.extraModulePackages = [config.boot.kernelPackages.lenovo-legion-module];
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    extraModulePackages = [config.boot.kernelPackages.lenovo-legion-module];
+    loader.timeout = 60;
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -118,7 +123,7 @@
     # print screen key is also bound to this tool in i3 config
     scrot
     neofetch
-    xfce.thunar # xfce4's file manager
+    #xfce.thunar # xfce4's file manager
     powertop
 
     firefox
