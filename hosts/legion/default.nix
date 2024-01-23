@@ -14,6 +14,7 @@
     # inputs.hardware.nixosModules.common-ssd
     ../../modules/system.nix
     ../../modules/i3.nix
+    ../../modules/cyber.nix
 
     # You can also split up your configuration and import pieces of it here:
     # ./users.nix
