@@ -31,11 +31,10 @@
     IGPU.configuration = {
       system.nixos.tags = ["IGPU"];
 
-      # Probably not needed
-      hardware.nvidia = {
-        package = null;
-        nvidiaSettings = false;
-      };
+      services.xserver.videoDrivers = [
+        "modesetting"
+        "fbdev"
+      ];
 
       imports = [
         inputs.nixos-hardware.nixosModules.common-gpu-nvidia-disable
@@ -52,11 +51,14 @@
       # neovim-nightly-overlay.overlays.default
 
       # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
+      (final: prev: {
+        # jdk = final.jdk.overrideAttrs (oldAttrs: {
+        #  enableJavaFX = [./change-hello-to-hi.patch];
+        # });
+
+        jdk = pkgs.jdk17.override {enableJavaFX = true;};
+      })
+      #(self: super: {jdk = super.jdk8.override {};})
     ];
     # Configure your nixpkgs instance
     config = {
@@ -78,6 +80,7 @@
     loader.timeout = 60;
   };
 
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -108,11 +111,28 @@
     jakobe = {
       isNormalUser = true;
       description = "Jakob Edvardsson";
-      extraGroups = ["networkmanager" "wheel"];
+      extraGroups = ["networkmanager" "wheel" "docker"];
       openssh.authorizedKeys.keys = [
         # TODO: Add your SSH public key(s) here, if you plan on using SSH to connect
       ];
     };
+  };
+  # Enable docker
+  virtualisation.containers.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    #rootless = {
+    #  enable = true;
+    #  setSocketVariable = true;
+    #};
+  };
+
+  # Enable flatpak
+  services.flatpak.enable = true;
+  xdg.portal = {
+    enable = true;
+    config.common.default = "*";
+    extraPortals = [pkgs.xdg-desktop-portal-gtk];
   };
 
   # List packages installed in system profile. To search, run:
@@ -129,7 +149,19 @@
 
     firefox
     lenovo-legion
+    ffmpeg
+    mpv
+    distrobox
+
+    jetbrains.idea-ultimate
+    # jetbrains.jdk
+    #jdk
+    #gradle
+    #glibc
+    #gvfs
+    # maven
   ];
+  #programs.java.enable = true;
 
   # This setups a SSH server. Very important if you're setting up a headless system.
   # Feel free to remove if you don't need it.
