@@ -79,13 +79,13 @@
 
 
   # Extra Module Options
-  #drivers.amdgpu.enable = true;
-  #drivers.nvidia.enable = true;
-  #drivers.nvidia-prime = {
-  #  enable = false;
-  #  amdgpuBusID = "PCI:6:0:0";
-  #  nvidiaBusID = "PCI:1:0:0";
-  #};
+  drivers.amdgpu.enable = true;
+  drivers.nvidia.enable = true;
+  drivers.nvidia-prime = {
+    enable = true;
+    amdgpuBusID = "PCI:6:0:0";
+    nvidiaBusID = "PCI:1:0:0";
+  };
   #vm.guest-services.enable = false;
   #local.hardware-clock.enable = false;
 
