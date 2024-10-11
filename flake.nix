@@ -1,79 +1,55 @@
 {
-  description = "Your new nix config";
-
+  description = "NixOS-Hyprland"; 
+  	
   inputs = {
-    # Nixpkgs
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  	nixpkgs.url = "nixpkgs/nixos-unstable";
+	nixpkgs-stable.url = "nixpkgs/nixos-24.05";
+	#wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
+	hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # hyprland development
 
-    # Home manager
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    	# Home manager
+   	home-manager.url = "github:nix-community/home-manager";
+    	home-manager.inputs.nixpkgs.follows = "nixpkgs";
+  	};
 
-    nixos-hardware.url = "github:JakobEdvardsson/nixos-hardware/master";
+  outputs = 
+	inputs@{ self,nixpkgs,nixpkgs-stable,home-manager, ... }:
+    	let
+      system = "x86_64-linux";
+      host = "nixos";
+      username = "jakobe";
 
-    nur.url = "github:nix-community/NUR";
-
-    # Shameless plug: looking for a way to nixify your themes and make
-    # everything match nicely? Try nix-colors!
-    # nix-colors.url = "github:misterio77/nix-colors";
-  };
-
-  outputs = {
-    self,
-    nixpkgs,
-    home-manager,
-    nixos-hardware,
-    nur,
-    ...
-  } @ inputs: let
-    inherit (self) outputs;
-  in {
-    # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
-    nixosConfigurations = {
-      legion = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
-        # > Our main nixos configuration file <
-        modules = [
-          ./hosts/legion
-          #nixos-hardware.nixosModules.lenovo-legion-16achg6-hybrid
-
-          home-manager.nixosModules.home-manager
-          {
-            #home-manager.useGlobalPkgs = true;
-            #home-manager.useUserPackages = true;
-            home-manager.users.jakobe = {
-              imports = [
-                nur.nixosModules.nur
-                ./hosts/legion/home.nix
-              ];
-            };
-
-            home-manager.extraSpecialArgs = {inherit inputs outputs;};
-          }
-        ];
+    pkgs = import nixpkgs {
+       	inherit system;
+       	config = {
+       	allowUnfree = true;
+       	};
       };
+    in
+      {
+	nixosConfigurations = {
+      "${host}" = nixpkgs.lib.nixosSystem rec {
+		specialArgs = { 
+			inherit system;
+			inherit inputs;
+			inherit username;
+			inherit host;
+			};
+	   		modules = [ 
+			  ./hosts/${host}/config.nix
+		           home-manager.nixosModules.home-manager {
+            			#home-manager.useGlobalPkgs = true;
+            			#home-manager.useUserPackages = true;
+            			home-manager.users.jakobe = {
+              			  imports = [
+                		    ./home-manager/home.nix
+              			  ];
+            			};
 
-      laptopserver = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
-        # > Our main nixos configuration file <
-        modules = [
-          ./hosts/laptopserver
-          home-manager.nixosModules.home-manager
-          {
-            #home-manager.useGlobalPkgs = true;
-            #home-manager.useUserPackages = true;
-            home-manager.users.jakobe = {
-              imports = [
-                nur.nixosModules.nur
-                ./hosts/laptopserver/home.nix
-              ];
-            };
-
-            home-manager.extraSpecialArgs = {inherit inputs outputs;};
-          }
-        ];
-      };
-    };
-  };
+            		       #home-manager.extraSpecialArgs = {inherit inputs outputs;};
+         		   }
+			];
+		     };
+		};
+	};
 }
