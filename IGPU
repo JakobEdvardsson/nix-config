@@ -1,2 +1,0 @@
-git add *
-sudo nixos-rebuild switch --flake ./ --specialisation IGPU
