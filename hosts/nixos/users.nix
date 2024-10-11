@@ -25,12 +25,22 @@ in
       ];
     };
     
-    defaultUserShell = pkgs.zsh;
+    defaultUserShell = pkgs.fish;
   }; 
   
   environment.shells = with pkgs; [ zsh ];
-  environment.systemPackages = with pkgs; [ fzf ]; 
-    
+  environment.systemPackages = with pkgs; [ 
+    fishPlugins.done
+    fishPlugins.fzf-fish
+    fishPlugins.forgit
+    fishPlugins.hydro
+    fzf
+    fishPlugins.grc
+    grc
+  ]; 
+
+  programs.fish.enable = true; 
+
   programs = {
   # Zsh configuration
 	  zsh = {

@@ -92,6 +92,10 @@
     yad
     yt-dlp
     stow
+    lsd
+    oh-my-posh
+    unzip
+
     python-packages
     #waybar  # if wanted experimental next line
     #(pkgs.waybar.overrideAttrs (oldAttrs: { mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];}))
