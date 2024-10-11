@@ -14,6 +14,9 @@ if status is-interactive
     # -------------------------
     oh-my-posh init fish --config ~/.config/oh-my-posh/config.json | source
 
+
+    zoxide init fish | source
+
     # --------------------
     # REMOVE INTRO MESSAGE
     # --------------------
@@ -35,6 +38,7 @@ if status is-interactive
     alias ls="lsd"
     alias c="clear"
     alias f="firefox"
+    alias cd="z"
 
 
 end

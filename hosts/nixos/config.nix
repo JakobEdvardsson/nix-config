@@ -79,15 +79,15 @@
 
 
   # Extra Module Options
-  drivers.amdgpu.enable = true;
-   drivers.nvidia.enable = true;
-  drivers.nvidia-prime = {
-    enable = false;
-    amdgpuBusID = "PCI:6:0:0";
-    nvidiaBusID = "PCI:1:0:0";
-  };
-  vm.guest-services.enable = false;
-  local.hardware-clock.enable = false;
+  #drivers.amdgpu.enable = true;
+  #drivers.nvidia.enable = true;
+  #drivers.nvidia-prime = {
+  #  enable = false;
+  #  amdgpuBusID = "PCI:6:0:0";
+  #  nvidiaBusID = "PCI:1:0:0";
+  #};
+  #vm.guest-services.enable = false;
+  #local.hardware-clock.enable = false;
 
   # networking
   networking.networkmanager.enable = true;
@@ -389,6 +389,8 @@
 
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
+  documentation.man.generateCaches = false;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
