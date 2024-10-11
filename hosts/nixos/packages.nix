@@ -52,6 +52,7 @@
 
    
     # Hyprland/Dotfiles Stuff
+    brightnessctl
     ags        
     btop
     cava
@@ -95,6 +96,7 @@
     lsd
     oh-my-posh
     unzip
+    zoxide
 
     python-packages
     #waybar  # if wanted experimental next line
