@@ -14,6 +14,13 @@
     # firefox
   ]) ++ (with pkgs; [
     # Unstable
+    # Applications
+    vesktop
+    spotify
+    gimp
+    inkscape
+
+
     # System Packages
     baobab
     btrfs-progs
@@ -35,6 +42,7 @@
     wget
     xdg-user-dirs
     xdg-utils
+    tree
 
     fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray
@@ -45,11 +53,16 @@
     vscode-fhs
     go
     nodejs_22
-    neovim
     tmux
     gh
     github-desktop
+    android-tools
 
+    #neovim
+    neovim
+    lazygit
+    ripgrep
+    fd
    
     # Hyprland/Dotfiles Stuff
     brightnessctl
