@@ -20,6 +20,12 @@
     ../../modules/nvidia-prime-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
+
+    ../../modules/nixos-hardware/cpu/amd
+    ../../modules/nixos-hardware/cpu/amd/pstate.nix
+    ../../modules/nixos-hardware/gpu/amd
+    ../../modules/nixos-hardware/pc/laptop
+    ../../modules/nixos-hardware/pc/laptop/ssd
   ];
 
   # BOOT related stuff
@@ -297,10 +303,10 @@
     algorithm = "zstd";
     };
 
-  powerManagement = {
-  	enable = true;
-	  cpuFreqGovernor = "schedutil";
-  };
+  #powerManagement = {
+  #	enable = true;
+  #	  cpuFreqGovernor = "schedutil";
+  #};
 
   #hardware.sane = {
   #  enable = true;
