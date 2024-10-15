@@ -19,7 +19,7 @@
     spotify
     gimp
     inkscape
-
+    brave
 
     # System Packages
     baobab
@@ -43,6 +43,8 @@
     xdg-user-dirs
     xdg-utils
     tree
+    usbutils
+    home-manager
 
     fastfetch
     (mpv.override {scripts = [mpvScripts.mpris];}) # with tray

@@ -10,7 +10,13 @@
     	# Home manager
    	home-manager.url = "github:nix-community/home-manager";
     	home-manager.inputs.nixpkgs.follows = "nixpkgs";
-  	};
+
+
+	fine-cmdline = {
+	    url = "github:VonHeikemen/fine-cmdline.nvim";
+	    flake = false;
+	};
+  };
 
   outputs = 
 	inputs@{ self,nixpkgs,nixpkgs-stable,home-manager, ... }:
@@ -38,15 +44,15 @@
 	   		modules = [ 
 			  ./hosts/${host}/config.nix
 		           home-manager.nixosModules.home-manager {
-            			#home-manager.useGlobalPkgs = true;
-            			#home-manager.useUserPackages = true;
+            			home-manager.useGlobalPkgs = true;
+            			home-manager.useUserPackages = true;
             			home-manager.users.jakobe = {
               			  imports = [
                 		    ./home-manager/home.nix
               			  ];
             			};
 
-            		       #home-manager.extraSpecialArgs = {inherit inputs outputs;};
+            		       home-manager.extraSpecialArgs = {inherit inputs;};
          		   }
 			];
 		     };
