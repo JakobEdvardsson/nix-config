@@ -1,4 +1,9 @@
-{ pkgs, inputs, ... }:
+{
+  pkgs,
+  inputs,
+  lib,
+  ...
+}:
 let
   finecmdline = pkgs.vimUtils.buildVimPlugin {
     name = "fine-cmdline";
@@ -28,7 +33,11 @@ in
         pyright
         marksman
         vue-language-server
-        nodePackages.vls
+        typescript-language-server
+        nodePackages.typescript-language-server
+        sourcekit-lsp
+
+        #nodePackages.vls
         lua-language-server
         gopls
         emmet-ls
@@ -112,6 +121,20 @@ in
         ${builtins.readFile ./nvim/plugins/trouble.lua}
         ${builtins.readFile ./nvim/plugins/vim-maximizer.lua}
         ${builtins.readFile ./nvim/plugins/which-key.lua}
+
+        lspconfig.ts_ls.setup({
+          capabilities = capabilities,
+          init_options = {
+            plugins = { -- I think this was my breakthrough that made it work
+              {
+                name = "@vue/typescript-plugin",
+                location = "${lib.getBin pkgs.vue-language-server}/lib/node_modules/@vue/language-server",
+                languages = { "vue" },
+              },
+            },
+          },
+          filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+        })
       '';
     };
   };

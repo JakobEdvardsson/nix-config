@@ -111,10 +111,11 @@ lspconfig["yamlls"].setup({
 lspconfig["bashls"].setup({
 	capabilities = capabilities,
 })
-lspconfig["vuels"].setup({
+lspconfig["sourcekit"].setup({
 	capabilities = capabilities,
 })
 
-lspconfig["ts_ls"].setup({
+-- The rest of the vue config is in ../../../neovim.nix
+lspconfig.volar.setup({
 	capabilities = capabilities,
 })
