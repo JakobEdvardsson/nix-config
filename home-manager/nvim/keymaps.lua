@@ -17,8 +17,8 @@ keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- 
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" }) -- close current split window
 
 keymap.set({ "n", "x" }, "<A-LEFT>", "<C-w>h", { desc = "Window go left" })
-keymap.set({ "n", "x" }, "<A-UP>", "<C-w>j", { desc = "Window go up" })
-keymap.set({ "n", "x" }, "<A-DOWN>", "<C-w>k", { desc = "Window go down" })
+keymap.set({ "n", "x" }, "<A-DOWN>", "<C-w>j", { desc = "Window go down" })
+keymap.set({ "n", "x" }, "<A-UP>", "<C-w>k", { desc = "Window go up" })
 keymap.set({ "n", "x" }, "<A-RIGHT>", "<C-w>l", { desc = "Window go right" })
 
 -- tabs

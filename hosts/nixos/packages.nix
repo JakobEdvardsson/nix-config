@@ -23,6 +23,7 @@ in
       gimp
       inkscape
       brave
+      flameshot
 
       # System Packages
       baobab
