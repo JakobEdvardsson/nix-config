@@ -28,8 +28,10 @@ in
         pyright
         marksman
         vue-language-server
+        nodePackages.vls
         lua-language-server
         gopls
+        emmet-ls
 
         # Code formatting
         stylua
