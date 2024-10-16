@@ -23,7 +23,7 @@ in
         nil
         rust-analyzer
         tailwindcss-language-server
-        #nodePackages.bash-language-server
+        nodePackages.bash-language-server
         yaml-language-server
         pyright
         marksman
@@ -42,7 +42,7 @@ in
       plugins = with pkgs.vimPlugins; [
         plenary-nvim
         tokyonight-nvim
-        vim-tmux-navigator
+        #vim-tmux-navigator
         nvim-surround
         substitute-nvim
         nvim-tree-lua
@@ -62,14 +62,11 @@ in
         luasnip
         friendly-snippets
         cmp_luasnip
-        #mason-nvim
-        #mason-lspconfig-nvim
         nvim-lspconfig
         cmp-nvim-lsp
         trouble-nvim
         conform-nvim
         nvim-lint
-        #mason-tool-installer-nvim
         comment-nvim
         nvim-ts-context-commentstring
         todo-comments-nvim
@@ -80,7 +77,6 @@ in
         indent-blankline-nvim
         gitsigns-nvim
         lazygit-nvim
-
         #finecmdline
       ];
       extraConfig = ''
@@ -114,11 +110,6 @@ in
         ${builtins.readFile ./nvim/plugins/trouble.lua}
         ${builtins.readFile ./nvim/plugins/vim-maximizer.lua}
         ${builtins.readFile ./nvim/plugins/which-key.lua}
-        require("ibl").setup()
-        require("bufferline").setup{}
-        require("lualine").setup({
-          icons_enabled = true,
-        })
       '';
     };
   };
