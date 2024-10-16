@@ -17,7 +17,7 @@ in
       extraPackages = with pkgs; [
         xclip
         wl-clipboard
-        
+
         # LSP
         luajitPackages.lua-lsp
         nil
@@ -30,6 +30,14 @@ in
         vue-language-server
         lua-language-server
         gopls
+
+        # Code formatting
+        stylua
+        vimPlugins.vim-isort
+        black
+        vimPlugins.vim-prettier
+        nixfmt-rfc-style
+
       ];
       plugins = with pkgs.vimPlugins; [
         plenary-nvim
@@ -73,8 +81,7 @@ in
         gitsigns-nvim
         lazygit-nvim
 
-
-       #finecmdline
+        #finecmdline
       ];
       extraConfig = ''
         set noemoji
@@ -116,4 +123,3 @@ in
     };
   };
 }
-

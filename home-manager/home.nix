@@ -1,5 +1,8 @@
-{ pkgs, ...
-}:{ 
+{
+  pkgs,
+  ...
+}:
+{
   imports = [
     ./neovim.nix
   ];
@@ -17,13 +20,11 @@
     };
   };
 
+  # home.file.".config/ags" = {
+  #   source = ./config/ags;
+  #   # copy the ags configuration directory recursively
+  #   recursive = true;
+  # };
 
- # home.file.".config/ags" = {
- #   source = ./config/ags;
- #   # copy the ags configuration directory recursively
- #   recursive = true;
- # };
-  
   home.stateVersion = "24.05";
 }
-

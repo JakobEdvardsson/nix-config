@@ -1,4 +1,4 @@
-{lib, config, ...}:
+{ lib, config, ... }:
 let
   nividiaPackage = config.hardware.nvidia.package;
 in

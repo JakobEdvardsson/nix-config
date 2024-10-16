@@ -2,8 +2,15 @@
 # VERSION: 3.0
 SETUVAR --export LS_COLORS:di\x3d1\x3b32\x3aln\x3d31\x3aso\x3d37\x3api\x3d37\x3aex\x3d32\x3abd\x3d34\x3b46\x3acd\x3d34\x3b43\x3asu\x3d30\x3b41\x3asg\x3d30\x3b46\x3atw\x3d30\x3b42\x3aow\x3d30\x3b43
 SETUVAR __fish_initialized:3400
-SETUVAR _hydro_git_15276:main\u2022\x20
+SETUVAR _hydro_git_123180:main\u2022\x20
+SETUVAR _hydro_git_15619:main\x20
+SETUVAR _hydro_git_15741:main\x20
+SETUVAR _hydro_git_17213:Situation\x2dAwareness\x2dSection\x20
+SETUVAR _hydro_git_4106:main\u2022\x20
+SETUVAR _hydro_git_4536:main\u2022\x20
+SETUVAR _hydro_git_5031:main\u2022\x20
 SETUVAR _hydro_git_5428:main\x20
+SETUVAR _hydro_git_72026:snowtam\u2022\x20
 SETUVAR fish_color_autosuggestion:brblack
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:blue
