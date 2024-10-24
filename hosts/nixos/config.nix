@@ -17,17 +17,15 @@
     ./hardware.nix
     ./users.nix
     ./packages.nix
-    ../../modules/amd-drivers.nix
+
+    ../../modules/nixos-hardware/gpu/amd
+    ../../modules/tlp.nix
+
+    #../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
-
-    ../../modules/nixos-hardware/cpu/amd
-    ../../modules/nixos-hardware/cpu/amd/pstate.nix
-    ../../modules/nixos-hardware/gpu/amd
-    ../../modules/nixos-hardware/pc/laptop
-    ../../modules/nixos-hardware/pc/laptop/ssd
   ];
 
   # BOOT related stuff
@@ -39,11 +37,18 @@
       "systemd.mask=dev-tpmrm0.device" # this is to mask that stupid 1.5 mins systemd bug
       "nowatchdog"
       "modprobe.blacklist=sp5100_tco" # watchdog for AMD
+      "amd_pstate=active" # amd cpu pstate
     ];
 
-    # This is for OBS Virtual Cam Support
-    kernelModules = [ "v4l2loopback" ];
-    extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+    # v4l2loopback This is for OBS Virtual Cam Support
+    kernelModules = [
+      "v4l2loopback"
+      "acpi_call"
+    ];
+    extraModulePackages = with config.boot.kernelPackages; [
+      acpi_call
+      v4l2loopback
+    ];
 
     initrd = {
       availableKernelModules = [
@@ -92,8 +97,16 @@
     plymouth.enable = true;
   };
 
+  #services.power-profiles-daemon.enable = true;
+  hardware.cpu.amd.updateMicrocode = true;
+
+  services.logind.extraConfig = ''
+    # don’t shutdown when power button is short-pressed
+    HandlePowerKey=ignore
+  '';
+
   # Extra Module Options
-  drivers.amdgpu.enable = true;
+  #drivers.amdgpu.enable = true;
   drivers.nvidia.enable = true;
   drivers.nvidia-prime = {
     enable = true;
@@ -405,6 +418,11 @@
     dockerCompat = false;
     defaultNetwork.settings.dns_enabled = false;
   };
+  virtualisation.docker.enable = true;
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
 
   # OpenGL
   hardware.graphics = {
@@ -417,6 +435,33 @@
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   documentation.man.generateCaches = false;
+
+  services.udev.extraRules = ''
+    # Rules for Oryx web flashing and live training
+    KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", GROUP="plugdev"
+    KERNEL=="hidraw*", ATTRS{idVendor}=="3297", MODE="0664", GROUP="plugdev"
+
+    # Legacy rules for live training over webusb (Not needed for firmware v21+)
+      # Rule for all ZSA keyboards
+      SUBSYSTEM=="usb", ATTR{idVendor}=="3297", GROUP="plugdev"
+      # Rule for the Moonlander
+      SUBSYSTEM=="usb", ATTR{idVendor}=="3297", ATTR{idProduct}=="1969", GROUP="plugdev"
+      # Rule for the Ergodox EZ
+      SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="1307", GROUP="plugdev"
+      # Rule for the Planck EZ
+      SUBSYSTEM=="usb", ATTR{idVendor}=="feed", ATTR{idProduct}=="6060", GROUP="plugdev"
+
+    # Wally Flashing rules for the Ergodox EZ
+    ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", ENV{ID_MM_DEVICE_IGNORE}="1"
+    ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789A]?", ENV{MTP_NO_PROBE}="1"
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789ABCD]?", MODE:="0666"
+    KERNEL=="ttyACM*", ATTRS{idVendor}=="16c0", ATTRS{idProduct}=="04[789B]?", MODE:="0666"
+
+    # Keymapp / Wally Flashing rules for the Moonlander and Planck EZ
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="df11", MODE:="0666", SYMLINK+="stm32_dfu"
+    # Keymapp Flashing rules for the Voyager
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", MODE:="0666", SYMLINK+="ignition_dfu"
+  '';
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

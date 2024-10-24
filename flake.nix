@@ -23,6 +23,7 @@
       nixpkgs,
       nixpkgs-stable,
       home-manager,
+      fine-cmdline,
       ...
     }@inputs:
     let
@@ -69,6 +70,9 @@
 
               home-manager.extraSpecialArgs = {
                 inherit pkgs;
+                inherit fine-cmdline;
+                inherit pkgs-stable;
+                inherit inputs;
               };
             }
           ];

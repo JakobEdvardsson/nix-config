@@ -15,6 +15,9 @@
         "video"
         "input"
         "audio"
+        "dialout"
+        "plugdev"
+        "docker"
       ];
 
       # define user packages here
