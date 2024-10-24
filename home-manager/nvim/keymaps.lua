@@ -24,32 +24,51 @@ keymap.set({ "n", "x" }, "<A-RIGHT>", "<C-w>l", { desc = "Window go right" })
 -- tabs
 keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" }) -- open new tab
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" }) -- close current tab
+
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
+keymap.set("n", "<leader>tt", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
+keymap.set("n", "<leader>t<RIGHT>", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
+
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
+keymap.set("n", "<leader>tT", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
+keymap.set("n", "<leader>t<LEFT>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
+
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+
+keymap.set({ "n", "x" }, "<leader>t1", "<cmd>lua require('bufferline').go_to(1, true)<cr>", { desc = "Tab 1" })
+keymap.set({ "n", "x" }, "<leader>t2", "<cmd>lua require('bufferline').go_to(2, true)<cr>", { desc = "Tab 2" })
+keymap.set({ "n", "x" }, "<leader>t3", "<cmd>lua require('bufferline').go_to(3, true)<cr>", { desc = "Tab 3" })
+keymap.set({ "n", "x" }, "<leader>t4", "<cmd>lua require('bufferline').go_to(4, true)<cr>", { desc = "Tab 4" })
+keymap.set({ "n", "x" }, "<leader>t5", "<cmd>lua require('bufferline').go_to(5, true)<cr>", { desc = "Tab 5" })
+keymap.set({ "n", "x" }, "<leader>t6", "<cmd>lua require('bufferline').go_to(6, true)<cr>", { desc = "Tab 6" })
+keymap.set({ "n", "x" }, "<leader>t7", "<cmd>lua require('bufferline').go_to(7, true)<cr>", { desc = "Tab 7" })
+keymap.set({ "n", "x" }, "<leader>t8", "<cmd>lua require('bufferline').go_to(8, true)<cr>", { desc = "Tab 8" })
+keymap.set({ "n", "x" }, "<leader>t9", "<cmd>lua require('bufferline').go_to(9, true)<cr>", { desc = "Tab 9" })
+keymap.set({ "n", "x" }, "<leader>t0", "<cmd>lua require('bufferline').go_to(10, true)<cr>", { desc = "Tab 10" })
 
 -- buffers
 keymap.set("n", "<leader>bo", "<cmd>enew<CR>", { desc = "Open new buffer" })
-keymap.set("n", "<leader>bl", ":ls<CR>", { desc = "List buffers" })
+keymap.set("n", "<leader>bl", ":Telescope buffers<CR>", { desc = "List buffers" })
+
 keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
+keymap.set("n", "<leader>b<RIGHT>", ":bnext<CR>", { desc = "Next buffer" })
+
 keymap.set("n", "<leader>bp", ":bprev<CR>", { desc = "Previous buffer" })
 keymap.set("n", "<leader>bB", ":bprev<CR>", { desc = "Previous buffer" })
+keymap.set("n", "<leader>b<LEFT>", ":bprev<CR>", { desc = "Previous buffer" })
+
 keymap.set("n", "<leader>bx", ":bdelete!<CR>", { desc = "Delete buffer" })
 keymap.set("n", "<leader>bv", ":vsplit | bnext<CR>", { desc = "Vertical split with next buffer" })
 keymap.set("n", "<leader>bh", ":split | bnext<CR>", { desc = "Horizontal split with next buffer" })
 
-keymap.set({ "n", "x" }, "<leader>1", "<cmd>lua require('bufferline').go_to(1, true)<cr>", { desc = "Buf 1" })
-keymap.set({ "n", "x" }, "<leader>2", "<cmd>lua require('bufferline').go_to(2, true)<cr>", { desc = "Buf 2" })
-keymap.set({ "n", "x" }, "<leader>3", "<cmd>lua require('bufferline').go_to(3, true)<cr>", { desc = "Buf 3" })
-keymap.set({ "n", "x" }, "<leader>4", "<cmd>lua require('bufferline').go_to(4, true)<cr>", { desc = "Buf 4" })
-keymap.set({ "n", "x" }, "<leader>5", "<cmd>lua require('bufferline').go_to(5, true)<cr>", { desc = "Buf 5" })
-keymap.set({ "n", "x" }, "<leader>6", "<cmd>lua require('bufferline').go_to(6, true)<cr>", { desc = "Buf 6" })
-keymap.set({ "n", "x" }, "<leader>7", "<cmd>lua require('bufferline').go_to(7, true)<cr>", { desc = "Buf 7" })
-keymap.set({ "n", "x" }, "<leader>8", "<cmd>lua require('bufferline').go_to(8, true)<cr>", { desc = "Buf 8" })
-keymap.set({ "n", "x" }, "<leader>9", "<cmd>lua require('bufferline').go_to(9, true)<cr>", { desc = "Buf 9" })
-keymap.set({ "n", "x" }, "<leader>0", "<cmd>lua require('bufferline').go_to(10, true)<cr>", { desc = "Buf 10" })
-
 -- terminal
 keymap.set("n", "<leader><CR>", "<cmd>term<CR>a", { desc = "Open a terminal" })
-keymap.set("t", "<C-ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+keymap.set("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+keymap.set("n", "<leader>xx", function()
+	vim.diagnostic.disable()
+end, { desc = "Disable diagnostic" })
+keymap.set("n", "<leader>xe", function()
+	vim.diagnostic.enable()
+end, { desc = "Enable diagnostic" })

@@ -24,6 +24,17 @@ in
       inkscape
       brave
       flameshot
+      onlyoffice-bin
+      thonny
+      teams-for-linux
+      zoom-us
+
+      # Hacking
+      thc-hydra
+      seclists
+      metasploit
+      gobuster
+      gospider
 
       # System Packages
       baobab
@@ -49,6 +60,7 @@ in
       tree
       usbutils
       home-manager
+      openvpn
 
       fastfetch
       (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray

@@ -36,6 +36,8 @@ in
         typescript-language-server
         nodePackages.typescript-language-server
         sourcekit-lsp
+        eslint_d
+        gopls
 
         #nodePackages.vls
         lua-language-server
@@ -48,6 +50,8 @@ in
         black
         vimPlugins.vim-prettier
         nixfmt-rfc-style
+        shfmt
+        pylint
 
       ];
       plugins = with pkgs.vimPlugins; [
@@ -88,7 +92,9 @@ in
         indent-blankline-nvim
         gitsigns-nvim
         lazygit-nvim
-        #finecmdline
+        harpoon2
+        finecmdline
+        scope-nvim
       ];
       extraConfig = ''
         set noemoji
@@ -121,6 +127,9 @@ in
         ${builtins.readFile ./nvim/plugins/trouble.lua}
         ${builtins.readFile ./nvim/plugins/vim-maximizer.lua}
         ${builtins.readFile ./nvim/plugins/which-key.lua}
+        ${builtins.readFile ./nvim/plugins/harpoon.lua}
+        ${builtins.readFile ./nvim/plugins/fine-cmdline.lua}
+        ${builtins.readFile ./nvim/plugins/scope.lua}
 
         lspconfig.ts_ls.setup({
           capabilities = capabilities,

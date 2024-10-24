@@ -17,6 +17,8 @@ conform.setup({
 		lua = { "stylua" },
 		python = { "isort", "black" },
 		nix = { "nixfmt" },
+		sh = { "shfmt" },
+		bash = { "shfmt" },
 	},
 	format_on_save = {
 		lsp_fallback = true,
