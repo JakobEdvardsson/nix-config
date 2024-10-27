@@ -28,6 +28,7 @@ in
       thonny
       teams-for-linux
       zoom-us
+      obs-studio
 
       # Hacking
       thc-hydra
@@ -107,7 +108,7 @@ in
       playerctl
       polkit_gnome
       pyprland
-      qt5ct
+      libsForQt5.qt5ct
       qt6ct
       qt6.qtwayland
       qt6Packages.qtstyleplugin-kvantum # kvantum
