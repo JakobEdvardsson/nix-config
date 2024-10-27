@@ -7,3 +7,5 @@ config/.config/Thunar/accels.scm
 config/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
 config/.config/dconf/user
 config/.config/fish/fish_variables
+config/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
+config/.config/Thunar/accels.scm
