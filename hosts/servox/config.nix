@@ -20,11 +20,8 @@
     ./local-packages.nix
 
     ../../modules/nixos-hardware/gpu/amd
-    ../../modules/tlp.nix
 
-    #../../modules/amd-drivers.nix
-    ../../modules/nvidia-drivers.nix
-    ../../modules/nvidia-prime-drivers.nix
+    ../../modules/amd-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
   ];
@@ -106,28 +103,13 @@
     HandlePowerKey=ignore
   '';
 
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
   # Extra Module Options
-  #drivers.amdgpu.enable = true;
-  drivers.nvidia.enable = true;
-  drivers.nvidia-prime = {
-    enable = true;
-    amdgpuBusID = "PCI:6:0:0";
-    nvidiaBusID = "PCI:1:0:0";
-  };
-
-  specialisation = {
-    on-the-go.configuration = {
-      system.nixos.tags = [ "on-the-go" ];
-      drivers.nvidia.enable = lib.mkForce false;
-      drivers.nvidia-prime = {
-        enable = lib.mkForce false;
-      };
-
-      imports = [
-        ../../modules/nixos-hardware/gpu/nvidia/disable.nix
-      ];
-    };
-  };
+  drivers.amdgpu.enable = true;
 
   #vm.guest-services.enable = false;
   #local.hardware-clock.enable = false;
@@ -349,8 +331,8 @@
   #};
 
   # Extra Logitech Support
-  hardware.logitech.wireless.enable = true;
-  hardware.logitech.wireless.enableGraphical = true;
+  hardware.logitech.wireless.enable = false;
+  hardware.logitech.wireless.enableGraphical = false;
 
   # Bluetooth
   hardware = {
@@ -423,6 +405,20 @@
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;
+  };
+
+  # Ollama
+  services.ollama = {
+    package = pkgs.unstable.ollama; # Uncomment if you want to use the unstable channel, see https://fictionbecomesfact.com/nixos-unstable-channel
+    enable = true;
+    acceleration = "rocm"; # Or "rocm"
+    rocmOverrideGfx = "10.3.1";
+    #environmentVariables = { # I haven't been able to get this to work myself yet, but I'm sharing it for the sake of completeness
+    # HOME = "/home/ollama";
+    # OLLAMA_MODELS = "/home/ollama/models";
+    # OLLAMA_HOST = "0.0.0.0:11434"; # Make Ollama accesible outside of localhost
+    # OLLAMA_ORIGINS = "http://localhost:8080,http://192.168.0.10:*"; # Allow access, otherwise Ollama returns 403 forbidden due to CORS
+    #};
   };
 
   # OpenGL
