@@ -9,6 +9,3 @@ config/.config/fish/fish_variables
 config/.config/fish/completions
 config/.config/Thunar/accels.scm
 config/.tmux/plugins
-
-
-
