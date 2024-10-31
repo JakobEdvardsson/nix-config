@@ -409,7 +409,7 @@
 
   # Ollama
   services.ollama = {
-    package = pkgs.unstable.ollama; # Uncomment if you want to use the unstable channel, see https://fictionbecomesfact.com/nixos-unstable-channel
+    #package = pkgs.unstable.ollama; # Uncomment if you want to use the unstable channel, see https://fictionbecomesfact.com/nixos-unstable-channel
     enable = true;
     acceleration = "rocm"; # Or "rocm"
     rocmOverrideGfx = "10.3.1";
