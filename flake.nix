@@ -53,6 +53,7 @@
             inherit username;
             inherit pkgs-stable;
             inherit inputs;
+            host = "servox";
           };
           modules = [
             ./hosts/nixos/config.nix
@@ -82,6 +83,7 @@
             inherit username;
             inherit pkgs-stable;
             inherit inputs;
+            host = "servox";
           };
           modules = [
             ./hosts/servox/config.nix
