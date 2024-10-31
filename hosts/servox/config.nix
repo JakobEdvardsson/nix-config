@@ -19,9 +19,9 @@
     ../../modules/packages.nix
     ./local-packages.nix
 
-    #../../modules/nixos-hardware/gpu/amd
+    ../../modules/nixos-hardware/gpu/amd
 
-    #../../modules/amd-drivers.nix
+    ../../modules/amd-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
   ];
@@ -100,6 +100,7 @@
 
   #services.power-profiles-daemon.enable = true;
   hardware.cpu.amd.updateMicrocode = true;
+  hardware.enableRedistributableFirmware = lib.mkDefault true;
 
   services.logind.extraConfig = ''
     # don’t shutdown when power button is short-pressed
