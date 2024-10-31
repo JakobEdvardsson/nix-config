@@ -31,7 +31,6 @@
       system = "x86_64-linux";
       lib = nixpkgs.lib;
       username = "jakobe";
-      host = "nixos";
       pkgs = import nixpkgs {
         inherit system;
         config = {
@@ -48,16 +47,15 @@
     in
     {
       nixosConfigurations = {
-        "${host}" = lib.nixosSystem {
+        "nixos" = lib.nixosSystem {
           specialArgs = {
             inherit system;
             inherit username;
-            inherit host;
             inherit pkgs-stable;
             inherit inputs;
           };
           modules = [
-            ./hosts/${host}/config.nix
+            ./hosts/nixos/config.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -77,6 +75,36 @@
             }
           ];
         };
+
+        "servox" = lib.nixosSystem {
+          specialArgs = {
+            inherit system;
+            inherit username;
+            inherit pkgs-stable;
+            inherit inputs;
+          };
+          modules = [
+            ./hosts/servox/config.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.jakobe = {
+                imports = [
+                  ./home-manager/home.nix
+                ];
+              };
+
+              home-manager.extraSpecialArgs = {
+                inherit pkgs;
+                inherit fine-cmdline;
+                inherit pkgs-stable;
+                inherit inputs;
+              };
+            }
+          ];
+        };
+
       };
     };
 }
