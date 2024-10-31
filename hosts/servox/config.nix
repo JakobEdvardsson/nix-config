@@ -19,9 +19,9 @@
     ../../modules/packages.nix
     ./local-packages.nix
 
-    ../../modules/nixos-hardware/gpu/amd
+    #../../modules/nixos-hardware/gpu/amd
 
-    ../../modules/amd-drivers.nix
+    #../../modules/amd-drivers.nix
     ../../modules/vm-guest-services.nix
     ../../modules/local-hardware-clock.nix
   ];
@@ -36,6 +36,7 @@
       "nowatchdog"
       "modprobe.blacklist=sp5100_tco" # watchdog for AMD
       "amd_pstate=active" # amd cpu pstate
+      "amdgpu"
     ];
 
     # v4l2loopback This is for OBS Virtual Cam Support
@@ -57,7 +58,9 @@
         "usbhid"
         "sd_mod"
       ];
-      kernelModules = [ ];
+      kernelModules = [
+        "amdgpu"
+      ];
     };
 
     # Needed For Some Steam Games
