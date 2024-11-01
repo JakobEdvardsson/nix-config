@@ -77,11 +77,17 @@ in
       github-desktop
       android-tools
 
-      #neovim
+      # Terminal
       neovim
       lazygit
       ripgrep
       fd
+      zoxide
+      oh-my-posh
+      kitty
+      lsd
+      starship
+      tmuxPlugins.tmux-thumbs
 
       # Hyprland/Dotfiles Stuff
       brightnessctl
@@ -98,7 +104,6 @@ in
       imagemagick
       inxi
       jq
-      kitty
       libsForQt5.qtstyleplugin-kvantum # kvantum
       networkmanagerapplet
       nwg-look # requires unstable channel
@@ -124,10 +129,7 @@ in
       yad
       yt-dlp
       stow
-      lsd
-      oh-my-posh
       unzip
-      zoxide
 
       python-packages
       #waybar  # if wanted experimental next line

@@ -15,7 +15,7 @@ set -g mouse on # enable mouse
 setw -g mode-keys vi
 set -g @scroll-speed-num-lines-per-scroll 1
 
-bind R source-file ~/.tmux.conf \; display "Reloaded!" # quick reload
+bind R source-file ~/.config/tmux/tmux.conf \; display "Reloaded!" # quick reload
 
 # Rebind prefix to C-Space
 unbind C-Space
@@ -75,4 +75,4 @@ set -g @tokyo-night-tmux_path_format relative # 'relative' or 'full'
 # set -g @plugin 'git@bitbucket.com:user/plugin'
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-run '~/.tmux/plugins/tpm/tpm'
+run '~/.config/tmux/plugins/tpm/tpm'
