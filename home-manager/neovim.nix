@@ -57,7 +57,7 @@ in
       plugins = with pkgs.vimPlugins; [
         plenary-nvim
         tokyonight-nvim
-        #vim-tmux-navigator
+        vim-tmux-navigator
         nvim-surround
         substitute-nvim
         nvim-tree-lua

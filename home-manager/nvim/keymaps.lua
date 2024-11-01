@@ -58,7 +58,9 @@ keymap.set("n", "<leader>bp", ":bprev<CR>", { desc = "Previous buffer" })
 keymap.set("n", "<leader>bB", ":bprev<CR>", { desc = "Previous buffer" })
 keymap.set("n", "<leader>b<LEFT>", ":bprev<CR>", { desc = "Previous buffer" })
 
-keymap.set("n", "<leader>bx", ":bdelete!<CR>", { desc = "Delete buffer" })
+--keymap.set("n", "<leader>bx", ":bdelete!<CR>", { desc = "Delete buffer" })
+-- Delete buffer without closing split windows
+keymap.set("n", "<leader>bx", ":bp|bd #<CR>", { desc = "Delete buffer" })
 keymap.set("n", "<leader>bv", ":vsplit | bnext<CR>", { desc = "Vertical split with next buffer" })
 keymap.set("n", "<leader>bh", ":split | bnext<CR>", { desc = "Horizontal split with next buffer" })
 
@@ -72,3 +74,10 @@ end, { desc = "Disable diagnostic" })
 keymap.set("n", "<leader>xe", function()
 	vim.diagnostic.enable()
 end, { desc = "Enable diagnostic" })
+
+vim.g.tmux_navigator_no_mappings = 1
+
+vim.api.nvim_set_keymap("n", "<M-Left>", ":TmuxNavigateLeft<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<M-Down>", ":TmuxNavigateDown<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<M-Up>", ":TmuxNavigateUp<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<M-Right>", ":TmuxNavigateRight<CR>", { noremap = true, silent = true })

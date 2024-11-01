@@ -45,3 +45,6 @@ autocmd!
 au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Visual", timeout=500})
 augroup END
 ]])
+
+-- Fix some issues with fish when using tmux-vim-navigator
+vim.opt.shell = "/bin/bash"
