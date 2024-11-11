@@ -43,6 +43,6 @@ if status is-interactive
 end
 
 
-# if test -n "$TMUX"
-#     set -gx TERM screen-256color
-# end
+if test -n "$TMUX"
+     set -gx TERM tmux-256color
+end
