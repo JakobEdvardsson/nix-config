@@ -99,7 +99,7 @@
   };
 
   #services.power-profiles-daemon.enable = true;
-  #hardware.cpu.amd.updateMicrocode = true;
+  hardware.cpu.amd.updateMicrocode = true;
   hardware.enableRedistributableFirmware = lib.mkDefault true;
 
   services.logind.extraConfig = ''
