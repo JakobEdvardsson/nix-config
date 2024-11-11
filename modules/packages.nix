@@ -36,6 +36,17 @@ in
       metasploit
       gobuster
       gospider
+      nmap
+      wireshark
+      tcpdump
+
+      # Embedded / coding
+      avra
+      avrdude
+      #avrlibc
+      clang
+      jetbrains.idea-ultimate
+      jetbrains.jdk
 
       # System Packages
       baobab
@@ -87,7 +98,7 @@ in
       kitty
       lsd
       starship
-      tmuxPlugins.tmux-thumbs
+      yazi
 
       # Hyprland/Dotfiles Stuff
       brightnessctl

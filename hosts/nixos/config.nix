@@ -137,6 +137,7 @@
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
 
+  networking.firewall.enable = true;
   # Set your time zone.
   time.timeZone = "Europe/Stockholm";
 

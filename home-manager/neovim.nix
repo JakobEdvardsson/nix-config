@@ -48,7 +48,7 @@ in
         stylua
         vimPlugins.vim-isort
         black
-        vimPlugins.vim-prettier
+        nodePackages.prettier
         nixfmt-rfc-style
         shfmt
         pylint
@@ -138,7 +138,7 @@ in
               {
                 name = "@vue/typescript-plugin",
                 location = "${lib.getBin pkgs.vue-language-server}/lib/node_modules/@vue/language-server",
-                languages = { "vue" },
+                languages = {"javascript", "typescript", "vue"},
               },
             },
           },

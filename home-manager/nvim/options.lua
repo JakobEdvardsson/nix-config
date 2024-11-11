@@ -47,4 +47,4 @@ augroup END
 ]])
 
 -- Fix some issues with fish when using tmux-vim-navigator
-vim.opt.shell = "/bin/bash"
+vim.opt.shell = "/usr/bin/env bash"

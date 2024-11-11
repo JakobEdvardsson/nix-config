@@ -1,9 +1,5 @@
-#
-#  ## Useful aliases
-#
-#  * We also have [Bash version](https://github.com/dmi3/bin/blob/master/aliases.bash), and portable [Over-SSH version](https://github.com/dmi3/bin/blob/master/sssh2#L39-L64)
-#
-#  Author: [Dmitry](http://dmi3.net) [Source](https://github.com/dmi3/fish)
+alias update='sudo nixos-rebuild switch --flake .#nixos'
+alias upgrade='nix flake update && sudo nixos-rebuild switch --flake .#nixos'
 
 
 #  * Create missing directories in path when calling `mkdir`
