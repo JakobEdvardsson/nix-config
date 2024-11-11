@@ -284,7 +284,7 @@
     rpcbind.enable = false;
     nfs.server.enable = false;
 
-    openssh.enable = true;
+    openssh.enable = false;
     flatpak.enable = false;
 
     blueman.enable = true;

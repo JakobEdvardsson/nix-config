@@ -19,7 +19,9 @@
         "plugdev"
         "docker"
       ];
-
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1aUDp1c38txQmImBCSU9N3zSRSNNWdeZvUBSx6QtLr jakobe"
+      ];
       # define user packages here
       packages =
         with pkgs;
