@@ -269,8 +269,7 @@
     rpcbind.enable = false;
     nfs.server.enable = false;
 
-    openssh.enable = true;
-    services.openssh = {
+    openssh = {
       enable = true;
       # require public key authentication for better security
       settings.PasswordAuthentication = false;
