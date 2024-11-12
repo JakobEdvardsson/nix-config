@@ -123,8 +123,11 @@
   networking.hostName = "${host}";
   networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
 
+  networking.firewall.enable = true;
   # Set your time zone.
   time.timeZone = "Europe/Stockholm";
+
+  services.tailscale.enable = true;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
