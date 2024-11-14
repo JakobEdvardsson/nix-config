@@ -29,6 +29,7 @@ in
       teams-for-linux
       zoom-us
       obs-studio
+      samba
 
       # Hacking
       thc-hydra
@@ -47,6 +48,7 @@ in
       clang
       jetbrains.idea-ultimate
       jetbrains.jdk
+      simavr
 
       # System Packages
       baobab

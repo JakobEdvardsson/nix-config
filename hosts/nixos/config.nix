@@ -3,13 +3,8 @@
 {
   config,
   pkgs,
-  pkgs-stable,
   inputs,
-  host,
-  username,
-  options,
   lib,
-  system,
   ...
 }:
 {
@@ -17,6 +12,7 @@
     ./hardware.nix
     ./users.nix
     ../../modules/packages.nix
+    ../../modules/networking.nix
     ./local-packages.nix
 
     ../../modules/nixos-hardware/gpu/amd
@@ -132,12 +128,6 @@
   #vm.guest-services.enable = false;
   #local.hardware-clock.enable = false;
 
-  # networking
-  networking.networkmanager.enable = true;
-  networking.hostName = "${host}";
-  networking.timeServers = options.networking.timeServers.default ++ [ "pool.ntp.org" ];
-
-  networking.firewall.enable = true;
   # Set your time zone.
   time.timeZone = "Europe/Stockholm";
 
@@ -355,20 +345,6 @@
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
 
-  # Bluetooth
-  hardware = {
-    bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-      settings = {
-        General = {
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
-        };
-      };
-    };
-  };
-
   # Enable sound with pipewire.
   hardware.pulseaudio.enable = false;
 
@@ -466,12 +442,6 @@
     # Keymapp Flashing rules for the Voyager
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="3297", MODE:="0666", SYMLINK+="ignition_dfu"
   '';
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
