@@ -1,5 +1,5 @@
-alias update='sudo nixos-rebuild switch --flake .#nixos'
-alias upgrade='nix flake update && sudo nixos-rebuild switch --flake .#nixos'
+alias update='sudo nixos-rebuild switch --flake ~/nix/'
+alias upgrade='nix flake update && sudo nixos-rebuild switch --flake ~/nix'
 
 
 #  * Create missing directories in path when calling `mkdir`
