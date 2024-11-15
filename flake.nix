@@ -63,7 +63,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.jakobe = {
                 imports = [
-                  ./home-manager/home.nix
+                  ./home-manager/nixos.nix
                 ];
               };
 
@@ -93,7 +93,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.jakobe = {
                 imports = [
-                  ./home-manager/home.nix
+                  ./home-manager/servox.nix
                 ];
               };
 

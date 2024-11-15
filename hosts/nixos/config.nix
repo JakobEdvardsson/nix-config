@@ -11,14 +11,17 @@
   imports = [
     ./hardware.nix
     ./users.nix
-    ../../modules/packages.nix
+    ./packages.nix
+
     ../../modules/networking.nix
-    ./local-packages.nix
+    ../../modules/hyprland.nix
+    ../../modules/locale.nix
+    ../../modules/audio.nix
+    ../../modules/polkit.nix
 
     ../../modules/nixos-hardware/gpu/amd
     ../../modules/tlp.nix
 
-    #../../modules/amd-drivers.nix
     ../../modules/nvidia-drivers.nix
     ../../modules/nvidia-prime-drivers.nix
     ../../modules/vm-guest-services.nix
@@ -64,12 +67,10 @@
     #  "vm.max_map_count" = 2147483642;
     #};
 
-    ## BOOT LOADERS: NOT USE ONLY 1. either systemd or grub  
     # Bootloader SystemD
     loader.systemd-boot.enable = true;
 
     loader.efi = {
-      #efiSysMountPoint = "/efi"; #this is if you have separate /efi partition
       canTouchEfiVariables = true;
     };
 
@@ -125,80 +126,18 @@
     };
   };
 
-  #vm.guest-services.enable = false;
-  #local.hardware-clock.enable = false;
-
-  # Set your time zone.
-  time.timeZone = "Europe/Stockholm";
-
   services.tailscale.enable = true;
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "sv_SE.UTF-8";
-    LC_IDENTIFICATION = "sv_SE.UTF-8";
-    LC_MEASUREMENT = "sv_SE.UTF-8";
-    LC_MONETARY = "sv_SE.UTF-8";
-    LC_NAME = "sv_SE.UTF-8";
-    LC_NUMERIC = "sv_SE.UTF-8";
-    LC_PAPER = "sv_SE.UTF-8";
-    LC_TELEPHONE = "sv_SE.UTF-8";
-    LC_TIME = "sv_SE.UTF-8";
-  };
 
   nixpkgs.config.allowUnfree = true;
 
   programs = {
-    hyprland = {
-      enable = true;
-      package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland; # hyprland-git
-      portalPackage =
-        inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland; # xdphls
-      xwayland.enable = true;
-    };
-
-    waybar.enable = true;
-    hyprlock.enable = true;
-    firefox.enable = true;
-    git.enable = true;
-    nm-applet.indicator = true;
-    #neovim.enable = true;
-
-    thunar.enable = true;
-    thunar.plugins = with pkgs.xfce; [
-      exo
-      mousepad
-      thunar-archive-plugin
-      thunar-volman
-      tumbler
-    ];
-
-    virt-manager.enable = false;
-
-    #steam = {
-    #  enable = true;
-    #  gamescopeSession.enable = true;
-    #  remotePlay.openFirewall = true;
-    #  dedicatedServer.openFirewall = true;
-    #};
-
-    xwayland.enable = true;
-
     dconf.enable = true;
-    seahorse.enable = true;
     fuse.userAllowOther = true;
-    mtr.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
 
-  };
-
-  users = {
-    mutableUsers = true;
   };
 
   # FONTS
@@ -212,40 +151,8 @@
     (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
   ];
 
-  # Extra Portal Configuration
-  xdg.portal = {
-    enable = true;
-    wlr.enable = false;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-    ];
-    configPackages = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal
-    ];
-  };
-
   # Services to start
   services = {
-    xserver = {
-      enable = false;
-      xkb = {
-        layout = "se";
-        variant = "";
-      };
-    };
-
-    greetd = {
-      enable = true;
-      vt = 3;
-      settings = {
-        default_session = {
-          user = "jakobe";
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland"; # start Hyprland with a TUI login manager
-        };
-      };
-    };
-
     smartd = {
       enable = false;
       autodetect = true;
@@ -253,14 +160,6 @@
 
     gvfs.enable = true;
     tumbler.enable = true;
-
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
-    };
 
     udev.enable = true;
     envfs.enable = true;
@@ -279,46 +178,12 @@
     openssh.enable = false;
     flatpak.enable = false;
 
-    blueman.enable = true;
-
-    #hardware.openrgb.enable = true;
-    #hardware.openrgb.motherboard = "amd";
-
     fwupd.enable = true;
 
     upower.enable = true;
 
     gnome.gnome-keyring.enable = true;
 
-    #printing = {
-    #  enable = false;
-    #  drivers = [
-    # pkgs.hplipWithPlugin
-    #  ];
-    #};
-
-    #avahi = {
-    #  enable = true;
-    #  nssmdns4 = true;
-    #  openFirewall = true;
-    #};
-
-    #ipp-usb.enable = true;
-
-    #syncthing = {
-    #  enable = false;
-    #  user = "${username}";
-    #  dataDir = "/home/${username}";
-    #  configDir = "/home/${username}/.config/syncthing";
-    #};
-
-  };
-
-  systemd.services.flatpak-repo = {
-    path = [ pkgs.flatpak ];
-    script = ''
-      flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-    '';
   };
 
   # zram
@@ -330,48 +195,9 @@
     algorithm = "zstd";
   };
 
-  #powerManagement = {
-  #	enable = true;
-  #	  cpuFreqGovernor = "schedutil";
-  #};
-
-  #hardware.sane = {
-  #  enable = true;
-  #  extraBackends = [ pkgs.sane-airscan ];
-  #  disabledDefaultBackends = [ "escl" ];
-  #};
-
   # Extra Logitech Support
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-
-  # Security / Polkit
-  security.rtkit.enable = true;
-  security.polkit.enable = true;
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (
-        subject.isInGroup("users")
-          && (
-            action.id == "org.freedesktop.login1.reboot" ||
-            action.id == "org.freedesktop.login1.reboot-multiple-sessions" ||
-            action.id == "org.freedesktop.login1.power-off" ||
-            action.id == "org.freedesktop.login1.power-off-multiple-sessions"
-          )
-        )
-      {
-        return polkit.Result.YES;
-      }
-    })
-  '';
-  security.pam.services.swaylock = {
-    text = ''
-      auth include login
-    '';
-  };
 
   # Cachix, Optimization settings and garbage collection automation
   nix = {
@@ -409,13 +235,12 @@
     enable = true;
   };
 
-  console.keyMap = "sv-latin1";
-
   # For Electron apps to use wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   documentation.man.generateCaches = false;
 
+  # This is needed to be able to flash config to moonlander
   services.udev.extraRules = ''
     # Rules for Oryx web flashing and live training
     KERNEL=="hidraw*", ATTRS{idVendor}=="16c0", MODE="0664", GROUP="plugdev"
