@@ -118,6 +118,8 @@
       settings.KbdInteractiveAuthentication = false;
       #settings.PermitRootLogin = "yes";
     };
+
+    qemuGuest.enable = true;
   };
   # zram
   zramSwap = {
