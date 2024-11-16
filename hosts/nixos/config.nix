@@ -22,10 +22,7 @@
     ../../modules/nixos-hardware/gpu/amd
     ../../modules/tlp.nix
 
-    ../../modules/nvidia-drivers.nix
-    ../../modules/nvidia-prime-drivers.nix
-    ../../modules/vm-guest-services.nix
-    ../../modules/local-hardware-clock.nix
+    ../../modules/nvidia-prime.nix
   ];
 
   # BOOT related stuff
@@ -103,21 +100,13 @@
     HandlePowerKey=ignore
   '';
 
-  # Extra Module Options
-  #drivers.amdgpu.enable = true;
-  drivers.nvidia.enable = true;
-  drivers.nvidia-prime = {
-    enable = true;
-    amdgpuBusID = "PCI:6:0:0";
-    nvidiaBusID = "PCI:1:0:0";
-  };
-
   specialisation = {
     on-the-go.configuration = {
       system.nixos.tags = [ "on-the-go" ];
-      drivers.nvidia.enable = lib.mkForce false;
-      drivers.nvidia-prime = {
-        enable = lib.mkForce false;
+      hardware.nvidia = {
+        prime.offload.enable = lib.mkForce true;
+        prime.offload.enableOffloadCmd = lib.mkForce true;
+        prime.sync.enable = lib.mkForce false;
       };
 
       imports = [
@@ -228,11 +217,6 @@
   virtualisation.docker.rootless = {
     enable = true;
     setSocketVariable = true;
-  };
-
-  # OpenGL
-  hardware.graphics = {
-    enable = true;
   };
 
   # For Electron apps to use wayland
