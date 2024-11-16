@@ -130,6 +130,13 @@
     algorithm = "zstd";
   };
 
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 48 * 1024;
+    }
+  ];
+
   # Cachix, Optimization settings and garbage collection automation
   nix = {
     settings = {
