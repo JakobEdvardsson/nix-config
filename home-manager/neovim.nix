@@ -53,6 +53,9 @@ in
         shfmt
         pylint
 
+        tree-sitter-grammars.tree-sitter-markdown
+        tree-sitter-grammars.tree-sitter-markdown-inline
+
       ];
       plugins = with pkgs.vimPlugins; [
         plenary-nvim
@@ -95,6 +98,11 @@ in
         harpoon2
         finecmdline
         scope-nvim
+        nui-nvim
+        img-clip-nvim
+        avante-nvim
+        render-markdown-nvim
+
       ];
       extraConfig = ''
         set noemoji
@@ -130,6 +138,7 @@ in
         ${builtins.readFile ./nvim/plugins/harpoon.lua}
         ${builtins.readFile ./nvim/plugins/fine-cmdline.lua}
         ${builtins.readFile ./nvim/plugins/scope.lua}
+        ${builtins.readFile ./nvim/plugins/avante.lua}
 
         lspconfig.ts_ls.setup({
           capabilities = capabilities,
