@@ -33,6 +33,7 @@
       wget
       tree
       usbutils
+      radeontop
     ])
     ++ (with pkgs; [
       # Unstable

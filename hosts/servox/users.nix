@@ -18,6 +18,7 @@
         "dialout"
         "plugdev"
         "docker"
+        "linger"
       ];
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIC1aUDp1c38txQmImBCSU9N3zSRSNNWdeZvUBSx6QtLr jakobe"
