@@ -165,16 +165,14 @@
   };
 
   # Virtualization / Containers
-  virtualisation.libvirtd.enable = false;
-  virtualisation.podman = {
-    enable = false;
-    dockerCompat = false;
-    defaultNetwork.settings.dns_enabled = false;
-  };
-  virtualisation.docker.enable = true;
-  virtualisation.docker.rootless = {
+  virtualisation.docker = {
     enable = true;
-    setSocketVariable = true;
+    autoPrune.enable = true;
+    enableOnBoot = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
   };
 
   documentation.man.generateCaches = false;
