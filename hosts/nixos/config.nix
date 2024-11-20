@@ -116,6 +116,7 @@
   };
 
   services.tailscale.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
 
   nixpkgs.config.allowUnfree = true;
 
