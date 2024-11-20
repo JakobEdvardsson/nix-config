@@ -48,7 +48,7 @@ keymap.set({ "n", "x" }, "<leader>t0", "<cmd>lua require('bufferline').go_to(10,
 
 -- buffers
 keymap.set("n", "<leader>bo", "<cmd>enew<CR>", { desc = "Open new buffer" })
-keymap.set("n", "<leader>bl", ":Telescope buffers<CR>", { desc = "List buffers" })
+keymap.set("n", "<leader><leader>", ":Telescope buffers<CR>", { desc = "List buffers" })
 
 keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
 keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
