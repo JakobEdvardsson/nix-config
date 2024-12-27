@@ -21,6 +21,7 @@
       zoom-us
       obs-studio
       samba
+      postman
 
       # Hacking
       thc-hydra
@@ -69,6 +70,8 @@
 
       fastfetch
       (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
+      qogir-icon-theme
+      qogir-theme
       #ranger
 
       # Code

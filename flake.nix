@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "nixpkgs/nixos-24.11";
     #wallust.url = "git+https://codeberg.org/explosion-mental/wallust?ref=dev";
     hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1"; # hyprland development
 

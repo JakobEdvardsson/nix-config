@@ -24,9 +24,9 @@ require("avante").setup({
 	vendors = {
 		---@type AvanteProvider
 		ollama = {
-			["local"] = true,
+			api_key_name = "",
 			endpoint = "http://192.168.50.99:11434/v1",
-			model = "codellama:7b",
+			model = "qwen2.5-coder",
 			parse_curl_args = function(opts, code_opts)
 				return {
 					url = opts.endpoint .. "/chat/completions",

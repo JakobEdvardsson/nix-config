@@ -6,10 +6,11 @@ opt.relativenumber = true
 opt.number = true
 
 -- tabs & indentation
-opt.tabstop = 4 -- 2 spaces for tabs (prettier default)
-opt.shiftwidth = 4 -- 2 spaces for indent width
+opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
+opt.shiftwidth = 2 -- 2 spaces for indent width
 opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
+vim.opt.scrolloff = 10 -- Minimal number of screen lines to keep above and below the cursor.
 
 opt.wrap = false
 
@@ -45,6 +46,14 @@ autocmd!
 au TextYankPost * silent! lua vim.highlight.on_yank({higroup="Visual", timeout=500})
 augroup END
 ]])
+
+-- make inc files asm
+vim.filetype.add({
+	extension = {
+		asm = "asm",
+		inc = "asm",
+	},
+})
 
 -- Fix some issues with fish when using tmux-vim-navigator
 vim.opt.shell = "/usr/bin/env bash"
