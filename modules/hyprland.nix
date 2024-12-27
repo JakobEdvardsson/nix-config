@@ -44,6 +44,7 @@ in
     (with pkgs-stable; [
       # Stable
       cliphist
+      cava
       # firefox
     ])
     ++ (with pkgs; [
@@ -51,7 +52,7 @@ in
       brightnessctl
       ags
       btop
-      cava
+      #cava
       eog
       gnome-system-monitor
       file-roller

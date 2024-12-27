@@ -27,7 +27,10 @@
 
   # BOOT related stuff
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest; # Kernel
+    #kernelPackages = pkgs.linuxPackages_latest; # Kernel
+    # Stick to 6.11, because NVIDIA driver is broken on 6.12
+    # See https://github.com/NixOS/nixpkgs/issues/357643
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_11;
 
     kernelParams = [
       "systemd.mask=systemd-vconsole-setup.service"
@@ -197,8 +200,8 @@
         "nix-command"
         "flakes"
       ];
-      substituters = [ "https://hyprland.cachix.org" ];
-      trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
+      # substituters = [ "https://hyprland.cachix.org" ];
+      # trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
     };
     gc = {
       automatic = true;

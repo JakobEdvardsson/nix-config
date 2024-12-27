@@ -32,6 +32,7 @@ keymap.set("n", "<leader>t<RIGHT>", "<cmd>tabn<CR>", { desc = "Go to next tab" }
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tT", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>t<LEFT>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
+keymap.set("n", "<leader>t<leader>", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
@@ -57,6 +58,7 @@ keymap.set("n", "<leader>b<RIGHT>", ":bnext<CR>", { desc = "Next buffer" })
 keymap.set("n", "<leader>bp", ":bprev<CR>", { desc = "Previous buffer" })
 keymap.set("n", "<leader>bB", ":bprev<CR>", { desc = "Previous buffer" })
 keymap.set("n", "<leader>b<LEFT>", ":bprev<CR>", { desc = "Previous buffer" })
+keymap.set("n", "<leader>b<leader>", ":bprev<CR>", { desc = "Previous buffer" })
 
 --keymap.set("n", "<leader>bx", ":bdelete!<CR>", { desc = "Delete buffer" })
 -- Delete buffer without closing split windows

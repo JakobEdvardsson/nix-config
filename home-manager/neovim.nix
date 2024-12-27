@@ -52,6 +52,7 @@ in
         nixfmt-rfc-style
         shfmt
         pylint
+        asmfmt
 
         tree-sitter-grammars.tree-sitter-markdown
         tree-sitter-grammars.tree-sitter-markdown-inline
@@ -59,7 +60,10 @@ in
       ];
       plugins = with pkgs.vimPlugins; [
         plenary-nvim
+        # Theme
         tokyonight-nvim
+        neovim-ayu
+
         vim-tmux-navigator
         nvim-surround
         substitute-nvim
