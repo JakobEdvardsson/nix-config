@@ -1,17 +1,18 @@
 {
-  description = "My NixOS configuration";
+  description = "My nixos homelab";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
 
-    hardware.url = "github:nixos/nixos-hardware";
+    # impermanence.url = "github:nix-community/impermanence";
+
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     sops-nix = {
-      url = "github:mic92/sops-nix";
+      url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -20,64 +21,53 @@
     {
       self,
       nixpkgs,
-      home-manager,
-      systems,
+      nix-darwin,
       ...
     }@inputs:
     let
       inherit (self) outputs;
-      lib = nixpkgs.lib // home-manager.lib;
-      forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
-      pkgsFor = lib.genAttrs (import systems) (
-        system:
-        import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
+
+      systems = [
+        "x86_64-linux"
+        # "aarch64-darwin"
+      ];
+
+      forAllSystems = nixpkgs.lib.genAttrs systems;
+
+      # Extend the library with custom functions
+      extendedLib = nixpkgs.lib.extend (
+        self: super: {
+          custom = import ./lib { inherit (nixpkgs) lib; };
         }
       );
     in
     {
-      inherit lib;
+      # Enables `nix fmt` at root of repo to format all nix files
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
 
-      nixosConfigurations = {
-        legion = lib.nixosSystem {
-          modules = [ ./hosts/legion ];
-          specialArgs = {
-            inherit inputs outputs;
+      darwinConfigurations = {
+        /*
+          mac1chng = nix-darwin.lib.darwinSystem {
+            specialArgs = {inherit inputs outputs;};
+            modules = [./machines/mac1chng/configuration.nix];
           };
-        };
-
-        servox = lib.nixosSystem {
-          modules = [ ./hosts/servox ];
-          specialArgs = {
-            inherit inputs outputs;
-          };
-        };
+        */
       };
 
-      homeConfigurations = {
-        # User jakobe for legion
-        "jakobe@legion" = lib.homeManagerConfiguration {
-          modules = [
-            ./home/jakobe/legion.nix
-            ./home/jakobe/nixpkgs.nix
-          ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = {
+      nixosConfigurations = {
+        legion = nixpkgs.lib.nixosSystem {
+          specialArgs = {
             inherit inputs outputs;
+            lib = extendedLib; # Use the extended library
           };
+          modules = [ ./hosts/nixos/legion ];
         };
-
-        # User jakobe for servox
-        "jakobe@servox" = lib.homeManagerConfiguration {
-          modules = [
-            ./home/jakobe/servox.nix
-            ./home/jakobe/nixpkgs.nix
-          ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = {
+        think = nixpkgs.lib.nixosSystem {
+          specialArgs = {
             inherit inputs outputs;
+            lib = extendedLib; # Use the extended library
           };
+          modules = [ ./hosts/nixos/think ];
         };
       };
     };
