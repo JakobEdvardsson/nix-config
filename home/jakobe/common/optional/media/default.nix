@@ -7,8 +7,6 @@
       ffmpeg
       spotify
       vlc
-      ;
-    inherit (pkgs.stable)
       calibre
       ;
   };
