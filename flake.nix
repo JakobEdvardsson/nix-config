@@ -65,6 +65,13 @@
           };
           modules = [ ./hosts/nixos/legion ];
         };
+        servox = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs;
+            lib = extendedLib; # Use the extended library
+          };
+          modules = [ ./hosts/nixos/servox ];
+        };
         think = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs;
