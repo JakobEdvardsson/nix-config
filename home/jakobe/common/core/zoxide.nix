@@ -3,7 +3,7 @@
     enable = true;
     enableBashIntegration = true;
     enableZshIntegration = true;
-    enableFishInegration = true;
+    enableFishIntegration = true;
     options = [
       "--cmd cd" # replace cd with z and zi (via cdi)
     ];

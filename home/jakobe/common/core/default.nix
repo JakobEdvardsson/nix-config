@@ -8,7 +8,7 @@
 {
   imports = lib.flatten [
     (map lib.custom.relativeToRoot [
-      "modules/common/host-spec.nix"
+      "modules/nixos/host-spec.nix"
       "modules/home-manager"
     ])
     ./neovim

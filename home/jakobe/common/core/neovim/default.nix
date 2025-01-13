@@ -4,12 +4,6 @@
   lib,
   ...
 }:
-let
-  finecmdline = pkgs.vimUtils.buildVimPlugin {
-    name = "fine-cmdline";
-    src = inputs.fine-cmdline;
-  };
-in
 {
   programs = {
     neovim = {
@@ -101,7 +95,6 @@ in
         gitsigns-nvim
         lazygit-nvim
         harpoon2
-        finecmdline
         scope-nvim
         nui-nvim
         img-clip-nvim

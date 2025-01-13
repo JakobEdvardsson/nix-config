@@ -8,8 +8,8 @@
 }:
 {
   imports = lib.flatten [
-    inputs.home-manager.nixos.home-manager
-    inputs.sops-nix.nixos.sops
+    inputs.home-manager.nixosModules.home-manager
+    inputs.sops-nix.nixosModules.sops
 
     (map lib.custom.relativeToRoot [
       "modules/nixos"
@@ -25,7 +25,6 @@
   hostSpec = {
     username = "jakobe";
     handle = "JakobEdvardsson";
-    email = "jakob.edvardsson@outlook.com";
   };
 
   networking.hostName = config.hostSpec.hostName;
@@ -37,12 +36,15 @@
   # home-manager.useUserPackages = true;
 
   #
-  # ========== Overlays ==========
+  # ========== Overlays & NixPkgs ==========
   #
+
   nixpkgs = {
-    overlays = [
-      outputs.overlays.default
-    ];
+    /*
+      overlays = [
+        outputs.overlays.default
+      ];
+    */
     config = {
       allowUnfree = true;
     };
