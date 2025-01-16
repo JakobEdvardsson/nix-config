@@ -81,8 +81,11 @@ in
   users.users.root = {
     # TODO: look at this
     shell = pkgs.zsh;
-    hashedPasswordFile = config.users.users.${hostSpec.username}.hashedPasswordFile;
-    password = lib.mkForce config.users.users.${hostSpec.username}.password; # This gets overridden if sops is working; it is only used if the hostSpec.hostName == "iso"
+    password = lib.mkForce "nixos"; # This gets overridden if sops is working; it is only used with nixos-installer
+    /*
+      hashedPasswordFile = config.users.users.${hostSpec.username}.hashedPasswordFile;
+      password = lib.mkForce config.users.users.${hostSpec.username}.password; # This gets overridden if sops is working; it is only used if the hostSpec.hostName == "iso"
+    */
     # root's ssh keys are mainly used for remote deployment.
     openssh.authorizedKeys.keys = config.users.users.${hostSpec.username}.openssh.authorizedKeys.keys;
   };

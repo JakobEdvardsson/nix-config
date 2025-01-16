@@ -12,12 +12,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    stylix.url = "github:danth/stylix/release-24.11";
-
-    sops-nix = {
-      url = "github:Mic92/sops-nix";
+    # Declarative partitioning and formatting
+    disko = {
+      url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Secrets management. See ./docs/secretsmgmt.md
+    sops-nix = {
+      url = "github:mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    # Theming
+    stylix.url = "github:danth/stylix/release-24.11";
   };
 
   outputs =

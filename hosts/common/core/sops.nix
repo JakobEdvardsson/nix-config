@@ -30,19 +30,21 @@ in
     # the secrets decrypted by the host key, which allows home-manager secrets to work without manually copying over
     # the age key.
     secrets = {
-      # extract password/username to /run/secrets-for-users/ so it can be used to create the user
-      "passwords/${config.hostSpec.username}".neededForUsers = true;
-
+      # These age keys are are unique for the user on each host and are generated on their own (i.e. they are not derived
+      # from an ssh key).
+      #TODO: fix
       /*
-        "passwords/msmtp" = { };
-        # borg password required by nix-config/modules/nixos/backup
-        "passwords/borg" = {
-          owner = "root";
-          group = if pkgs.stdenv.isLinux then "root" else "wheel";
-          mode = "0600";
-          path = "/etc/borg/passphrase";
+        "keys/age/${config.hostSpec.username}_${config.networking.hostName}" = {
+          owner = config.users.users.${config.hostSpec.username}.name;
+          inherit (config.users.users.${config.hostSpec.username}) group;
+          # We need to ensure the entire directory structure is that of the user...
+          path = "${config.hostSpec.home}/.config/sops/age/keys.txt";
         };
       */
+
+      # extract password/username to /run/secrets-for-users/ so it can be used to create the user
+      "passwords/${config.hostSpec.username}".neededForUsers = true;
+      "private_keys/jakobe" = { };
 
     };
 
