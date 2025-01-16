@@ -56,26 +56,28 @@ in
   ];
 
   # Import the user's personal/home configurations, unless the environment is minimal
-  home-manager = {
-    extraSpecialArgs = {
-      inherit pkgs inputs;
-      hostSpec = config.hostSpec;
+  /*
+    home-manager = {
+      extraSpecialArgs = {
+        inherit pkgs inputs;
+        hostSpec = config.hostSpec;
+      };
+      users.${hostSpec.username}.imports = lib.flatten [
+        (
+          { config, ... }:
+          import (lib.custom.relativeToRoot "home/${hostSpec.username}/${hostSpec.hostName}.nix") {
+            inherit
+              pkgs
+              inputs
+              config
+              lib
+              hostSpec
+              ;
+          }
+        )
+      ];
     };
-    users.${hostSpec.username}.imports = lib.flatten [
-      (
-        { config, ... }:
-        import (lib.custom.relativeToRoot "home/${hostSpec.username}/${hostSpec.hostName}.nix") {
-          inherit
-            pkgs
-            inputs
-            config
-            lib
-            hostSpec
-            ;
-        }
-      )
-    ];
-  };
+  */
 
   # root's ssh key are mainly used for remote deployment, borg, and some other specific ops
   users.users.root = {
@@ -90,11 +92,13 @@ in
     openssh.authorizedKeys.keys = config.users.users.${hostSpec.username}.openssh.authorizedKeys.keys;
   };
 
-  home-manager.users.root = lib.optionalAttrs (!hostSpec.isMinimal) {
-    home.stateVersion = "23.05"; # Avoid error
-    programs.fish = {
-      enable = true;
+  /*
+    home-manager.users.root = lib.optionalAttrs (!hostSpec.isMinimal) {
+      home.stateVersion = "23.05"; # Avoid error
+      programs.fish = {
+        enable = true;
+      };
     };
-  };
+  */
 
 }
