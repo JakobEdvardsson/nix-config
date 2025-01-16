@@ -28,10 +28,13 @@
     #
     #TODO: implement/remove
 
-    /*
-      inputs.disko.nixosModules.disko
-      (lib.custom.relativeToRoot "hosts/common/disks/ghost.nix")
-    */
+    inputs.disko.nixosModules.disko
+    (lib.custom.relativeToRoot "hosts/common/disk/hybrid.nix")
+    {
+      _module.args = {
+        disk = "/dev/disk/by-uuid/071edf10-af7a-4c50-8619-e54c2888a852";
+      };
+    }
 
     #
     # ========== Misc Inputs ==========
