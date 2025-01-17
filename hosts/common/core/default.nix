@@ -32,7 +32,7 @@
   # Force home-manager to use global packages
   home-manager.useGlobalPkgs = true;
   # If there is a conflict file that is backed up, use this extension
-  home-manager.backupFileExtension = "bk";
+  home-manager.backupFileExtension = "backup";
   # home-manager.useUserPackages = true;
 
   #
@@ -85,17 +85,6 @@
       substituters = [ "https://hyprland.cachix.org" ];
       trusted-public-keys = [ "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc=" ];
     };
-  };
-
-  #
-  # ========== Basic Shell Enablement ==========
-  #
-  # On darwin it's important this is outside home-manager
-  programs.zsh = {
-    # TODO: Add fish
-    enable = true;
-    enableCompletion = true;
-    promptInit = "source ''${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
   };
 
   # Database for aiding terminal-based programs

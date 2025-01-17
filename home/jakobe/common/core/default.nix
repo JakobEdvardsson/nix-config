@@ -17,6 +17,7 @@
     ./kitty.nix
     ./ssh.nix
     ./zoxide.nix
+    ./nix-index.nix
   ];
 
   inherit hostSpec;

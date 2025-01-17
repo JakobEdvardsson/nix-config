@@ -24,6 +24,12 @@
     };
     # Theming
     stylix.url = "github:danth/stylix/release-24.11";
+
+    # index packages / used for command-not-found and comma
+    nix-index-database = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

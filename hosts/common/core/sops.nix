@@ -44,8 +44,6 @@ in
 
       # extract password/username to /run/secrets-for-users/ so it can be used to create the user
       "passwords/${config.hostSpec.username}".neededForUsers = true;
-      "private_keys/jakobe" = { };
-
     };
 
   };
