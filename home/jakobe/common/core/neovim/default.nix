@@ -56,8 +56,6 @@
       plugins = with pkgs.vimPlugins; [
         plenary-nvim
         # Theme
-        tokyonight-nvim
-        neovim-ayu
 
         vim-tmux-navigator
         nvim-surround
@@ -133,7 +131,6 @@
         ${builtins.readFile ./plugins/vim-maximizer.lua}
         ${builtins.readFile ./plugins/which-key.lua}
         ${builtins.readFile ./plugins/harpoon.lua}
-        ${builtins.readFile ./plugins/fine-cmdline.lua}
         ${builtins.readFile ./plugins/scope.lua}
 
         lspconfig.ts_ls.setup({
