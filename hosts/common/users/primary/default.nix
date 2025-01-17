@@ -40,12 +40,14 @@ in
   };
 
   # Create ssh sockets directory for controlpaths when homemanager not loaded (i.e. isMinimal)
-  systemd.tmpfiles.rules =
+  /*
+    systemd.tmpfiles.rules =
     let
       user = config.users.users.${hostSpec.username}.name;
       group = config.users.users.${hostSpec.username}.group;
     in
     [ "d /home/${hostSpec.username}/.ssh/sockets 0750 ${user} ${group} -" ];
+  */
 
   # No matter what environment we are in we want these tools
   programs.fish.enable = true;
