@@ -56,49 +56,44 @@ in
   ];
 
   # Import the user's personal/home configurations, unless the environment is minimal
-  /*
-    home-manager = {
-      extraSpecialArgs = {
-        inherit pkgs inputs;
-        hostSpec = config.hostSpec;
-      };
-      users.${hostSpec.username}.imports = lib.flatten [
-        (
-          { config, ... }:
-          import (lib.custom.relativeToRoot "home/${hostSpec.username}/${hostSpec.hostName}.nix") {
-            inherit
-              pkgs
-              inputs
-              config
-              lib
-              hostSpec
-              ;
-          }
-        )
-      ];
-    };
-  */
 
-  # root's ssh key are mainly used for remote deployment, borg, and some other specific ops
-  users.users.root = {
-    # TODO: look at this
-    shell = pkgs.zsh;
-    password = lib.mkForce "nixos"; # This gets overridden if sops is working; it is only used with nixos-installer
-    /*
-      hashedPasswordFile = config.users.users.${hostSpec.username}.hashedPasswordFile;
-      password = lib.mkForce config.users.users.${hostSpec.username}.password; # This gets overridden if sops is working; it is only used if the hostSpec.hostName == "iso"
-    */
-    # root's ssh keys are mainly used for remote deployment.
-    openssh.authorizedKeys.keys = config.users.users.${hostSpec.username}.openssh.authorizedKeys.keys;
+  home-manager = {
+    extraSpecialArgs = {
+      inherit pkgs inputs;
+      hostSpec = config.hostSpec;
+    };
+    users.${hostSpec.username}.imports = lib.flatten [
+      (
+        { config, ... }:
+        import (lib.custom.relativeToRoot "home/${hostSpec.username}/${hostSpec.hostName}.nix") {
+          inherit
+            pkgs
+            inputs
+            config
+            lib
+            hostSpec
+            ;
+        }
+      )
+    ];
   };
 
+  # root's ssh key are mainly used for remote deployment, borg, and some other specific ops
+  # Not needed
   /*
-    home-manager.users.root = lib.optionalAttrs (!hostSpec.isMinimal) {
-      home.stateVersion = "23.05"; # Avoid error
-      programs.fish = {
-        enable = true;
-      };
+    users.users.root = {
+      shell = pkgs.fish;
+        hashedPasswordFile = config.users.users.${hostSpec.username}.hashedPasswordFile;
+        password = lib.mkForce config.users.users.${hostSpec.username}.password; # This gets overridden if sops is working; it is only used if the hostSpec.hostName == "iso"
+      # root's ssh keys are mainly used for remote deployment.
+      openssh.authorizedKeys.keys = config.users.users.${hostSpec.username}.openssh.authorizedKeys.keys;
     };
-  */
 
+      home-manager.users.root = lib.optionalAttrs (!hostSpec.isMinimal) {
+        home.stateVersion = "23.05"; # Avoid error
+        programs.fish = {
+          enable = true;
+        };
+      };
+  */
 }

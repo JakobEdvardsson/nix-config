@@ -107,7 +107,6 @@
     systemd.enable = true;
   };
 
-  #TODO:(stylix) move this stuff to separate file but define theme itself per host
   # host-wide styling
   stylix = {
     enable = true;
