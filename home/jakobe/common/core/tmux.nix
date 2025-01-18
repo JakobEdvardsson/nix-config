@@ -15,14 +15,14 @@
     plugins = with pkgs.tmuxPlugins; [
       fzf-tmux-url
       tmux-fzf
-      tmux-yank
+      yank
       sensible
       {
-        plugin = tmux-resurrect;
+        plugin = resurrect;
         extraConfig = "set -g @resurrect-strategy-nvim 'session'";
       }
       {
-        plugin = tmux-continuum;
+        plugin = continuum;
         extraConfig = "set -g @continuum-restore 'on'";
       }
       {
