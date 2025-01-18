@@ -94,7 +94,6 @@
       wev # show wayland events. also handy for detecting keypress codes
       wget # downloader
       zip # zip compression
-      trash-cli # trash managment
       ;
   };
 

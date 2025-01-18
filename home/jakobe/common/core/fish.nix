@@ -10,6 +10,12 @@
     inputs.nix-index-database.hmModules.nix-index
   ];
 
+  home.packages = builtins.attrValues {
+    inherit (pkgs)
+      trash-cli # trash managment
+      ;
+  };
+
   programs.fish = {
     enable = true;
     functions = {
@@ -21,8 +27,8 @@
       ls = "eza $argv";
       ll = "eza -laa $argv";
       tree = "eza -T $argv";
-      tp = "trash put $argv";
-      rm = "echo 'Stop using rm, use trash put (or tp) instead'";
+      tp = "trash-put $argv";
+      rm = "echo 'Stop using rm, use tp (or trash-put) instead'";
     };
   };
 
