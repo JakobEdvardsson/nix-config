@@ -18,7 +18,6 @@
     ./ssh.nix
     ./zoxide.nix
     ./nix-index.nix
-    ./test.nix
   ];
 
   inherit hostSpec;
