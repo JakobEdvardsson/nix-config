@@ -20,7 +20,6 @@
   inherit hostSpec;
 
   services.ssh-agent.enable = true;
-  programs.fish.enable = true;
 
   home = {
     username = lib.mkDefault config.hostSpec.username;
