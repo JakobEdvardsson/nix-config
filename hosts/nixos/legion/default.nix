@@ -83,7 +83,6 @@
   #
 
   hostSpec = {
-    # TODO: look this up!
     hostName = "legion";
   };
 
@@ -114,7 +113,7 @@
       url = "https://www.pixelstalk.net/wp-content/uploads/2016/05/Epic-Anime-Awesome-Wallpapers.jpg";
       sha256 = "enQo3wqhgf0FEPHj2coOCvo7DuZv+x5rL/WIo4qPI50=";
     }; # base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
     cursor = {
       package = pkgs.bibata-cursors;
       name = "Bibata-Modern-Ice";
