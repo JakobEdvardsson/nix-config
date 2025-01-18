@@ -13,6 +13,7 @@
   home.packages = builtins.attrValues {
     inherit (pkgs)
       trash-cli # trash managment
+      eza # ls replacement
       ;
   };
 

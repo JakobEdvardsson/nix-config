@@ -73,7 +73,6 @@
       btop # resource monitor
       coreutils # basic gnu utils
       curl
-      eza # ls replacement
       dust # disk usage
       fd # tree style ls
       findutils # find
