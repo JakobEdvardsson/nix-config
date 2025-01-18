@@ -71,16 +71,6 @@
       bind v split-window -h -c "#{pane_current_path}"
       bind z resize-pane -Z
       bind '"' choose-window
-
-
-
-
-
-
-
-
-
-
     '';
   };
 }
