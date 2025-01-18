@@ -84,7 +84,6 @@
   #
 
   hostSpec = {
-    # TODO: look this up!
     hostName = "servox";
   };
 
@@ -114,41 +113,45 @@
       url = "https://www.pixelstalk.net/wp-content/uploads/2016/05/Epic-Anime-Awesome-Wallpapers.jpg";
       sha256 = "enQo3wqhgf0FEPHj2coOCvo7DuZv+x5rL/WIo4qPI50=";
     }; # base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-    #      base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
-    #      cursor = {
-    #        package = pkgs.foo;
-    #        name = "";
-    #      };
-    #     fonts = {
-    #monospace = {
-    #    package = pkgs.foo;
-    #    name = "";
-    #};
-    #sanSerif = {
-    #    package = pkgs.foo;
-    #    name = "";
-    #};
-    #serif = {
-    #    package = pkgs.foo;
-    #    name = "";
-    #};
-    #    sizes = {
-    #        applications = 12;
-    #        terminal = 12;
-    #        desktop = 12;
-    #        popups = 10;
-    #    };
-    #};
+    base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+    cursor = {
+      package = pkgs.bibata-cursors;
+      name = "Bibata-Modern-Ice";
+    };
+    fonts = {
+      serif = {
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Serif";
+      };
+
+      sansSerif = {
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Sans";
+      };
+
+      monospace = {
+        package = pkgs.dejavu_fonts;
+        name = "DejaVu Sans Mono";
+      };
+
+      emoji = {
+        package = pkgs.noto-fonts-emoji;
+        name = "Noto Color Emoji";
+      };
+      sizes = {
+        applications = 12;
+        terminal = 12;
+        desktop = 12;
+        popups = 10;
+      };
+    };
     opacity = {
       applications = 1.0;
       terminal = 1.0;
       desktop = 1.0;
-      popups = 0.8;
+      popups = 0.9;
     };
     polarity = "dark";
-    # program specific exclusions
-    #targets.foo.enable = false;
   };
   #hyprland border override example
   #  wayland.windowManager.hyprland.settings.general."col.active_border" = lib.mkForce "rgb(${config.stylix.base16Scheme.base0E});
