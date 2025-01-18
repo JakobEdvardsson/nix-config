@@ -11,6 +11,9 @@
       "modules/nixos/host-spec.nix"
       "modules/home-manager"
     ])
+
+    ./terminal
+
     (lib.custom.scanPaths ./.)
   ];
 
