@@ -23,6 +23,7 @@
   inherit hostSpec;
 
   services.ssh-agent.enable = true;
+  programs.fish.enable = true;
 
   home = {
     username = lib.mkDefault config.hostSpec.username;
@@ -34,7 +35,7 @@
     ];
     sessionVariables = {
       FLAKE = "$HOME/src/nix-config";
-      SHELL = "zsh";
+      SHELL = "fish";
       TERM = "kitty";
       TERMINAL = "kitty";
       VISUAL = "nvim";
