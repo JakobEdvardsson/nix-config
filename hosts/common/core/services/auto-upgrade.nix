@@ -15,7 +15,7 @@ in
     enable = isClean;
     dates = "hourly";
     flags = [ "--refresh" ];
-    flake = "git://github.com/JakobEdvardsson/nix-config";
+    flake = "github:JakobEdvardsson/nix-config";
   };
 
   # Only run if current config (self) is older than the new one.
