@@ -12,11 +12,11 @@
     newSession = true; # Automatically spawn a session if trying to attach and none are running.
     escapeTime = 100;
 
-    plugins = with pkgs; [
-      tmuxPlugins.tmux-fzf-url
-      tmuxPlugins.tmux-fzf
-      tmuxPlugins.tmux-yank
-      tmuxPlugins.sensible
+    plugins = with pkgs.tmuxPlugins; [
+      fzf-tmux-url
+      tmux-fzf
+      tmux-yank
+      sensible
       {
         plugin = tmux-resurrect;
         extraConfig = "set -g @resurrect-strategy-nvim 'session'";
