@@ -11,13 +11,7 @@
       "modules/nixos/host-spec.nix"
       "modules/home-manager"
     ])
-    ./neovim
-    ./fonts.nix
-    ./git.nix
-    ./kitty.nix
-    ./ssh.nix
-    ./zoxide.nix
-    ./nix-index.nix
+    (lib.custom.scanPaths ./.)
   ];
 
   inherit hostSpec;
