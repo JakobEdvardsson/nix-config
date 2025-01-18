@@ -10,7 +10,6 @@
     mouse = true;
     keyMode = "vi";
     newSession = true; # Automatically spawn a session if trying to attach and none are running.
-    escapeTime = 100;
 
     plugins = with pkgs.tmuxPlugins; [
       fzf-tmux-url
