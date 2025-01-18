@@ -1,0 +1,3 @@
+- Hyprland etc.
+- Tailscale
+- Add alias for common git commands
