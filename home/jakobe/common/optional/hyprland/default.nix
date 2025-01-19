@@ -26,11 +26,10 @@
 
     settings = {
       # Monitor, more at the bottom of this file:
-      /*
-        source = [
-          "./monitors.conf"
-        ];
-      */
+
+      source = [
+        "./monitor.conf"
+      ];
 
       #
       # ========== Environment Vars ==========
@@ -161,7 +160,7 @@
   };
   xdg = {
     configFile = {
-      "hypr/kebab.conf".source = config.lib.file.mkOutOfStoreSymlink "/home/jakobe/nix-config/home/jakobe/common/optional/hyprland/config/monitors/legin.conf";
+      "hypr/monitor.conf".source = config.lib.file.mkOutOfStoreSymlink "${config.hostSpec.home}/nix-config/home/jakobe/common/optional/hyprland/config/monitors/${config.hostSpec.hostName}.conf";
     };
   };
 }
