@@ -12,14 +12,19 @@
 
   home.packages = builtins.attrValues {
     inherit (pkgs)
-      trash-cli # trash managment
-      eza # ls replacement
       ;
   };
 
   programs.fish = {
     enable = true;
-    shellAliases = {
+    shellAliases = rec {
+      # Eza ls replacement
+      ls = "${pkgs.eza}/bin/eza --group-directories-first";
+      l = "${ls} -lbF --git --icons";
+      ll = "${l} -G";
+      la = "${ls} -lbhHigmuSa@ --time-style=long-iso --git --color-scale --icons";
+      lt = "${ls} --tree --level=2 --icons";
+
       mkdir = "mkdir -pv"; # * Create missing directories in path when calling `mkdir`
       rmm = "rm -rvI"; # * `rmm` command to remove directories, but ask nicely
       cpp = "cp -R"; # * `cpp` command to copy directories, but ask nicely
@@ -30,6 +35,30 @@
       df = "df -h";
       du = "du -ch";
       free = "free -m";
+
+      #-------------Bat related------------
+      cat = "${pkgs.bat}/bin/bat --paging=never";
+      diff = "${pkgs.batdiff}/bin/batdiff";
+      rg = "${pkgs.batgrep}/bin/batgrep";
+      man = "${pkgs.batman}/bin/batman";
+
+      # git;
+      gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+      ga = "git add";
+      gc = "git commit";
+      gco = "git checkout";
+      gs = "git status";
+      gca = "git commit --amend";
+      gd = "git diff";
+      gdc = "git diff --cached";
+      gir = "git rebase -i";
+      gpr = "gh pr create";
+      gdpr = "gh pr create --draft";
+
+      # Less used ones:
+      lsblk = "lsblk -o name,mountpoint,label,size,type,uuid";
+      weather = "${pkgs.curl}/bin/curl -4 http://wttr.in/Malmö";
+
     };
     functions = {
       fish_greeting = "";
@@ -37,16 +66,12 @@
       "..." = "cd ../..";
       "...." = "cd ../../..";
       "....." = "cd ../../../..";
-      ls = ''
-        functions -e ls
-        eza $argv
-      '';
-      ll = ''
-        functions -e ll
-        eza -laa $argv
-      '';
       tree = "eza -T $argv";
-      tp = "trash-put $argv";
+
+      #trash
+      tp = "${pkgs.trash-cli}/bin/trash-put $argv";
+      tl = "${pkgs.trash-cli}/bin/trash-list $argv";
+      tempty = "${pkgs.trash-cli}/bin/trash-empty $argv";
       rm = "echo 'Stop using rm, use tp (or trash-put) instead'";
 
       copy = ''
