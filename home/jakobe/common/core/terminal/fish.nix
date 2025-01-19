@@ -37,8 +37,14 @@
       "..." = "cd ../..";
       "...." = "cd ../../..";
       "....." = "cd ../../../..";
-      ls = "eza $argv";
-      ll = "eza -laa $argv";
+      ls = ''
+        functions -e ls
+        eza $argv
+      '';
+      ll = ''
+        functions -e ll
+        eza -laa $argv
+      '';
       tree = "eza -T $argv";
       tp = "trash-put $argv";
       rm = "echo 'Stop using rm, use tp (or trash-put) instead'";
