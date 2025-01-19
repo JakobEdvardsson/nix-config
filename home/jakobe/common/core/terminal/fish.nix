@@ -10,17 +10,22 @@
     inputs.nix-index-database.hmModules.nix-index
   ];
 
-  home.packages = builtins.attrValues {
-    inherit (pkgs)
-      ripgrep
-      ;
-  };
+  home.packages = with pkgs; [
+    eza
+    bat
+    bat-extras.batdiff
+    bat-extras.batgrep
+    ripgrep
+    bat-extras.batman
+
+    trash-cli
+  ];
 
   programs.fish = {
     enable = true;
     shellAliases = rec {
       # Eza ls replacement
-      ls = "${pkgs.eza}/bin/eza --group-directories-first";
+      ls = "eza --group-directories-first";
       l = "${ls} -lbF --git --icons";
       ll = "${l} -G";
       la = "${ls} -lbhHigmuSa@ --time-style=long-iso --git --color-scale --icons";
@@ -38,10 +43,10 @@
       free = "free -m";
 
       #-------------Bat related------------
-      cat = "${pkgs.bat}/bin/bat --paging=never";
-      diff = "${pkgs.bat-extras.batdiff}/bin/batdiff";
-      rg = "${pkgs.bat-extras.batgrep}/bin/batgrep";
-      man = "${pkgs.bat-extras.batman}/bin/batman";
+      cat = "bat --paging=never";
+      diff = "batdiff";
+      rg = "batgrep";
+      man = "batman";
 
       # git;
       gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
@@ -71,9 +76,9 @@
       tree = "eza -T $argv";
 
       #trash
-      tp = "${pkgs.trash-cli}/bin/trash-put $argv";
-      tl = "${pkgs.trash-cli}/bin/trash-list $argv";
-      tempty = "${pkgs.trash-cli}/bin/trash-empty $argv";
+      tp = "trash-put $argv";
+      tl = "trash-list $argv";
+      tempty = "trash-empty $argv";
       rm = "echo 'Stop using rm, use tp (or trash-put) instead'";
 
       copy = ''
