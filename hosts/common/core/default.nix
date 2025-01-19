@@ -13,10 +13,10 @@
 
     (map lib.custom.relativeToRoot [
       "modules/nixos"
-      "hosts/common/core/sops.nix"
       "hosts/common/core/services"
       "hosts/common/users/primary"
     ])
+    (lib.custom.scanPaths ./.)
   ];
 
   #
