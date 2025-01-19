@@ -12,6 +12,7 @@
 
   home.packages = builtins.attrValues {
     inherit (pkgs)
+      ripgrep
       ;
   };
 
@@ -38,9 +39,9 @@
 
       #-------------Bat related------------
       cat = "${pkgs.bat}/bin/bat --paging=never";
-      diff = "${pkgs.batdiff}/bin/batdiff";
-      rg = "${pkgs.batgrep}/bin/batgrep";
-      man = "${pkgs.batman}/bin/batman";
+      diff = "${pkgs.bat-extras.batdiff}/bin/batdiff";
+      rg = "${pkgs.bat-extras.batgrep}/bin/batgrep";
+      man = "${pkgs.bat-extras.batman}/bin/batman";
 
       # git;
       gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
