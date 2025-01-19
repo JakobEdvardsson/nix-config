@@ -45,6 +45,7 @@
       # git;
       gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
       ga = "git add";
+      gp = "git push";
       gc = "git commit";
       gco = "git checkout";
       gs = "git status";
