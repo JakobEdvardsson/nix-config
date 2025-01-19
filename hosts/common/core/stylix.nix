@@ -15,8 +15,8 @@
   stylix = {
     enable = true;
     image = pkgs.fetchurl {
-      url = "https://www.pixelstalk.net/wp-content/uploads/2016/05/Epic-Anime-Awesome-Wallpapers.jpg";
-      sha256 = "enQo3wqhgf0FEPHj2coOCvo7DuZv+x5rL/WIo4qPI50=";
+      url = "https://wallpaperbat.com/img/850807-legion-gaming-community.jpg";
+      sha256 = "pLYV4/ypmA0IRzFofxRBllAkgMEwsQWBsIBSagUmNx0=";
     }; # base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
     cursor = {
