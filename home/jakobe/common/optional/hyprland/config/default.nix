@@ -5,6 +5,7 @@
     ./decoration.nix
     ./general.nix
     ./gestures.nix
-    ./startupScript.nix
+    ./startup-script.nix
+    ./emoji.nix
   ];
 }
