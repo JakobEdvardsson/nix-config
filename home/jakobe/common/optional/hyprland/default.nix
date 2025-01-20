@@ -8,6 +8,7 @@
   imports = [
     ./config
     ./scripts
+    ./waybar
   ];
   # required packages for Hyprland
   home.packages = with pkgs; [
