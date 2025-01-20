@@ -1,10 +1,15 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  lib,
+  ...
+}:
 {
 
   imports = [
-    "hosts/common/optional/thunar.nix" # file manager
-    "hosts/common/optional/audio.nix" # pipewire and cli controls
-    "hosts/common/optional/bluetooth.nix" # bluetooth and blueman
+    ./thunar.nix # file manager
+    ./audio.nix # pipewire and cli controls
+    ./bluetooth.nix # bluetooth and blueman
     #TODO: add a display manager
   ];
 

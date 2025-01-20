@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, ... }:
 let
   emoji-picker = pkgs.writeShellScriptBin "emoji-picker" ''
         # Get user selection via rofi from emoji file.
