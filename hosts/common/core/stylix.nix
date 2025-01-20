@@ -17,7 +17,9 @@
     image = pkgs.fetchurl {
       url = "https://wallpaperbat.com/img/850807-legion-gaming-community.jpg";
       sha256 = "pLYV4/ypmA0IRzFofxRBllAkgMEwsQWBsIBSagUmNx0=";
-    }; # base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+    };
+    imageScalingMode = "fit";
+    # base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
     cursor = {
       package = pkgs.bibata-cursors;
