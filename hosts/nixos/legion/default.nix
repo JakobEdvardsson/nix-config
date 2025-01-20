@@ -60,7 +60,6 @@
       "hosts/common/optional/libvirt.nix" # vm tools
       # "hosts/common/optional/gaming.nix" # steam, gamescope, gamemode, and related hardware
       # "hosts/common/optional/msmtp.nix" # for sending email notifications
-      "hosts/common/optional/nvtop.nix" # GPU monitor (not available in home-manager)
       # "hosts/common/optional/obsidian.nix" # wiki
       "hosts/common/optional/plymouth.nix" # fancy boot screen
       # "hosts/common/optional/thunar.nix" # file manager

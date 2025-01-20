@@ -65,10 +65,10 @@
         "ALT,PRINT, exec, screenshot region swappy" # Screenshot region then edit
 
         # Scroll through existing workspaces with mod + scroll
-        "mod, mouse_down, workspace, e+1"
-        "mod, mouse_up, workspace, e-1"
-        "mod, period, workspace, e+1"
-        "mod, comma, workspace, e-1"
+        "$mod, mouse_down, workspace, e+1"
+        "$mod, mouse_up, workspace, e-1"
+        "$mod, period, workspace, e+1"
+        "$mod, comma, workspace, e-1"
 
         # Custom
         "$shiftMod,E, exec, emoji-picker" # Emoji picker with wofi
