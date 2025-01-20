@@ -21,7 +21,7 @@
 
         "CTRL ALT, Delete, exec, hyprctl dispatch exit 0"
         "$mod, Q, killactive,"
-        "$mod SHIFT, Q, exec, kill-active-process" # custom script
+        "$mod SHIFT, Q, exec, kill-active-process"
         "$mod, F, fullscreen"
         "$mod SHIFT, F, togglefloating,"
         "$mod ALT, F, exec, hyprctl dispatch workspaceopt allfloat"
@@ -69,6 +69,11 @@
         "mod, mouse_up, workspace, e-1"
         "mod, period, workspace, e+1"
         "mod, comma, workspace, e-1"
+
+        # Custom
+        "$shiftMod,E, exec, emoji-picker" # Emoji picker with wofi
+        "$mod,F2, exec, night-shift" # Toggle night shift
+        "$mod,F3, exec, night-shift" # Toggle night shift
 
       ]
       ++ (builtins.concatLists (

@@ -2,34 +2,17 @@
 #- 
 #- Usefull quick scripts
 #-
-#- - `menu` - Open wofi with drun mode. (wofi)
-#- - `powermenu` - Open power dropdown menu. (wofi)
+#- - `powermenu` - Open power dropdown menu. (rofi)
 #- - `lock` - Lock the screen. (hyprlock)
 { pkgs, ... }:
 
 let
-  menu =
-    pkgs.writeShellScriptBin "menu"
-      # bash
-      ''
-        if pgrep wofi; then
-        	pkill wofi
-        else
-        	wofi -p " Apps" --show drun
-        fi
-        # if pgrep tofi; then
-        # 	pkill tofi
-        # else
-        # 	tofi-drun --drun-launch=true
-        # fi
-      '';
-
   powermenu =
     pkgs.writeShellScriptBin "powermenu"
       # bash
       ''
-        if pgrep wofi; then
-        	pkill wofi
+        if pgrep rofi; then
+        	pkill rofi
         # if pgrep tofi; then
         #   pkill tofi
         else
@@ -41,7 +24,7 @@ let
             "󰿅 Shutdown"
           )
 
-          selected=$(printf '%s\n' "''${options[@]}" | wofi -p " Powermenu" --dmenu)
+          selected=$(printf '%s\n' "''${options[@]}" | rofi -dmenu -p " Powermenu")
           # selected=$(printf '%s\n' "''${options[@]}" | tofi --prompt-text "> ")
           selected=''${selected:2}
 
@@ -69,8 +52,8 @@ let
     pkgs.writeShellScriptBin "quickmenu"
       # bash
       ''
-        if pgrep wofi; then
-        	pkill wofi
+        if pgrep rofi; then
+        	pkill rofi
         # if pgrep tofi; then
         #   pkill tofi
         else
@@ -81,7 +64,7 @@ let
             "󰈊 Hyprpicker"
           )
 
-          selected=$(printf '%s\n' "''${options[@]}" | wofi -p " Quickmenu" --dmenu)
+          selected=$(printf '%s\n' "''${options[@]}" | rofi -dmenu -p " Quickmenu" )
           # selected=$(printf '%s\n' "''${options[@]}" | tofi --prompt-text "> ")
           selected=''${selected:2}
 
@@ -112,7 +95,6 @@ let
 in
 {
   home.packages = [
-    menu
     powermenu
     lock
     quickmenu
