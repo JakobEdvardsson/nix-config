@@ -9,39 +9,67 @@
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
     "$shiftMod" = "SUPER_SHIFT";
+    # config.home.sessionVariable are defined in /home/jakobe/common/core/default.nix
     bind =
       [
-        "$mod,RETURN, exec, ${pkgs.kitty}/bin/kitty" # Kitty
-        "$mod,T, exec, ${pkgs.xfce.thunar}/bin/thunar" # Thunar
-        "$shiftMod,L, exec, ${pkgs.hyprlock}/bin/hyprlock" # Lock
-        "$mod,X, exec, powermenu" # Powermenu
-        "$mod,SPACE, exec, menu" # Launcher
-        "$mod,C, exec, quickmenu" # Quickmenu
-        "$shiftMod,SPACE, exec, hyprfocus-toggle" # Toggle HyprFocus
-        # "$mod,TAB, overview:toggle" # Overview
+        "$mod, D, exec, pkill rofi || rofi -show drun -modi drun,filebrowser,run,window"
+        "$mod, V, exec, pkill rofi || nvidia-offload rofi -show drun -modi drun,filebrowser,run,window"
 
-        "$mod,Q, killactive," # Close window
-        "$shiftMod,T, togglefloating," # Toggle Floating
-        "$mod,F, fullscreen" # Toggle Fullscreen
-        "$mod,left, movefocus, l" # Move focus left
-        "$mod,right, movefocus, r" # Move focus Right
-        "$mod,up, movefocus, u" # Move focus Up
-        "$mod,down, movefocus, d" # Move focus Down
-        "$shiftMod,up, focusmonitor, -1" # Focus previous monitor
-        "$shiftMod,down, focusmonitor, 1" # Focus next monitor
-        "$shiftMod,left, layoutmsg, addmaster" # Add to master
-        "$shiftMod,right, layoutmsg, removemaster" # Remove from master
+        "$mod, Return, exec, ${config.home.sessionVariables.TERM}" # Launch terminal
+        "$mod, T, exec, ${config.home.sessionVariables.FILES}" # Launch file manager"
+        "$mod, W, exec, ${config.home.sessionVariables.BROWSER}" # Launch browser
 
-        "$mod,PRINT, exec, screenshot window" # Screenshot window
+        "CTRL ALT, Delete, exec, hyprctl dispatch exit 0"
+        "$mod, Q, killactive,"
+        "$mod SHIFT, Q, exec, kill-active-process" # custom script
+        "$mod, F, fullscreen"
+        "$mod SHIFT, F, togglefloating,"
+        "$mod ALT, F, exec, hyprctl dispatch workspaceopt allfloat"
+        #TODO: lock / menu
+        /*
+          "CTRL ALT, L, exec, $scriptsDir/LockScreen.sh"
+          "CTRL ALT, P, exec, $scriptsDir/Wlogout.sh"
+          #######
+          "$shiftMod,L, exec, ${pkgs.hyprlock}/bin/hyprlock" # Lock
+          "$mod,X, exec, powermenu" # Powermenu
+          "$mod,SPACE, exec, menu" # Launcher
+          "$mod,C, exec, quickmenu" # Quickmenu
+        */
+
+        # Resize windows
+        "$mod SHIFT, left, resizeactive,-50 0"
+        "$mod SHIFT, right, resizeactive,50 0"
+        "$mod SHIFT, up, resizeactive,0 -50"
+        "$mod SHIFT, down, resizeactive,0 50"
+
+        # Move windows
+        "$mod CTRL, left, movewindow, l"
+        "$mod CTRL, right, movewindow, r"
+        "$mod CTRL, up, movewindow, u"
+        "$mod CTRL, down, movewindow, d"
+
+        # Move focus with mod + arrow keys
+        "$mod, left, movefocus, l"
+        "$mod, right, movefocus, r"
+        "$mod, up, movefocus, u"
+        "$mod, down, movefocus, d"
+
+        # Workspaces related
+        "$mod, tab, workspace, m+1"
+        "$mod SHIFT, tab, workspace, m-1"
+
+        # Screenshot
         ",PRINT, exec, screenshot monitor" # Screenshot monitor
+        "$mod,PRINT, exec, screenshot window" # Screenshot window
         "$shiftMod,PRINT, exec, screenshot region" # Screenshot region
         "ALT,PRINT, exec, screenshot region swappy" # Screenshot region then edit
 
-        "$shiftMod,S, exec, ${pkgs.qutebrowser}/bin/qutebrowser :open $(wofi --show dmenu -L 1 -p ' Search on internet')" # Search on internet with wofi
-        "$shiftMod,C, exec, clipboard" # Clipboard picker with wofi
-        "$shiftMod,E, exec, ${pkgs.wofi-emoji}/bin/wofi-emoji" # Emoji picker with wofi
-        "$mod,F2, exec, night-shift" # Toggle night shift
-        "$mod,F3, exec, night-shift" # Toggle night shift
+        # Scroll through existing workspaces with mod + scroll
+        "mod, mouse_down, workspace, e+1"
+        "mod, mouse_up, workspace, e-1"
+        "mod, period, workspace, e+1"
+        "mod, comma, workspace, e-1"
+
       ]
       ++ (builtins.concatLists (
         builtins.genList (
@@ -52,6 +80,7 @@
           [
             "$mod,code:1${toString i}, workspace, ${toString ws}"
             "$mod SHIFT,code:1${toString i}, movetoworkspace, ${toString ws}"
+            "$mod CTRL, code:1${toString i}, movetoworkspacesilent, ${toString ws}"
           ]
         ) 9
       ));
