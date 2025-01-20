@@ -30,8 +30,10 @@
       "$HOME/scripts/talon_scripts"
     ];
     sessionVariables = {
-      FLAKE = "$HOME/src/nix-config";
+      FLAKE = "$HOME/nix-config";
       SHELL = "fish";
+      BROWSER = "brave";
+      FILES = "thunar";
       TERM = "kitty";
       TERMINAL = "kitty";
       VISUAL = "nvim";

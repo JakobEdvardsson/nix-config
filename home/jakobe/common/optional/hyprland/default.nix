@@ -9,6 +9,13 @@
     ./config
     ./scripts
   ];
+  # required packages for Hyprland
+  home.packages = with pkgs; [
+    kitty
+
+    rofi
+    playerctl # manage audio
+  ];
 
   wayland.windowManager.hyprland = {
     enable = true;
