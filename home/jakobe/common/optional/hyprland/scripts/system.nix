@@ -2,7 +2,7 @@
 #- 
 #- Usefull quick scripts
 #-
-#- - `powermenu` - Open power dropdown menu. (rofi)
+#- - `powermenu` - Open power dropdown menu. (${pkgs.rofi-wayland}/bin/rofi)
 #- - `lock` - Lock the screen. (hyprlock)
 { pkgs, ... }:
 
@@ -11,8 +11,8 @@ let
     pkgs.writeShellScriptBin "powermenu"
       # bash
       ''
-        if pgrep rofi; then
-        	pkill rofi
+        if pgrep ${pkgs.rofi-wayland}/bin/rofi; then
+        	pkill ${pkgs.rofi-wayland}/bin/rofi
         # if pgrep tofi; then
         #   pkill tofi
         else
@@ -24,7 +24,7 @@ let
             "󰿅 Shutdown"
           )
 
-          selected=$(printf '%s\n' "''${options[@]}" | rofi -dmenu -p " Powermenu")
+          selected=$(printf '%s\n' "''${options[@]}" | ${pkgs.rofi-wayland}/bin/rofi -dmenu -p " Powermenu")
           # selected=$(printf '%s\n' "''${options[@]}" | tofi --prompt-text "> ")
           selected=''${selected:2}
 
@@ -52,8 +52,8 @@ let
     pkgs.writeShellScriptBin "quickmenu"
       # bash
       ''
-        if pgrep rofi; then
-        	pkill rofi
+        if pgrep ${pkgs.rofi-wayland}/bin/rofi; then
+        	pkill ${pkgs.rofi-wayland}/bin/rofi
         # if pgrep tofi; then
         #   pkill tofi
         else
@@ -64,7 +64,7 @@ let
             "󰈊 Hyprpicker"
           )
 
-          selected=$(printf '%s\n' "''${options[@]}" | rofi -dmenu -p " Quickmenu" )
+          selected=$(printf '%s\n' "''${options[@]}" | ${pkgs.rofi-wayland}/bin/rofi -dmenu -p " Quickmenu" )
           # selected=$(printf '%s\n' "''${options[@]}" | tofi --prompt-text "> ")
           selected=''${selected:2}
 
