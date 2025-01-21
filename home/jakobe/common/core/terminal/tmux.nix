@@ -51,6 +51,7 @@
       ###################
 
       bind c new-window -c '#{pane_current_path}'
+      bind c new-session -c '#{pane_current_path}'
       bind s choose-session
       bind p previous-window
       bind n next-window
@@ -58,12 +59,17 @@
       bind p previous-window
       bind n next-window
       bind r command-prompt 'rename-window %%'
-      bind R source-file ~/.config/tmux/tmux.conf \; display "Reloaded!" # quick reload
+      bind R command-prompt 'rename-session %%'
+      bind U source-file ~/.config/tmux/tmux.conf \; display "Reloaded!" # quick reload
       bind w list-windows
       bind m copy-mode
       bind q kill-pane
       bind x swap-pane -D
       bind-key -T copy-mode-vi v send-keys -X begin-selection
+
+      bind-key Left swap-window -t -1\; select-window -t -1
+      bind-key Right swap-window -t +1\; select-window -t +1
+
 
       bind j choose-window 'join-pane -h -s "%%"'
       bind h split-window -v -c "#{pane_current_path}"

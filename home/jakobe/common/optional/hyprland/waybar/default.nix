@@ -1,169 +1,96 @@
 {
   pkgs,
   lib,
-  host,
   config,
   ...
 }:
 
-let
-  inherit (import ../hosts/${host}/variables.nix) clock24h;
-in
 {
-  # Configure & Theme Waybar
   programs.waybar = {
     enable = true;
-    package = pkgs.waybar;
-    settings = [
-      {
-        layer = "top";
-        position = "top";
-        modules-center = [ "hyprland/workspaces" ];
-        modules-left = [
-          "custom/startmenu"
-          "hyprland/window"
-          "pulseaudio"
-          "cpu"
-          "memory"
-          "idle_inhibitor"
-        ];
-        modules-right = [
-          "custom/hyprbindings"
-          "custom/notification"
-          "custom/exit"
-          "battery"
-          "tray"
-          "clock"
-        ];
+    systemd.enable = true;
+    style =
+      with config.lib.stylix.colors.withHashtag;
+      ''
+        @define-color base00 ${base00}; @define-color base01 ${base01}; @define-color base02 ${base02}; @define-color base03 ${base03};
+        @define-color base04 ${base04}; @define-color base05 ${base05}; @define-color base06 ${base06}; @define-color base07 ${base07};
 
+        @define-color base08 ${base08}; @define-color base09 ${base09}; @define-color base0A ${base0A}; @define-color base0B ${base0B};
+        @define-color base0C ${base0C}; @define-color base0D ${base0D}; @define-color base0E ${base0E}; @define-color base0F ${base0F};
+      ''
+      + builtins.readFile ./waybar-style.css;
+    settings = {
+      bar = {
+        layer = "top";
+        height = 40;
+        spacing = 8;
+        margin-top = 20;
+        margin-left = 20;
+        margin-right = 20;
+        margin-down = 5;
+        modules-left = [ "hyprland/workspaces" ];
+        modules-center = [ "clock" ];
+        modules-right = [
+          "network"
+          "memory"
+          "backlight"
+          "pulseaudio"
+          "hyprland/language"
+          "tray"
+          "battery"
+        ];
         "hyprland/workspaces" = {
-          format = "{name}";
-          format-icons = {
-            default = " ";
-            active = " ";
-            urgent = " ";
-          };
-          on-scroll-up = "hyprctl dispatch workspace e+1";
-          on-scroll-down = "hyprctl dispatch workspace e-1";
-        };
-        "clock" = {
-          format = " {:L%H:%M}";
-          tooltip = true;
-          tooltip-format = "<big>{:%A, %d.%B %Y }</big>\n<tt><small>{calendar}</small></tt>";
-        };
-        "hyprland/window" = {
-          max-length = 22;
-          separate-outputs = false;
-          rewrite = {
-            "" = " 🙈 No Windows? ";
+          format = "{icon}";
+          "format-icons" = {
+            "1" = "α";
+            "2" = "β";
+            "3" = "γ";
+            "4" = "δ";
+            "5" = "ε";
+            urgent = "λ";
+            focused = "σ";
+            default = "ω";
           };
         };
-        "memory" = {
-          interval = 5;
-          format = " {}%";
-          tooltip = true;
-        };
-        "cpu" = {
-          interval = 5;
-          format = " {usage:2}%";
-          tooltip = true;
-        };
-        "disk" = {
-          format = " {free}";
-          tooltip = true;
-        };
-        "network" = {
-          format-icons = [
-            "󰤯"
-            "󰤟"
-            "󰤢"
-            "󰤥"
-            "󰤨"
-          ];
-          format-ethernet = " {bandwidthDownOctets}";
-          format-wifi = "{icon} {signalStrength}%";
-          format-disconnected = "󰤮";
-          tooltip = false;
+        "hyprland/language" = {
+          format = "{} <span font-family='Material Design Icons' rise='-1000' size='medium'>󰌌</span>";
+          format-ru = "ru";
+          format-en = "en";
         };
         "tray" = {
-          spacing = 12;
+          spacing = 10;
         };
-        "pulseaudio" = {
-          format = "{icon} {volume}% {format_source}";
-          format-bluetooth = "{volume}% {icon} {format_source}";
-          format-bluetooth-muted = " {icon} {format_source}";
-          format-muted = " {format_source}";
-          format-source = " {volume}%";
-          format-source-muted = "";
-          format-icons = {
-            headphone = "";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = [
-              ""
-              ""
-              ""
-            ];
-          };
-          on-click = "sleep 0.1 && pavucontrol";
+        "clock" = {
+          format = "{:%H:%M  󰅐}";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          format-alt = "{:%d %h %Y  󰃮}";
+          on-click = "killall calcure || alacritty -t calcure -e calcure;sudo ydotool click 0xc1";
         };
-        "custom/exit" = {
-          tooltip = false;
-          format = "";
-          on-click = "sleep 0.1 && wlogout";
+        "memory" = {
+          format = "{}% ";
+          on-click = "killall btop || alacritty -t btop -e btop;sudo ydotool click 0xc1";
         };
-        "custom/startmenu" = {
-          tooltip = false;
-          format = "";
-          # exec = "rofi -show drun";
-          on-click = "sleep 0.1 && rofi-launcher";
-        };
-        "custom/hyprbindings" = {
-          tooltip = false;
-          format = "󱕴";
-          on-click = "sleep 0.1 && list-hypr-bindings";
-        };
-        "idle_inhibitor" = {
-          format = "{icon}";
-          format-icons = {
-            activated = "";
-            deactivated = "";
-          };
-          tooltip = "true";
-        };
-        "custom/notification" = {
-          tooltip = false;
-          format = "{icon} {}";
-          format-icons = {
-            notification = "<span foreground='red'><sup></sup></span>";
-            none = "";
-            dnd-notification = "<span foreground='red'><sup></sup></span>";
-            dnd-none = "";
-            inhibited-notification = "<span foreground='red'><sup></sup></span>";
-            inhibited-none = "";
-            dnd-inhibited-notification = "<span foreground='red'><sup></sup></span>";
-            dnd-inhibited-none = "";
-          };
-          return-type = "json";
-          exec-if = "which swaync-client";
-          exec = "swaync-client -swb";
-          on-click = "sleep 0.1 && task-waybar";
-          escape = true;
+        "backlight" = {
+          format = "{percent}% {icon}";
+          format-icons = [
+            "󰃞"
+            "󰃟"
+            "󰃠"
+          ];
         };
         "battery" = {
-          states = {
+          "states" = {
+            good = 95;
             warning = 30;
             critical = 15;
           };
-          format = "{icon} {capacity}%";
-          format-charging = "󰂄 {capacity}%";
-          format-plugged = "󱘖 {capacity}%";
+          format = "{capacity}% {icon}";
+          format-charging = "{capacity}% 󰂄";
+          format-plugged = "{capacity}% ";
+          format-alt = "{icon}";
           format-icons = [
-            "󰁺"
-            "󰁻"
+            "󱃍"
+            "󰁼"
             "󰁼"
             "󰁽"
             "󰁾"
@@ -173,10 +100,41 @@ in
             "󰂂"
             "󰁹"
           ];
-          on-click = "";
-          tooltip = false;
+
         };
-      }
-    ];
+        "network" = {
+          interface = "wlp2*";
+          format-wifi = "{essid} ({signalStrength}%) 󰤨";
+          format-ethernet = "{ipaddr}/{cidr} 󰈀";
+          tooltip-format = "{ifname} via {gwaddr} 󰩟";
+          format-linked = "{ifname} (No IP) 󰩟";
+          format-disconnected = "󰤫";
+          on-click = "killall connman-gtk || connman-gtk;sudo ydotool click 0xc1";
+        };
+        "pulseaudio" = {
+          format = "{volume}% {icon} {format_source}";
+          format-bluetooth = "{volume}% <span font-family='Material Design Icons' rise='-2000' font-size='x-large'>󰥰</span> {format_source}";
+          format-bluetooth-muted = "󰟎 {format_source}";
+          format-muted = "󰝟 {format_source}";
+          format-source = "{volume}% 󰍬";
+          format-source-muted = "󰍭";
+          on-click = "killall bluetuith || alacritty -t blue -e bluetuith; sudo ydotool click 0xc1";
+          "format-icons" = {
+            headphone = "󰋋";
+            hands-free = "";
+            headset = "";
+            phone = "";
+            portable = "";
+            car = "";
+            muted-icon = "󰝟";
+            default = [
+              "󰕿"
+              "󰖀"
+              "󰕾"
+            ];
+          };
+        };
+      };
+    };
   };
 }
