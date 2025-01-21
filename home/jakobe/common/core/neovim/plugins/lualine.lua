@@ -11,41 +11,21 @@ local colors = {
 	inactive_bg = "#2c3043",
 }
 
-local my_lualine_theme = {
-	normal = {
-		a = { bg = colors.blue, fg = colors.bg, gui = "bold" },
-		b = { bg = colors.bg, fg = colors.fg },
-		c = { bg = colors.bg, fg = colors.fg },
-	},
-	insert = {
-		a = { bg = colors.green, fg = colors.bg, gui = "bold" },
-		b = { bg = colors.bg, fg = colors.fg },
-		c = { bg = colors.bg, fg = colors.fg },
-	},
-	visual = {
-		a = { bg = colors.violet, fg = colors.bg, gui = "bold" },
-		b = { bg = colors.bg, fg = colors.fg },
-		c = { bg = colors.bg, fg = colors.fg },
-	},
-	command = {
-		a = { bg = colors.yellow, fg = colors.bg, gui = "bold" },
-		b = { bg = colors.bg, fg = colors.fg },
-		c = { bg = colors.bg, fg = colors.fg },
-	},
-	replace = {
-		a = { bg = colors.red, fg = colors.bg, gui = "bold" },
-		b = { bg = colors.bg, fg = colors.fg },
-		c = { bg = colors.bg, fg = colors.fg },
-	},
-	inactive = {
-		a = { bg = colors.inactive_bg, fg = colors.semilightgray, gui = "bold" },
-		b = { bg = colors.inactive_bg, fg = colors.semilightgray },
-		c = { bg = colors.inactive_bg, fg = colors.semilightgray },
-	},
-}
+local theme = require("lualine.themes.base16")
+theme.normal.b.bg = nil
+theme.normal.c.bg = nil
+theme.replace.b.bg = nil
+theme.insert.b.bg = nil
+theme.visual.b.bg = nil
+theme.inactive.a.bg = nil
+theme.inactive.b.bg = nil
+theme.inactive.c.bg = nil
 
 -- configure lualine with modified theme
 lualine.setup({
+	options = {
+		theme = theme,
+	},
 	sections = {
 		lualine_a = {
 			{

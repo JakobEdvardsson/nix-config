@@ -149,4 +149,5 @@
       '';
     };
   };
+  stylix.targets.neovim.plugin = "base16-nvim"; # This is for lualine in nvim
 }
