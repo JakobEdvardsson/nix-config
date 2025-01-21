@@ -14,7 +14,7 @@
   home.packages = with pkgs; [
     kitty
 
-    rofi
+    rofi-wayland
     playerctl # manage audio
   ];
 

@@ -12,8 +12,8 @@
     # config.home.sessionVariable are defined in /home/jakobe/common/core/default.nix
     bind =
       [
-        "$mod, D, exec, pkill rofi || rofi -show drun -modi drun,filebrowser,run,window"
-        "$mod, V, exec, pkill rofi || nvidia-offload rofi -show drun -modi drun,filebrowser,run,window"
+        "$mod, D, exec, pkill ${pkgs.rofi-wayland}/bin/rofi || ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
+        "$mod, V, exec, pkill ${pkgs.rofi-wayland}/bin/rofi || nvidia-offload ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
 
         "$mod, Return, exec, ${config.home.sessionVariables.TERM}" # Launch terminal
         "$mod, T, exec, ${config.home.sessionVariables.FILES}" # Launch file manager"
