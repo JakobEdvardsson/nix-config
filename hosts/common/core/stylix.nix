@@ -19,7 +19,7 @@
       sha256 = "pLYV4/ypmA0IRzFofxRBllAkgMEwsQWBsIBSagUmNx0=";
     };
     imageScalingMode = "fit";
-    # base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-material-dark-medium.yaml";
+    #base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark.yaml";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
     cursor = {
       package = pkgs.bibata-cursors;

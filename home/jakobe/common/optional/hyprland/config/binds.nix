@@ -87,7 +87,7 @@
             "$mod SHIFT,code:1${toString i}, movetoworkspace, ${toString ws}"
             "$mod CTRL, code:1${toString i}, movetoworkspacesilent, ${toString ws}"
           ]
-        ) 9
+        ) 10
       ));
 
     bindm = [
