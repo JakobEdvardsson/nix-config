@@ -9,6 +9,8 @@
   # required packages for Waybar
   home.packages = with pkgs; [
     playerctl # manage audio
+    pavucontrol # manage audio
+
   ];
 
   programs.waybar = {
@@ -23,120 +25,156 @@
         @define-color base08 ${base08}; @define-color base09 ${base09}; @define-color base0A ${base0A}; @define-color base0B ${base0B};
         @define-color base0C ${base0C}; @define-color base0D ${base0D}; @define-color base0E ${base0E}; @define-color base0F ${base0F};
       ''
-      + builtins.readFile ./waybar-style.css;
+      + builtins.readFile ./style.css;
     settings = {
       bar = {
         layer = "top";
-        height = 35;
-        spacing = 8;
-        margin-top = 8;
-        margin-left = 8;
-        margin-right = 8;
-        margin-down = 4;
-        modules-left = [ "hyprland/workspaces" ];
-        modules-center = [ "clock" ];
-        modules-right = [
-          "network"
-          "memory"
-          "backlight"
-          "pulseaudio"
-          "hyprland/language"
-          "tray"
-          "battery"
+        position = "top";
+        spacing = 0;
+        height = 34;
+        modules-left = [
+          "custom/logo"
+          "hyprland/workspaces"
         ];
-        "hyprland/workspaces" = {
+        modules-center = [
+          "clock"
+        ];
+        modules-right = [
+          "tray"
+          "memory"
+          "network"
+          "wireplumber"
+          "battery"
+          "custom/power"
+        ];
+        "wlr/taskbar" = {
           format = "{icon}";
-          "format-icons" = {
-            "1" = "α";
-            "2" = "β";
-            "3" = "γ";
-            "4" = "δ";
-            "5" = "ε";
-            urgent = "λ";
-            focused = "σ";
-            default = "ω";
+          on-click = "activate";
+          on-click-right = "fullscreen";
+          icon-theme = "WhiteSur";
+          icon-size = 25;
+          tooltip-format = "{title}";
+        };
+        "hyprland/workspaces" = {
+          on-click = "activate";
+          format = "{icon}";
+          format-icons = {
+            default = "";
+            "1" = "1";
+            "2" = "2";
+            "3" = "3";
+            "4" = "4";
+            "5" = "5";
+            "6" = "6";
+            "7" = "7";
+            "8" = "8";
+            "9" = "9";
+            active = "󱓻";
+            urgent = "󱓻";
+          };
+          persistent_workspaces = {
+            "1" = [ ];
+            "2" = [ ];
+            "3" = [ ];
+            "4" = [ ];
+            "5" = [ ];
           };
         };
-        "hyprland/language" = {
-          format = "{} <span font-family='Material Design Icons' rise='-1000' size='medium'>󰌌</span>";
-          format-en = "en";
+        "memory" = {
+          interval = 5;
+          format = "󰍛 {}%";
+          max-length = 10;
         };
         "tray" = {
           spacing = 10;
         };
         "clock" = {
-          format = "{:%H:%M  󰅐}";
-          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          format-alt = "{:%d %h %Y  󰃮}";
-          on-click = "killall calcure || alacritty -t calcure -e calcure;sudo ydotool click 0xc1";
-        };
-        "memory" = {
-          format = "{}% ";
-          on-click = "killall btop || alacritty -t btop -e btop;sudo ydotool click 0xc1";
-        };
-        "backlight" = {
-          format = "{percent}% {icon}";
-          format-icons = [
-            "󰃞"
-            "󰃟"
-            "󰃠"
-          ];
-        };
-        "battery" = {
-          "states" = {
-            good = 95;
-            warning = 30;
-            critical = 15;
-          };
-          format = "{capacity}% {icon}";
-          format-charging = "{capacity}% 󰂄";
-          format-plugged = "{capacity}% ";
-          format-alt = "{icon}";
-          format-icons = [
-            "󱃍"
-            "󰁼"
-            "󰁼"
-            "󰁽"
-            "󰁾"
-            "󰁿"
-            "󰂀"
-            "󰂁"
-            "󰂂"
-            "󰁹"
-          ];
-
+          tooltip-format = "{calendar}";
+          format-alt = "  {:%a, %d %b %Y}";
+          format = "  {:%I:%M %p}";
         };
         "network" = {
-          interface = "wlp2*";
-          format-wifi = "{essid} ({signalStrength}%) 󰤨";
-          format-ethernet = "{ipaddr}/{cidr} 󰈀";
-          tooltip-format = "{ifname} via {gwaddr} 󰩟";
-          format-linked = "{ifname} (No IP) 󰩟";
-          format-disconnected = "󰤫";
-          on-click = "killall connman-gtk || connman-gtk;sudo ydotool click 0xc1";
+          format-wifi = "{icon}";
+          format-icons = [
+            "󰤯"
+            "󰤟"
+            "󰤢"
+            "󰤥"
+            "󰤨"
+          ];
+          format-ethernet = "󰀂";
+          format-alt = "󱛇";
+          format-disconnected = "󰖪";
+          tooltip-format-wifi = "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
+          tooltip-format-ethernet = "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
+          tooltip-format-disconnected = "Disconnected";
+          on-click = "~/.config/rofi/wifi/wifi.sh &";
+          on-click-right = "~/.config/rofi/wifi/wifinew.sh &";
+          interval = 5;
+          nospacing = 1;
         };
-        "pulseaudio" = {
-          format = "{volume}% {icon} {format_source}";
-          format-bluetooth = "{volume}% <span font-family='Material Design Icons' rise='-2000' font-size='x-large'>󰥰</span> {format_source}";
-          format-bluetooth-muted = "󰟎 {format_source}";
-          format-muted = "󰝟 {format_source}";
-          format-source = "{volume}% 󰍬";
-          format-source-muted = "󰍭";
-          on-click = "killall bluetuith || alacritty -t blue -e bluetuith; sudo ydotool click 0xc1";
-          "format-icons" = {
-            headphone = "󰋋";
-            hands-free = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            muted-icon = "󰝟";
+        wireplumber = {
+          format = "{icon}";
+          format-bluetooth = "󰂰";
+          nospacing = 1;
+          tooltip-format = "Volume : {volume}%";
+          format-muted = "󰝟";
+          format-icons = {
+            headphone = "";
             default = [
-              "󰕿"
               "󰖀"
               "󰕾"
+              ""
             ];
           };
+          on-click = "pamixer -t";
+          scroll-step = 1;
+        };
+        "custom/logo" = {
+          format = "  ";
+          tooltip = false;
+          on-click = "~/.config/rofi/launchers/misc/launcher.sh &";
+        };
+        battery = {
+          format = "{capacity}% {icon}";
+          format-icons = {
+            charging = [
+              "󰢜"
+              "󰂆"
+              "󰂇"
+              "󰂈"
+              "󰢝"
+              "󰂉"
+              "󰢞"
+              "󰂊"
+              "󰂋"
+              "󰂅"
+            ];
+            default = [
+              "󰁺"
+              "󰁻"
+              "󰁼"
+              "󰁽"
+              "󰁾"
+              "󰁿"
+              "󰂀"
+              "󰂁"
+              "󰂂"
+              "󰁹"
+            ];
+          };
+          format-full = "Charged ";
+          interval = 5;
+          states = {
+            warning = 20;
+            critical = 10;
+          };
+          tooltip = false;
+        };
+        "custom/power" = {
+          format = "󰤆";
+          tooltip = false;
+          on-click = "~/.config/rofi/powermenu/type-2/powermenu.sh &";
         };
       };
     };
