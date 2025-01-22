@@ -97,6 +97,7 @@
         nui-nvim
         img-clip-nvim
         render-markdown-nvim
+        nvim-colorizer-lua # View colors in nvim
 
       ];
       extraConfig = ''
@@ -132,6 +133,7 @@
         ${builtins.readFile ./plugins/which-key.lua}
         ${builtins.readFile ./plugins/harpoon.lua}
         ${builtins.readFile ./plugins/scope.lua}
+        ${builtins.readFile ./plugins/colorizer.lua}
 
         lspconfig.ts_ls.setup({
           capabilities = capabilities,
