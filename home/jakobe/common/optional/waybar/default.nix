@@ -6,6 +6,11 @@
 }:
 
 {
+  # required packages for Waybar
+  home.packages = with pkgs; [
+    playerctl # manage audio
+  ];
+
   programs.waybar = {
     enable = true;
     systemd.enable = true;
@@ -22,12 +27,12 @@
     settings = {
       bar = {
         layer = "top";
-        height = 40;
+        height = 35;
         spacing = 8;
-        margin-top = 20;
-        margin-left = 20;
-        margin-right = 20;
-        margin-down = 5;
+        margin-top = 8;
+        margin-left = 8;
+        margin-right = 8;
+        margin-down = 4;
         modules-left = [ "hyprland/workspaces" ];
         modules-center = [ "clock" ];
         modules-right = [
@@ -42,16 +47,11 @@
         "hyprland/workspaces" = {
           format = "{icon}";
           "format-icons" = {
-            "1" = "1";
-            "2" = "2";
-            "3" = "3";
-            "4" = "4";
-            "5" = "5";
-            "6" = "6";
-            "7" = "7";
-            "8" = "8";
-            "9" = "9";
-            "10" = "0";
+            "1" = "α";
+            "2" = "β";
+            "3" = "γ";
+            "4" = "δ";
+            "5" = "ε";
             urgent = "λ";
             focused = "σ";
             default = "ω";
@@ -59,7 +59,6 @@
         };
         "hyprland/language" = {
           format = "{} <span font-family='Material Design Icons' rise='-1000' size='medium'>󰌌</span>";
-          format-ru = "ru";
           format-en = "en";
         };
         "tray" = {
