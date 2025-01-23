@@ -1,4 +1,5 @@
 - [ ] Hyprland
+- [ ] Hyprland Nvidia option
 - [x] Waybar
 - [ ] Hypridle
 - [ ] Hyprlock
@@ -6,6 +7,7 @@
 - [ ] Authentication Agent
 - [ ] Make configs optional
 - [ ] Tailscale
+- [ ] Kitty / ghosty
 
   - [x] UserSettings
   - [x] Keybinds

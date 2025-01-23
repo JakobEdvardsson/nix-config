@@ -7,5 +7,7 @@
     ./gestures.nix
     ./startup-script.nix
     ./emoji.nix
+    ./window-rules.nix
+    ./animations.nix
   ];
 }
