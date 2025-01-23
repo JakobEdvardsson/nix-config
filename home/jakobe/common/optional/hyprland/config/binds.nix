@@ -15,7 +15,7 @@
         "$mod, D, exec, pkill ${pkgs.rofi-wayland}/bin/rofi || ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
         "$mod, V, exec, pkill ${pkgs.rofi-wayland}/bin/rofi || nvidia-offload ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
 
-        "$mod, Return, exec, ${config.home.sessionVariables.TERM}" # Launch terminal
+        "$mod, Return, exec, ${config.home.sessionVariables.TERMINAL}" # Launch terminal
         "$mod, T, exec, ${config.home.sessionVariables.FILES}" # Launch file manager"
         "$mod, W, exec, ${config.home.sessionVariables.BROWSER}" # Launch browser
 
