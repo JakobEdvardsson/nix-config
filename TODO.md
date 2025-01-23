@@ -1,4 +1,11 @@
-- Hyprland
+- [ ] Hyprland
+- [x] Waybar
+- [ ] Hypridle
+- [ ] Hyprlock
+- [ ] xdg-desktop-portal
+- [ ] Authentication Agent
+- [ ] Make configs optional
+- [ ] Tailscale
 
   - [x] UserSettings
   - [x] Keybinds
@@ -9,13 +16,3 @@
   - [ ] UserSettings.conf
   - [ ] WindowRules.conf
   - [ ] WorkspaceRules.conf
-
-  - [ ] Hyprlock
-  - [ ] Hypridle
-  - [ ] xdg-desktop-portal
-  - [ ] Hypridle
-  - [ ] Authentication Agent
-  - [ ]
-
-- [ ] Tailscale
-- [x] Add alias for common git commands
