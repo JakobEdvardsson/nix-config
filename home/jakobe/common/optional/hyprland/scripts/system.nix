@@ -1,5 +1,5 @@
 # - ## System
-#- 
+#-
 #- Usefull quick scripts
 #-
 #- - `powermenu` - Open power dropdown menu. (${pkgs.rofi-wayland}/bin/rofi)
@@ -76,7 +76,7 @@ let
               night-shift
               ;;
             "Nixy")
-              kitty zsh -c nixy
+              kitty fish -c nixy
               ;;
             "Hyprpicker")
               sleep 0.2 && ${pkgs.hyprpicker}/bin/hyprpicker -a
