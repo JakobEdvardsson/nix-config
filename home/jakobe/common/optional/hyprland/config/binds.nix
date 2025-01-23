@@ -31,10 +31,9 @@
           "CTRL ALT, P, exec, $scriptsDir/Wlogout.sh"
           #######
           "$shiftMod,L, exec, ${pkgs.hyprlock}/bin/hyprlock" # Lock
-          "$mod,X, exec, powermenu" # Powermenu
-          "$mod,SPACE, exec, menu" # Launcher
-          "$mod,C, exec, quickmenu" # Quickmenu
         */
+        "$mod,X, exec, powermenu" # Powermenu
+        "$mod,C, exec, quickmenu" # Quickmenu
 
         # Resize windows
         "$mod SHIFT, left, resizeactive,-50 0"
@@ -72,8 +71,7 @@
 
         # Custom
         "$shiftMod,E, exec, emoji-picker" # Emoji picker with wofi
-        "$mod,F2, exec, night-shift" # Toggle night shift
-        "$mod,F3, exec, night-shift" # Toggle night shift
+        "$shiftMod,N, exec, night-shift" # Toggle night shift
 
       ]
       ++ (builtins.concatLists (

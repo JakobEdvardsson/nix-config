@@ -1,6 +1,6 @@
 # - ## Nixy
-#- 
-#- Nixy is a simple script that I use to manage my NixOS system. It's a simple script that provides a menu to rebuild, upgrade, update, collect garbage, clean boot menu, etc. 
+#-
+#- Nixy is a simple script that I use to manage my NixOS system. It's a simple script that provides a menu to rebuild, upgrade, update, collect garbage, clean boot menu, etc.
 #-
 #- - `nixy` - UI wizard to manage the system.
 #- - `nixy rebuild` - Rebuild the system.
@@ -33,7 +33,6 @@ let
             "󰦗;Upgrade;nixy upgrade"
             "󰚰;Update;nixy update"
             ";Collect Garbage;nixy gc"
-            "󰍜;Clean Boot Menu;nixy cb"
           )
 
           # Apply default icons if empty:
@@ -54,27 +53,16 @@ let
         [[ $1 == "" ]] && ui
 
         if [[ $1 == "rebuild" ]];then
-          sudo nixos-rebuild switch --flake ${configDirectory}#${hostname}
+          echo '${configDirectory} ${hostname}'
+          nh os switch ${configDirectory} --hostname ${hostname}
         elif [[ $1 == "upgrade" ]];then
-          sudo nixos-rebuild switch --upgrade --flake '${configDirectory}#${hostname}'
+          nh os switch ${configDirectory} --hostname ${hostname}
         elif [[ $1 == "update" ]];then
           cd ${configDirectory} && nix flake update
         elif [[ $1 == "gc" ]];then
           cd ${configDirectory} && sudo nix-collect-garbage -d
         elif [[ $1 == "cb" ]];then
           sudo /run/current-system/bin/switch-to-configuration boot
-        elif [[ $1 == "remote" ]];then
-        #TODO: fix this:
-          cd ~/.config/nixos && git add . && git commit -m "update" && git push
-          ssh jack -S -C "cd /home/hadi/.config/nixos && git pull && sudo -S nixos-rebuild switch --flake ~/.config/nixos#jack"
-        elif [[ $1 == "loop" ]];then
-          while true; do
-            nixy
-            echo "Press enter to continue, e to exit" 
-            read -n 1 REPLY
-            clear
-            [[ $REPLY == "e" ]] && exit 0
-          done
         else
           echo "Unknown argument"
         fi
