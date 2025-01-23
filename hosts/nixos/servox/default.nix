@@ -102,6 +102,8 @@
     systemd.enable = true;
   };
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   services.qemuGuest.enable = true;
 
   # https://wiki.nixos.org/wiki/FAQ/When_do_I_update_stateVersion
