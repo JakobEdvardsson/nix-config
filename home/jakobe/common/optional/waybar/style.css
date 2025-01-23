@@ -1,3 +1,25 @@
+/* 
+Example color schemes
+
+@base00 #000000 #0F1419 ----
+@base01 #231a40 #131721 ---
+@base02 #432d59 #272D38 --
+@base03 #593380 #3E4B59 -
+@base04 #7b43bf #BFBDB6 +
+@base05 #b08ae6 #E6E1CF ++
+@base06 #9045e6 #E6E1CF +++
+@base07 #a366ff #F3F4F5 ++++
+@base08 #a82ee6 #F07178 red
+@base09 #bb66cc #FF8F40 orange
+@base0A #f29df2 #FFB454 yellow
+@base0B #41d9bF #B8CC52 green
+@base0C #40dfff #95E6CB aqua/cyan
+@base0D #326ee6 #59C2FF blue
+@base0E #7e5ce6 #D2A6FF purple
+@base0F #a886bf #E6B673 brown
+
+ */
+
 * {
   border: none;
   border-radius: 0;
@@ -63,7 +85,7 @@ window#waybar.hidden {
   padding: 6px 12px;
   background-color: @base03;
   color: #181825;
-  min-width: 20px;
+  min-width: 22px;
 }
 
 #custom-power {
@@ -90,8 +112,8 @@ window#waybar.hidden {
 #battery.warning,
 #battery.critical,
 #battery.urgent {
-  background-color: #ff0000;
-  color: #ffff00;
+  background-color: @base08;
+  color: @base0A;
 }
 
 #battery.charging {
@@ -109,7 +131,6 @@ window#waybar.hidden {
 
 #network {
   background-color: @base0E;
-  padding-right: 18px;
 }
 
 #clock {

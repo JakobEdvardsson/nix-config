@@ -8,8 +8,13 @@
 {
   # required packages for Waybar
   home.packages = with pkgs; [
-    playerctl # manage audio
-    pavucontrol # manage audio
+    # Audio
+    playerctl
+    pamixer
+    pavucontrol
+
+    # Network
+    networkmanagerapplet
 
   ];
 
@@ -31,7 +36,7 @@
         layer = "top";
         position = "top";
         spacing = 0;
-        height = 34;
+        height = 30;
         modules-left = [
           "custom/logo"
           "hyprland/workspaces"
@@ -47,15 +52,7 @@
           "battery"
           "custom/power"
         ];
-        "wlr/taskbar" = {
-          format = "{icon}";
-          on-click = "activate";
-          on-click-right = "fullscreen";
-          icon-theme = "WhiteSur";
-          icon-size = 25;
-          tooltip-format = "{title}";
-        };
-        "hyprland/workspaces" = {
+        hyprland.workspaces = {
           on-click = "activate";
           format = "{icon}";
           format-icons = {
@@ -69,31 +66,24 @@
             "7" = "7";
             "8" = "8";
             "9" = "9";
-            active = "󱓻";
-            urgent = "󱓻";
-          };
-          persistent_workspaces = {
-            "1" = [ ];
-            "2" = [ ];
-            "3" = [ ];
-            "4" = [ ];
-            "5" = [ ];
+            "10" = "10";
+            urgent = " ";
           };
         };
-        "memory" = {
+        memory = {
           interval = 5;
           format = "󰍛 {}%";
           max-length = 10;
         };
-        "tray" = {
+        tray = {
           spacing = 10;
         };
-        "clock" = {
+        clock = {
           tooltip-format = "{calendar}";
           format-alt = "  {:%a, %d %b %Y}";
           format = "  {:%I:%M %p}";
         };
-        "network" = {
+        network = {
           format-wifi = "{icon}";
           format-icons = [
             "󰤯"
@@ -102,19 +92,18 @@
             "󰤥"
             "󰤨"
           ];
-          format-ethernet = "󰀂";
-          format-alt = "󱛇";
+          format-ethernet = "󰌘";
           format-disconnected = "󰖪";
           tooltip-format-wifi = "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
           tooltip-format-ethernet = "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
           tooltip-format-disconnected = "Disconnected";
-          on-click = "~/.config/rofi/wifi/wifi.sh &";
-          on-click-right = "~/.config/rofi/wifi/wifinew.sh &";
+          on-click = "nm-connection-editor & ";
+          on-click-right = "${config.home.sessionVariables.TERMINAL} nmtui &";
           interval = 5;
           nospacing = 1;
         };
         wireplumber = {
-          format = "{icon}";
+          format = "{icon}  {volume} %";
           format-bluetooth = "󰂰";
           nospacing = 1;
           tooltip-format = "Volume : {volume}%";
@@ -127,13 +116,16 @@
               ""
             ];
           };
-          on-click = "pamixer -t";
+          on-click = "pavucontrol -t 3";
+          on-click-right = "pamixer -t";
+
           scroll-step = 1;
         };
         "custom/logo" = {
           format = "  ";
           tooltip = false;
-          on-click = "~/.config/rofi/launchers/misc/launcher.sh &";
+          on-click = "${config.home.sessionVariables.BROWSER} https://home-manager-options.extranix.com/ &&
+            ${config.home.sessionVariables.BROWSER} https://search.nixos.org/packages & "; # Open nixos and homemanager search
         };
         battery = {
           format = "{capacity}% {icon}";
@@ -174,7 +166,7 @@
         "custom/power" = {
           format = "󰤆";
           tooltip = false;
-          on-click = "~/.config/rofi/powermenu/type-2/powermenu.sh &";
+          on-click = "powermenu &";
         };
       };
     };
