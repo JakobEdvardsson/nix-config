@@ -66,6 +66,8 @@ let
         else
           echo "Unknown argument"
         fi
+
+        read -p "Press enter to exit..."
       '';
 
 in

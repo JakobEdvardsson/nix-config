@@ -90,7 +90,7 @@
 
     bindm = [
       "$mod,mouse:272, movewindow" # Move Window (mouse)
-      "$mod,R, resizewindow" # Resize Window (mouse)
+      "$mod, mouse:273, resizewindow" # Resize Window (mouse)
     ];
 
     bindl = [
@@ -107,6 +107,5 @@
       ",XF86MonBrightnessUp, exec, brightness-up" # Brightness Up
       ",XF86MonBrightnessDown, exec, brightness-down" # Brightness Down
     ];
-
   };
 }
