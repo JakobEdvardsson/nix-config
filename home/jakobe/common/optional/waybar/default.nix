@@ -81,7 +81,7 @@
         clock = {
           tooltip-format = "{calendar}";
           format-alt = "  {:%a, %d %b %Y}";
-          format = "  {:%I:%M %p}";
+          format = "  {:%H:%M}";
         };
         network = {
           format-wifi = "{icon}";
