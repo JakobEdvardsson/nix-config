@@ -57,7 +57,7 @@ in
     users.${hostSpec.username}.imports = lib.flatten [
       (
         { config, ... }:
-        import (lib.custom.relativeToRoot "home/${hostSpec.username}/${hostSpec.hostName}.nix") {
+        import (lib.custom.relativeToRoot "home/${hostSpec.username}/${hostSpec.hostName}") {
           inherit
             pkgs
             inputs

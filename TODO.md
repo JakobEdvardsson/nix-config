@@ -1,5 +1,6 @@
 - [ ] Hyprland
 - [ ] Hyprland Nvidia option
+- [ ] Rofi
 - [x] Waybar
 - [ ] Hypridle
 - [ ] Hyprlock
