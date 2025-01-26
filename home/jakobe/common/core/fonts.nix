@@ -5,5 +5,6 @@
     pkgs.noto-fonts
     pkgs.nerdfonts # loads the complete collection. look into overide for FiraMono or potentially mononoki
     pkgs.meslo-lgs-nf
+    pkgs.jetbrains-mono
   ];
 }

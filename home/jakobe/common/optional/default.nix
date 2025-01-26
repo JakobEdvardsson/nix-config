@@ -9,11 +9,13 @@
     ./browsers
     ./comms
     # ./gaming
-    ./hyprland
     ./media
     ./tools
-    ./waybar
     ./sops.nix
     ./xdg.nix
+
+    ./hyprland
+    ./waybar
+    ./rofi-wayland
   ];
 }

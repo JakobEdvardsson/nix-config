@@ -31,7 +31,10 @@ in
 
   config = lib.mkIf cfg.enable {
     # Dependencies for hyprland
-    customHome.waybar.enable = lib.mkDefault true;
+    customHome = {
+      waybar.enable = lib.mkDefault true;
+      rofi-wayland.enable = lib.mkDefault true;
+    };
 
     # required packages for Hyprland
     home.packages = with pkgs; [
