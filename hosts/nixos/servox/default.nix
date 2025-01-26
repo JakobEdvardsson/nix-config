@@ -106,6 +106,11 @@
 
   services.qemuGuest.enable = true;
 
+  systemd.services.systemd-suspend.environment.SYSTEMD_SLEEP_FREEZE_USER_SESSIONS = "false";
+  # https://github.com/NixOS/nixpkgs/issues/369376
+  # https://github.com/kachick/dotfiles/issues/959
+  # https://github.com/NixOS/nixpkgs/issues/223690
+
   # https://wiki.nixos.org/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.05";
 }
