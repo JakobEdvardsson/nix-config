@@ -166,6 +166,9 @@
         				nixos = {
         					expr = '(builtins.getFlake "${config.hostSpec.home}/nix-config").nixosConfigurations.${config.hostSpec.hostName}.options',
         				},
+        				home_manager = {
+        					expr = '(builtins.getFlake "${config.hostSpec.home}/nix-config").nixosConfigurations.${config.hostSpec.hostName}.options.home-manager.users.value.${config.hostSpec.username}',
+        				},
         			},
         		},
         	},
