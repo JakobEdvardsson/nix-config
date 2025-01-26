@@ -63,6 +63,9 @@
       gpr = "gh pr create";
       gdpr = "gh pr create --draft";
 
+      # Always attemp to attach to session requires: newSession = true;
+      tmux = "tmux a";
+
       # Less used ones:
       lsblk = "lsblk -o name,mountpoint,label,size,type,uuid";
       weather = "${pkgs.curl}/bin/curl -4 http://wttr.in/Malmö";
