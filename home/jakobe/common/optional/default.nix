@@ -14,8 +14,6 @@
     ./sops.nix
     ./xdg.nix
 
-    ./hyprland
-    ./waybar
-    ./rofi-wayland
+    ./wm
   ];
 }
