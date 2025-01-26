@@ -96,9 +96,6 @@ lspconfig["lua_ls"].setup({
 lspconfig["pyright"].setup({
 	capabilities = capabilities,
 })
-lspconfig["nil_ls"].setup({
-	capabilities = capabilities,
-})
 lspconfig["marksman"].setup({
 	capabilities = capabilities,
 })
