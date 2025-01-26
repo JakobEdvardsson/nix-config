@@ -2,6 +2,7 @@
   pkgs,
   inputs,
   lib,
+  config,
   ...
 }:
 {
@@ -19,7 +20,7 @@
 
         # LSP
         luajitPackages.lua-lsp
-        nil
+        nixd
         rust-analyzer
         tailwindcss-language-server
         nodePackages.bash-language-server
@@ -136,20 +137,55 @@
         ${builtins.readFile ./plugins/colorizer.lua}
 
         lspconfig.ts_ls.setup({
-          capabilities = capabilities,
-          init_options = {
-            plugins = { -- I think this was my breakthrough that made it work
-              {
-                name = "@vue/typescript-plugin",
-                location = "${lib.getBin pkgs.vue-language-server}/lib/node_modules/@vue/language-server",
-                languages = {"javascript", "typescript", "vue"},
-              },
-            },
-          },
-          filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+        	capabilities = capabilities,
+        	init_options = {
+        		plugins = { -- I think this was my breakthrough that made it work
+        			{
+        				name = "@vue/typescript-plugin",
+        				location = "${lib.getBin pkgs.vue-language-server}/lib/node_modules/@vue/language-server",
+        				languages = { "javascript", "typescript", "vue" },
+        			},
+        		},
+        	},
+        	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
         })
+
+
+        require("lspconfig").nixd.setup({
+        	cmd = { "nixd" },
+        	capabilities = capabilities,
+        	settings = {
+        		nixd = {
+        			nixpkgs = {
+        				expr = "import <nixpkgs> { }",
+        			},
+        			formatting = {
+        				command = { "nixfmt" },
+        			},
+        			options = {
+        				nixos = {
+        					expr = '(builtins.getFlake "${config.hostSpec.home}/nix-config").nixosConfigurations.${config.hostSpec.hostName}.options',
+        				},
+        			},
+        		},
+        	},
+        })
+
       '';
     };
   };
   stylix.targets.neovim.plugin = "base16-nvim"; # This is for lualine in nvim
+
+  /*
+    Note:
+    nixd completion doesn't work with config.s<tab>
+
+    the following works fine:
+    config = lib.mkIf true{
+      h<tab>
+    }
+
+    ref: https://github.com/nix-community/nixd/issues/566
+  */
+  nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ]; # This is for nixd
 }
