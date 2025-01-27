@@ -19,3 +19,4 @@
   - [ ] UserSettings.conf
   - [ ] WindowRules.conf
   - [ ] WorkspaceRules.conf
+  - [ ] Notification when battery is low
