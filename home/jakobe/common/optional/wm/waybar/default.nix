@@ -59,6 +59,7 @@ in
             "network"
             "wireplumber"
             "battery"
+            "custom/swaync"
             "custom/power"
           ];
           hyprland.workspaces = {
@@ -136,6 +137,28 @@ in
             on-click = "${config.home.sessionVariables.BROWSER} https://home-manager-options.extranix.com/ &&
             ${config.home.sessionVariables.BROWSER} https://search.nixos.org/packages & "; # Open nixos and homemanager search
           };
+          "custom/swaync" = {
+            "tooltip" = true;
+            "tooltip-format" = "Left Click= Launch Notification Center\nRight Click= Do not Disturb";
+            "format" = "{} {icon}";
+            "format-icons" = {
+              "notification" = "<span foreground='red'><sup></sup></span>";
+              "none" = "";
+              "dnd-notification" = "<span foreground='red'><sup></sup></span>";
+              "dnd-none" = "";
+              "inhibited-notification" = "<span foreground='red'><sup></sup></span>";
+              "inhibited-none" = "";
+              "dnd-inhibited-notification" = "<span foreground='red'><sup></sup></span>";
+              "dnd-inhibited-none" = "";
+            };
+            "return-type" = "json";
+            "exec-if" = "which swaync-client";
+            "exec" = "swaync-client -swb";
+            "on-click" = "sleep 0.1 && swaync-client -t -sw";
+            "on-click-right" = "swaync-client -d -sw";
+            "escape" = true;
+          };
+
           battery = {
             format = "{capacity}% {icon}";
             format-icons = {
