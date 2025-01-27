@@ -5,9 +5,6 @@ alias upgrade='nix flake update && sudo nixos-rebuild switch --flake ~/nix'
 #  * Create missing directories in path when calling `mkdir`
 alias mkdir='mkdir -pv'
 
-#  * `path` command to print full file path
-alias path='readlink -e'
-
 #  * `rmm` command to remove directories, but ask nicely
 alias rmm='rm -rvI'
 
@@ -20,11 +17,6 @@ alias cp='cp -i'
 #  * `mv` to ask when overwriting files
 alias mv='mv -i'
 
-#  * `add-to-path` Command to add current directory to path
-alias add-to-path='set -U fish_user_paths (pwd) $fish_user_paths'
-
-# Update `PATH` variable
-alias path-update='set -gx PATH (bash -c "source ~/git/stuff/config/path; echo \$PATH")'
 
 #  * Human readable sizes for `df`, `du`, `free` (i.e. Mb, Gb etc)
 alias df='df -h'
@@ -80,16 +72,11 @@ end
 # Useful for piping, i.e. `cat ~/.ssh/id_rsa.pub | copy` or `uuid | copy`
 # If arguments are given, copies it to clipboard
 function copy --description "Copy pipe or argument"
-  if [ "$argv" = "" ]
-    xclip -sel clip
-  else
-    printf "$argv" | xclip -sel clip
-  end    
-end
-
-function copypath --description "Copy full file path"
-  readlink -e $argv | xclip -sel clip
-  echo "copied to clipboard"
+    if [ "$argv" = "" ]
+      fish_clipboard_copy
+    else
+      printf "$argv" | fish_clipboard_copy
+    end
 end
 
 function color --description "Print color"
