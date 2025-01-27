@@ -20,7 +20,7 @@ in
       '';
     };
 
-    nvidia.enable = lib.mkOption {
+    nvidia = lib.mkOption {
       default = false;
       type = lib.types.bool;
       description = "Enable Nvidia option for hyprland. Offload render to gpu";
@@ -85,7 +85,7 @@ in
             "QT_QPA_PLATFORM,wayland"
           ]
           (
-            if cfg.nvidia.enable then
+            if cfg.nvidia then
               [
                 "LIBVA_DRIVER_NAME,nvidia"
                 "__GLX_VENDOR_LIBRARY_NAME,nvidia"
