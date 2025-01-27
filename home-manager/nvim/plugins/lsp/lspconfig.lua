@@ -117,6 +117,9 @@ lspconfig["sourcekit"].setup({
 lspconfig["gopls"].setup({
 	capabilities = capabilities,
 })
+lspconfig["clangd"].setup({
+	capabilities = capabilities,
+})
 
 -- The rest of the vue config is in ../../../neovim.nix
 lspconfig.volar.setup({

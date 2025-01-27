@@ -38,6 +38,7 @@ in
         sourcekit-lsp
         eslint_d
         gopls
+        clang-tools
 
         #nodePackages.vls
         lua-language-server
@@ -104,7 +105,6 @@ in
         scope-nvim
         nui-nvim
         img-clip-nvim
-        avante-nvim
         render-markdown-nvim
 
       ];
@@ -142,7 +142,6 @@ in
         ${builtins.readFile ./nvim/plugins/harpoon.lua}
         ${builtins.readFile ./nvim/plugins/fine-cmdline.lua}
         ${builtins.readFile ./nvim/plugins/scope.lua}
-        ${builtins.readFile ./nvim/plugins/avante.lua}
 
         lspconfig.ts_ls.setup({
           capabilities = capabilities,

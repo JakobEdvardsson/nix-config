@@ -22,6 +22,10 @@
       obs-studio
       samba
       postman
+      speedcrunch
+
+      age
+      sops
 
       # Hacking
       thc-hydra
@@ -72,6 +76,7 @@
       (mpv.override { scripts = [ mpvScripts.mpris ]; }) # with tray
       qogir-icon-theme
       qogir-theme
+      busybox
       #ranger
 
       # Code

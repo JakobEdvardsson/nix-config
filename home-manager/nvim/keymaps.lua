@@ -83,3 +83,8 @@ vim.api.nvim_set_keymap("n", "<M-Left>", ":TmuxNavigateLeft<CR>", { noremap = tr
 vim.api.nvim_set_keymap("n", "<M-Down>", ":TmuxNavigateDown<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<M-Up>", ":TmuxNavigateUp<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<M-Right>", ":TmuxNavigateRight<CR>", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<C-Left>", ":TmuxNavigateLeft<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-Down>", ":TmuxNavigateDown<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-Up>", ":TmuxNavigateUp<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<C-Right>", ":TmuxNavigateRight<CR>", { noremap = true, silent = true })
