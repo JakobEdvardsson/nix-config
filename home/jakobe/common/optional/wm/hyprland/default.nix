@@ -76,13 +76,13 @@ in
         #
         env = lib.concatLists [
           [
-            "NIXOS_OZONE_WL=1" # For ozone-based and Electron apps
-            "MOZ_ENABLE_WAYLAND=1" # For Firefox Wayland
-            "MOZ_WEBRENDER=1" # For Firefox Wayland
-            "XDG_SESSION_TYPE=wayland"
-            "WLR_NO_HARDWARE_CURSORS=1"
-            "WLR_RENDERER_ALLOW_SOFTWARE=1"
-            "QT_QPA_PLATFORM=wayland"
+            "NIXOS_OZONE_WL,1" # For ozone-based and Electron apps
+            "MOZ_ENABLE_WAYLAND,1" # For Firefox Wayland
+            "MOZ_WEBRENDER,1" # For Firefox Wayland
+            "XDG_SESSION_TYPE,wayland"
+            "WLR_NO_HARDWARE_CURSORS,1"
+            "WLR_RENDERER_ALLOW_SOFTWARE,1"
+            "QT_QPA_PLATFORM,wayland"
           ]
           (
             if cfg.nvidia.enable then
