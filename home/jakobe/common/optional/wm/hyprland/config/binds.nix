@@ -12,8 +12,8 @@
     # config.home.sessionVariable are defined in /home/jakobe/common/core/default.nix
     bind =
       [
-        "$mod, D, exec, pkill ${pkgs.rofi-wayland}/bin/rofi || ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
-        "$mod, V, exec, pkill ${pkgs.rofi-wayland}/bin/rofi || nvidia-offload ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
+        "$mod, D, exec, pkill rofi || ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
+        "$mod, V, exec, pkill rofi || nvidia-offload ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
 
         "$mod, Return, exec, ${config.home.sessionVariables.TERMINAL}" # Launch terminal
         "$mod, T, exec, ${config.home.sessionVariables.FILES}" # Launch file manager"
@@ -25,14 +25,9 @@
         "$mod, F, fullscreen"
         "$mod SHIFT, F, togglefloating,"
         "$mod ALT, F, exec, hyprctl dispatch workspaceopt allfloat"
-        #TODO: lock / menu
-        /*
-          "CTRL ALT, L, exec, $scriptsDir/LockScreen.sh"
-          "CTRL ALT, P, exec, $scriptsDir/Wlogout.sh"
-          #######
-          "$shiftMod,L, exec, ${pkgs.hyprlock}/bin/hyprlock" # Lock
-        */
-        "$mod,X, exec, powermenu" # Powermenu
+
+        "$shiftMod,L, exec, ${pkgs.hyprlock}/bin/hyprlock" # Lock
+        "$shiftMod,P, exec, powermenu" # Powermenu
         "$mod,C, exec, quickmenu" # Quickmenu
 
         # Resize windows

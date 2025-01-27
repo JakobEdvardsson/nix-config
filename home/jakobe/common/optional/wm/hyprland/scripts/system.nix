@@ -11,8 +11,8 @@ let
     pkgs.writeShellScriptBin "powermenu"
       # bash
       ''
-        if pgrep ${pkgs.rofi-wayland}/bin/rofi; then
-        	pkill ${pkgs.rofi-wayland}/bin/rofi
+        if pgrep "rofi"; then
+        	pkill "rofi"
         # if pgrep tofi; then
         #   pkill tofi
         else
@@ -52,8 +52,8 @@ let
     pkgs.writeShellScriptBin "quickmenu"
       # bash
       ''
-        if pgrep ${pkgs.rofi-wayland}/bin/rofi; then
-        	pkill ${pkgs.rofi-wayland}/bin/rofi
+        if pgrep "rofi"; then
+        	pkill "rofi"
         # if pgrep tofi; then
         #   pkill tofi
         else
