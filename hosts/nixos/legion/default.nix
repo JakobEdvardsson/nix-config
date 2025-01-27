@@ -52,6 +52,7 @@
       #TODO: implement/remove
 
       "hosts/common/optional/hyprland.nix" # window manager
+      "hosts/common/optional/nvidia-prime.nix" # nvidia-prime
       # "hosts/common/optional/services/greetd.nix" # display manager
       # "hosts/common/optional/services/openssh.nix" # allow remote SSH access
       # "hosts/common/optional/services/printing.nix" # CUPS

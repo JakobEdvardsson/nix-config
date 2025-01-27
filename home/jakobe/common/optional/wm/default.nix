@@ -10,5 +10,7 @@
     ./waybar
     ./rofi-wayland
     ./hyprlock
+    ./hypridle
+    ./swaync
   ];
 }

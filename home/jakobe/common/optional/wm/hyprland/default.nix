@@ -20,6 +20,12 @@ in
       '';
     };
 
+    nvidia.enable = lib.mkOption {
+      default = false;
+      type = lib.types.bool;
+      description = "Enable Nvidia option for hyprland. Offload render to gpu";
+    };
+
     #TODO:
     # Nvidia options
   };
@@ -35,12 +41,13 @@ in
       waybar.enable = lib.mkDefault true;
       rofi-wayland.enable = lib.mkDefault true;
       hyprlock.enable = lib.mkDefault true;
+      hypridle.enable = lib.mkDefault true;
+      swaync.enable = lib.mkDefault true;
     };
 
     # required packages for Hyprland
     home.packages = with pkgs; [
       kitty
-      rofi-wayland
     ];
 
     wayland.windowManager.hyprland = {
@@ -67,14 +74,31 @@ in
         #
         # ========== Environment Vars ==========
         #
-        env = [
-          "NIXOS_OZONE_WL, 1" # for ozone-based and electron apps to run on wayland
-          "MOZ_ENABLE_WAYLAND, 1" # for firefox to run on wayland
-          "MOZ_WEBRENDER, 1" # for firefox to run on wayland
-          "XDG_SESSION_TYPE,wayland"
-          "WLR_NO_HARDWARE_CURSORS,1"
-          "WLR_RENDERER_ALLOW_SOFTWARE,1"
-          "QT_QPA_PLATFORM,wayland"
+        env = lib.concatLists [
+          [
+            "NIXOS_OZONE_WL=1" # For ozone-based and Electron apps
+            "MOZ_ENABLE_WAYLAND=1" # For Firefox Wayland
+            "MOZ_WEBRENDER=1" # For Firefox Wayland
+            "XDG_SESSION_TYPE=wayland"
+            "WLR_NO_HARDWARE_CURSORS=1"
+            "WLR_RENDERER_ALLOW_SOFTWARE=1"
+            "QT_QPA_PLATFORM=wayland"
+          ]
+          (
+            if cfg.nvidia.enable then
+              [
+                "LIBVA_DRIVER_NAME,nvidia"
+                "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+                "NVD_BACKEND,direct"
+                # additional ENV's for nvidia. Caution, activate with care
+                "GBM_BACKEND,nvidia-drm"
+                "__NV_PRIME_RENDER_OFFLOAD,1"
+                "__VK_LAYER_NV_optimus,NVIDIA_only"
+                "WLR_DRM_NO_ATOMIC,1"
+              ]
+            else
+              [ ]
+          )
         ];
 
       };

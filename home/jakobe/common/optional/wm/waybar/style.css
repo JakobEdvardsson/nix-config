@@ -74,6 +74,7 @@ window#waybar.hidden {
 
 #memory,
 #custom-power,
+#custom-swaync,
 #battery,
 #backlight,
 #wireplumber,
@@ -86,10 +87,6 @@ window#waybar.hidden {
   background-color: @base03;
   color: #181825;
   min-width: 22px;
-}
-
-#custom-power {
-  margin-right: 6px;
 }
 
 #custom-logo {
@@ -139,6 +136,10 @@ window#waybar.hidden {
 }
 
 #custom-power {
+  background-color: @base08;
+  margin-right: 6px;
+}
+#custom-swaync {
   background-color: @base0F;
 }
 
