@@ -1,7 +1,7 @@
 { pkgs, ... }:
 let
   # FIXME:(xdg) That should use config options and just reference whatever is configured as the default
-  browser = [ "firefox.desktop" ];
+  browser = [ "brave.desktop" ];
   editor = [ "nvim.desktop" ];
   media = [ "vlc.desktop" ];
   writer = [ "libreoffice-writer.desktop" ];

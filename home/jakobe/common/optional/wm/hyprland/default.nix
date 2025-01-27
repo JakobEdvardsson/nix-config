@@ -34,6 +34,7 @@ in
     customHome = {
       waybar.enable = lib.mkDefault true;
       rofi-wayland.enable = lib.mkDefault true;
+      hyprlock.enable = lib.mkDefault true;
     };
 
     # required packages for Hyprland

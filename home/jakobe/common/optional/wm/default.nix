@@ -9,5 +9,6 @@
     ./hyprland
     ./waybar
     ./rofi-wayland
+    ./hyprlock
   ];
 }

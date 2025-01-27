@@ -1,9 +1,9 @@
 - [ ] Hyprland
 - [ ] Hyprland Nvidia option
-- [ ] Rofi
+- [x] Rofi
 - [x] Waybar
 - [ ] Hypridle
-- [ ] Hyprlock
+- [x] Hyprlock
 - [ ] xdg-desktop-portal
 - [ ] Authentication Agent
 - [ ] Make configs optional
