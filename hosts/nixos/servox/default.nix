@@ -100,6 +100,7 @@
 
   boot.initrd = {
     systemd.enable = true;
+    kernelModules = [ "amdgpu" ];
   };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;

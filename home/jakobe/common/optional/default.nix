@@ -13,6 +13,7 @@
     ./tools
     ./sops.nix
     ./xdg.nix
+    ./programming
 
     ./wm
   ];
