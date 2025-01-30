@@ -16,6 +16,7 @@
       enable = true;
       monitor = ./monitor.conf;
     };
+    programming.enable = true;
   };
 
 }

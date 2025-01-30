@@ -64,7 +64,7 @@
       gdpr = "gh pr create --draft";
 
       # Always attemp to attach to session requires: newSession = true;
-      tmux = "tmux a";
+      mux = "tmux a";
 
       # Less used ones:
       lsblk = "lsblk -o name,mountpoint,label,size,type,uuid";

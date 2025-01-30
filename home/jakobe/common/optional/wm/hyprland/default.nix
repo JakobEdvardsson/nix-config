@@ -48,6 +48,7 @@ in
     # required packages for Hyprland
     home.packages = with pkgs; [
       kitty
+      hyprpolkitagent
     ];
 
     wayland.windowManager.hyprland = {
@@ -65,6 +66,9 @@ in
       };
 
       settings = {
+        exec-once = [
+          "systemctl --user start hyprpolkitagent"
+        ];
         # Monitor, more at the bottom of this file:
 
         source = [
