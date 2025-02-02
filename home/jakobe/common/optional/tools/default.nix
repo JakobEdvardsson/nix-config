@@ -2,18 +2,16 @@
 {
   #imports = [ ./foo.nix ];
 
-  home.packages = builtins.attrValues {
-    inherit (pkgs)
-      # Device imaging
-      rpi-imager
+  home.packages = with pkgs; [
+    # Device imaging
+    rpi-imager
 
-      # Productivity
-      drawio
-      grimblast
-      libreoffice
+    # Productivity
+    drawio
+    grimblast
+    caprine
 
-      # Media production
-      obs-studio
-      ;
-  };
+    # Media production
+    obs-studio
+  ];
 }
