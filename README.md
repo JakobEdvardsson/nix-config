@@ -1,3 +1,6 @@
+- Create new host under hosts/nixos/<hostname>
+- Create new home under home/jakobe/<hostname>
+
 - Put "admin" age sops key in ~/.config/sops/age/keys.txt
 - Sudo nixos-rebuild switch --flake .#<hostname>
 
