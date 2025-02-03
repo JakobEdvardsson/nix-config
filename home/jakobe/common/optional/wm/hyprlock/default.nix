@@ -49,7 +49,7 @@ in
             font_size = 64
             font_family = JetBrains Mono Nerd Font 10
 
-            position = 0, -50
+            position = 0, 0
             halign = center
             valign = center
         }
@@ -61,7 +61,7 @@ in
             font_size = 24
             font_family = JetBrains Mono Nerd Font 10
 
-            position = 0, -120
+            position = 0, -80
             halign = center
             valign = center
         }
