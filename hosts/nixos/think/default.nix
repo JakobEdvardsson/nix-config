@@ -18,7 +18,7 @@
     # ========== Hardware ==========
     #
     ./hardware.nix
-    inputs.hardware.nixosModules.common-cpu-intel-alder-lake
+    inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
     inputs.hardware.nixosModules.common-pc
 
