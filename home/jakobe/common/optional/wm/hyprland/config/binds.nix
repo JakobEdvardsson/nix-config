@@ -55,8 +55,8 @@
         # Screenshot
         ",PRINT, exec, screenshot monitor" # Screenshot monitor
         "$mod,PRINT, exec, screenshot window" # Screenshot window
-        "$shiftMod,PRINT, exec, screenshot region" # Screenshot region
-        "ALT,PRINT, exec, screenshot region swappy" # Screenshot region then edit
+        "ALT,PRINT, exec, screenshot region" # Screenshot region
+        "SHIFT,PRINT, exec, screenshot region swappy" # Screenshot region then edit
 
         # Scroll through existing workspaces with mod + scroll
         "$mod, mouse_down, workspace, e+1"
