@@ -101,9 +101,6 @@
         nvim-colorizer-lua # View colors in nvim
 
       ];
-      extraConfig = ''
-        set noemoji
-      '';
       extraLuaConfig = ''
         ${builtins.readFile ./options.lua}
         ${builtins.readFile ./keymaps.lua}
