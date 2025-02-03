@@ -17,6 +17,9 @@
       monitor = ./monitor.conf;
     };
     programming.enable = true;
+    tools.enable = true;
+    media.enable = true;
+    comms.enable = true;
+    browser.enable = true;
   };
-
 }

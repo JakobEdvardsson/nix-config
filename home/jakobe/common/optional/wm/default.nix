@@ -12,5 +12,6 @@
     ./hyprlock
     ./hypridle
     ./swaync
+    ./polkit
   ];
 }

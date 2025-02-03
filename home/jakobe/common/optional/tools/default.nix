@@ -1,17 +1,31 @@
-{ pkgs, ... }:
 {
-  #imports = [ ./foo.nix ];
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.customHome.tools;
+in
+{
+  options.customHome.tools = {
+    enable = lib.mkEnableOption "Nice to have tools";
+  };
 
-  home.packages = with pkgs; [
-    # Device imaging
-    rpi-imager
+  config = lib.mkIf cfg.enable {
 
-    # Productivity
-    drawio
-    grimblast
-    caprine
+    home.packages = with pkgs; [
+      # Device imaging
+      rpi-imager
+      mediawriter # fedora
 
-    # Media production
-    obs-studio
-  ];
+      # Productivity
+      drawio
+      grimblast
+      caprine
+
+      # Media production
+      obs-studio
+    ];
+  };
 }

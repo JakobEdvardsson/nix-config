@@ -50,7 +50,7 @@ in
       #apply = old: builtins.toString config.users.groups."${old}".gid;
     };
     timeZone = lib.mkOption {
-      default = "Europe/Berlin";
+      default = "Europe/Stockholm";
       type = lib.types.str;
       description = ''
         Time zone to be used for the homelab services

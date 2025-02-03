@@ -43,12 +43,12 @@ in
       hyprlock.enable = lib.mkDefault true;
       hypridle.enable = lib.mkDefault true;
       swaync.enable = lib.mkDefault true;
+      polkit.enable = lib.mkDefault true;
     };
 
     # required packages for Hyprland
     home.packages = with pkgs; [
       kitty
-      hyprpolkitagent
     ];
 
     wayland.windowManager.hyprland = {
@@ -67,7 +67,6 @@ in
 
       settings = {
         exec-once = [
-          "systemctl --user start hyprpolkitagent"
         ];
         # Monitor, more at the bottom of this file:
 
