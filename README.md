@@ -20,9 +20,10 @@ cd nix-config
 password = lib.mkForce "nixos"; # Uncomment to set temporary password until sops passwords work
 ```
 
-- build system
+- update hardware.nix && build system
 
 ```bash
+nixos-generate-config --show-hardware-config > ~/nix-config/hosts/nixos/think/hardware.nix
 sudo nixos-rebuild boot --flake .#<hostname>
 ```
 
