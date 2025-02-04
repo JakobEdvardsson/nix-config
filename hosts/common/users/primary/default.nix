@@ -20,8 +20,8 @@ in
     name = hostSpec.username;
     home = "/home/${hostSpec.username}";
     isNormalUser = true;
-    hashedPasswordFile = sopsHashedPasswordFile; # Blank if sops is not working.
-    # password = lib.mkForce "nixos"; # This gets overridden if sops is working; it is only used with nixos-installer
+    hashedPasswordFile = sopsHashedPasswordFile; # Comment out to disable password
+    # password = lib.mkForce "nixos"; # Uncomment to set temporary password until sops passwords work
     shell = pkgs.fish; # default shell
     openssh.authorizedKeys.keys = lib.lists.forEach pubKeys (key: builtins.readFile key);
 
