@@ -6,11 +6,17 @@
   ...
 }:
 {
-  programs.git = {
-    enable = true;
+  programs = {
+    git = {
+      enable = true;
+    };
+    gh = {
+      enable = true;
+      settings.editor = "nvim";
+      settings.git_protocol = "ssh";
+    };
   };
   home.packages = with pkgs; [
     github-desktop
-    gh
   ];
 }
