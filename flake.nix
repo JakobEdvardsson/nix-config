@@ -36,7 +36,6 @@
     {
       self,
       nixpkgs,
-      nix-darwin,
       ...
     }@inputs:
     let
@@ -44,7 +43,6 @@
 
       systems = [
         "x86_64-linux"
-        # "aarch64-darwin"
       ];
 
       forAllSystems = nixpkgs.lib.genAttrs systems;
@@ -59,16 +57,6 @@
     {
       # Enables `nix fmt` at root of repo to format all nix files
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
-
-      darwinConfigurations = {
-        /*
-          mac1chng = nix-darwin.lib.darwinSystem {
-            specialArgs = {inherit inputs outputs;};
-            modules = [./machines/mac1chng/configuration.nix];
-          };
-        */
-      };
-
       nixosConfigurations = {
         legion = nixpkgs.lib.nixosSystem {
           specialArgs = {
