@@ -33,6 +33,7 @@ sudo nixos-rebuild boot --flake .#<hostname>
 ```bash
 nix-shell -p ssh-to-age --run 'cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age' # Get age key from host ssh key
 nix-shell -p ssh-to-age --run 'sudo ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key -o ~/.config/sops/age/keys.txt' # Get private-key to keys.txt
+nix-shell -p ssh-to-age --run 'age-keygen -y ~/.config/sops/age/keys.txt' # Verify same public key
 ```
 
 - From the host, add the public age key to .sops.yaml as a new host
