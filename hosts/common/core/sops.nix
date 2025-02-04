@@ -12,13 +12,19 @@ in
 {
   #the import for inputs.sops-nix.nixosModules.sops is handled in hosts/common/core/default.nix so that it can be dynamically input according to the platform
 
+  environment.systemPackages = with pkgs; [
+    ssh-to-age
+    age
+    sops
+  ];
+
   sops = {
     defaultSopsFile = "${secretsFile}";
     validateSopsFiles = false;
     age = {
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
-      keyFile = "${config.hostSpec.home}/.config/sops/age/keys.txt";
-      generateKey = true;
+      #keyFile = "${config.hostSpec.home}/.config/sops/age/keys.txt";
+      generateKey = false;
     };
     # secrets will be output to /run/secrets
     # e.g. /run/secrets/msmtp-password
