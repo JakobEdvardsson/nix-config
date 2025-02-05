@@ -13,9 +13,9 @@ let
 
   sound-change = pkgs.writeShellScriptBin "sound-change" ''
     [[ $1 == "mute" ]] && wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-    [[ $1 == "up" ]] && wpctl set-volume @DEFAULT_AUDIO_SINK@ ''${2-${increments}}%+
-    [[ $1 == "down" ]] && wpctl set-volume @DEFAULT_AUDIO_SINK@ ''${2-${increments}}%-
-    [[ $1 == "set" ]] && wpctl set-volume @DEFAULT_AUDIO_SINK@ ''${2-100}%
+    [[ $1 == "up" ]] && wpctl set-volume --limit=1.5 @DEFAULT_AUDIO_SINK@ ''${2-${increments}}%+
+    [[ $1 == "down" ]] && wpctl set-volume --limit=1.5 @DEFAULT_AUDIO_SINK@ ''${2-${increments}}%-
+    [[ $1 == "set" ]] && wpctl set-volume --limit=1.5 @DEFAULT_AUDIO_SINK@ ''${2-100}%
   '';
 
   sound-up = pkgs.writeShellScriptBin "sound-up" ''
@@ -33,6 +33,13 @@ let
   sound-toggle = pkgs.writeShellScriptBin "sound-toggle" ''
     sound-change mute
   '';
-in {
-  home.packages = [ sound-change sound-up sound-down sound-toggle sound-set ];
+in
+{
+  home.packages = [
+    sound-change
+    sound-up
+    sound-down
+    sound-toggle
+    sound-set
+  ];
 }
