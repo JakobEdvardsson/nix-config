@@ -25,7 +25,7 @@ Example color schemes
   border-radius: 0;
   min-height: 0;
   font-family: JetBrainsMono Nerd Font;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 window#waybar {
@@ -43,14 +43,8 @@ window#waybar.hidden {
 }
 
 #workspaces button {
-  all: initial;
-  /* Remove GTK theme values (waybar #1351) */
-  min-width: 0;
-  /* Fix weird spacing in materia (waybar #450) */
-  box-shadow: inset 0 -3px transparent;
-  /* Use box-shadow instead of border so the text isn't offset */
-  padding: 6px 18px;
-  margin: 6px 3px;
+  padding: 4px 18px;
+  margin: 5px 3px;
   border-radius: 4px;
   background-color: @base02;
   color: @base06;
@@ -62,8 +56,6 @@ window#waybar.hidden {
 }
 
 #workspaces button:hover {
-  box-shadow: inherit;
-  text-shadow: inherit;
   color: @base06;
   background-color: @base03;
 }
@@ -79,13 +71,14 @@ window#waybar.hidden {
 #backlight,
 #wireplumber,
 #network,
+#bluetooth,
 #clock,
 #tray {
   border-radius: 4px;
-  margin: 6px 3px;
-  padding: 6px 12px;
+  margin: 5px 3px;
+  padding: 4px 12px;
   background-color: @base03;
-  color: #181825;
+  color: @base06;
   min-width: 22px;
 }
 
@@ -98,51 +91,19 @@ window#waybar.hidden {
   color: #1793d1;
 }
 
-#memory {
-  background-color: @base0A;
-}
-
-#battery {
-  background-color: @base0B;
-}
-
 #battery.warning,
 #battery.critical,
 #battery.urgent {
-  background-color: @base08;
-  color: @base0A;
+  background-color: red;
 }
-
 #battery.charging {
   background-color: #a6e3a1;
   color: #181825;
 }
 
-#backlight {
-  background-color: @base0c;
-}
-
-#wireplumber {
-  background-color: @base0D;
-}
-
-#network {
-  background-color: @base0E;
-}
-
 #clock {
   font-family: JetBrainsMono Nerd Font;
-  background-color: @base08;
 }
-
-#custom-power {
-  background-color: @base08;
-  margin-right: 6px;
-}
-#custom-swaync {
-  background-color: @base0F;
-}
-
 tooltip {
   border-radius: 8px;
   padding: 15px;
