@@ -25,6 +25,9 @@ in
       # Network
       networkmanagerapplet
 
+      # Bluetooth
+      blueman
+
     ];
 
     programs.waybar = {
@@ -57,6 +60,7 @@ in
             "tray"
             "memory"
             "network"
+            "bluetooth"
             "wireplumber"
             "battery"
             "custom/swaync"
@@ -108,10 +112,31 @@ in
             tooltip-format-ethernet = "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
             tooltip-format-disconnected = "Disconnected";
             on-click = "nm-connection-editor & ";
+            on-click-middle = "nm-applet &";
             on-click-right = "${config.home.sessionVariables.TERMINAL} nmtui &";
             interval = 5;
             nospacing = 1;
           };
+
+          bluetooth = {
+            format = "󰂰";
+            format-disabled = "󰂲";
+            format-connected = "󰂱";
+            format-connected-battery = "󰂱";
+
+            tooltip-format = "{num_connections} connected";
+            tooltip-format-disabled = "Bluetooth Disabled";
+            tooltip-format-connected = "{num_connections} connected\n{device_enumerate}";
+            tooltip-format-enumerate-connected = "{device_alias}";
+            tooltip-format-enumerate-connected-battery = "{device_alias}: {device_battery_percentage}%";
+
+            on-click = "blueman-manager & ";
+            on-click-right = "blueman-applet & ";
+            interval = 1;
+            min-length = 1;
+            max-length = 10;
+          };
+
           wireplumber = {
             format = "{icon}  {volume} %";
             format-bluetooth = "󰂰";
