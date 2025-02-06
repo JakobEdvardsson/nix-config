@@ -86,12 +86,10 @@
       rm = "echo 'Stop using rm, use tp (or trash-put) instead'";
 
       copy = ''
-        function copy --description "Copy pipe or argument"
-          if [ "$argv" = "" ]
-            fish_clipboard_copy
-          else
-            printf "$argv" | fish_clipboard_copy
-          end
+        if [ "$argv" = "" ]
+          fish_clipboard_copy
+        else
+          printf "$argv" | fish_clipboard_copy
         end
       '';
 
