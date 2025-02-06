@@ -13,6 +13,7 @@
 
     (map lib.custom.relativeToRoot [
       "modules/nixos"
+      "homelab"
       "hosts/common/core/services"
       "hosts/common/users/primary"
     ])
