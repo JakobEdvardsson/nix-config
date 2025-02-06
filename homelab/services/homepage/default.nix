@@ -13,6 +13,11 @@ in
     enable = lib.mkEnableOption {
       description = "Enable ${service}";
     };
+    url = lib.mkOption {
+      type = lib.types.str;
+      default = "homepage.${homelab.baseDomain}";
+    };
+
     misc = lib.mkOption {
       default = [ ];
       type = lib.types.listOf (
@@ -187,7 +192,8 @@ in
           }
         ];
     };
-    services.caddy.virtualHosts."${homelab.baseDomain}" = {
+    #services.caddy.virtualHosts."${homelab.baseDomain}" = {
+    services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''
         reverse_proxy http://127.0.0.1:${toString config.services.${service}.listenPort}
