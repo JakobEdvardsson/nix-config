@@ -53,6 +53,15 @@ in
                 icon = "asus-router.svg";
               };
             }
+            {
+              HomeAssistant = {
+                href = "http://192.168.50.10:8123";
+                siteMonitor = "http://192.168.10:8123";
+                description = "Home Assistant";
+                icon = "home-assistant";
+              };
+            }
+
           ];
         };
         # jellyfin.enable = true;
