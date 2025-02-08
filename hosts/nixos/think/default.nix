@@ -51,6 +51,7 @@
       "defaults"
       "noatime" # Avoids writing access times, improves performance
       "errors=remount-ro" # Remount as read-only on failure
+      "x-mount.mkdir" # Creates the mount directory if missing
       "uid=994" # Set owner to UID 994
       "gid=993" # Set group to GID 993
       "umask=002" # Ensure group has write permission
