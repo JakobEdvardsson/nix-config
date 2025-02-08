@@ -100,6 +100,8 @@
       bind-key -n "M-Up" switch-client -p   # Switch to previous session
       bind-key -n "M-Down" switch-client -n   # Switch to next session
 
+      bind-key Left swap-window -t -1\; select-window -t -1
+      bind-key Right swap-window -t +1\; select-window -t +1
 
       bind j choose-window 'join-pane -h -s "%%"'
       bind h split-window -v -c "#{pane_current_path}"
