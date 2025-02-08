@@ -19,7 +19,10 @@
     "ahci"
     "nvme"
     "usbhid"
+    "sd_mod"
+    "uas"
   ];
+
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
