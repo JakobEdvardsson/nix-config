@@ -44,7 +44,7 @@ in
         # homepage icons can be found at https://github.com/homarr-labs/dashboard-icons
         homepage = {
           enable = true;
-          misc = [
+          external = [
             {
               AsusRouter = {
                 href = "http://192.168.50.1";
