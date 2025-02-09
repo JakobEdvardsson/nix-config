@@ -16,7 +16,7 @@ in
       mounts = {
         config = "/appdata";
         slow = "/mnt/slow";
-        fast = "/mnt/cache";
+        fast = "/mnt/fast";
       };
       /*
         samba = {
