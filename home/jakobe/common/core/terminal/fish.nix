@@ -25,7 +25,7 @@
     enable = true;
     shellAliases = rec {
       # Eza ls replacement
-      ls = "eza --group-directories-first";
+      ls = "eza --group-directories-first -g";
       l = "${ls} -lbF --git --icons";
       ll = "${l} -G";
       la = "${ls} -lbhHigmuSa@ --time-style=long-iso --git --color-scale --icons";
