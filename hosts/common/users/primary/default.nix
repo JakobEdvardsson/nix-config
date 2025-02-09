@@ -27,6 +27,7 @@ in
 
     extraGroups = lib.flatten [
       "wheel"
+      "share" # used for homelab
       (ifTheyExist [
         "audio"
         "video"
