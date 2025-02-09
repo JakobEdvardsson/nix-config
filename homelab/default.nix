@@ -13,7 +13,7 @@ in
       '';
     };
     mounts.fast = lib.mkOption {
-      default = "/mnt/cache";
+      default = "/mnt/fast";
       type = lib.types.path;
       description = ''
         Path to the 'fast' mount
