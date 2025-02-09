@@ -14,23 +14,10 @@ in
     enable = lib.mkEnableOption {
       description = "Enable ${service}";
     };
-    dataDir = lib.mkOption {
-      type = lib.types.path;
-      default = "${config.homelab.mounts.slow}/${service}/data";
-    };
-    logDir = lib.mkOption {
-      type = lib.types.path;
-      default = "${config.homelab.mounts.config}/${service}/log";
-    };
-    cacheDir = lib.mkOption {
-      type = lib.types.path;
-      default = "${config.homelab.mounts.config}/${service}/cache";
-    };
     configDir = lib.mkOption {
-      type = lib.types.path;
-      default = "${config.homelab.mounts.config}/${service}/config";
+      type = lib.types.str;
+      default = "/var/lib/${service}";
     };
-
     url = lib.mkOption {
       type = lib.types.str;
       default = "jellyfin.${homelab.baseDomain}";
@@ -76,12 +63,6 @@ in
       enable = true;
       user = homelab.user;
       group = homelab.group;
-
-      logDir = lib.mkDefault cfg.logDir;
-      cacheDir = lib.mkDefault cfg.cacheDir;
-      dataDir = lib.mkDefault cfg.dataDir;
-      configDir = lib.mkDefault cfg.configDir;
-
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
@@ -89,13 +70,5 @@ in
         reverse_proxy http://127.0.0.1:8096
       '';
     };
-
-    systemd.tmpfiles.rules = [
-      "d '${cfg.logDir}'      0770 ${homelab.user} ${homelab.group} - -"
-      "d '${cfg.cacheDir}'      0770 ${homelab.user} ${homelab.group} - -"
-      "d '${cfg.dataDir}'      0770 ${homelab.user} ${homelab.group} - -"
-      "d '${cfg.configDir}'      0770 ${homelab.user} ${homelab.group} - -"
-    ];
   };
-
 }
