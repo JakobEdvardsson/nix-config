@@ -53,5 +53,6 @@
 
   imports = [
     ./homepage
+    ./jellyfin
   ];
 }
