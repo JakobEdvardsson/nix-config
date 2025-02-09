@@ -64,7 +64,7 @@ in
 
           ];
         };
-        # jellyfin.enable = true;
+        jellyfin.enable = true;
         # paperless = {
         #   enable = true;
         #   passwordFile = config.sops.secrets.paperlessPassword.path;

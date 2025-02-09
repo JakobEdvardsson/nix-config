@@ -16,19 +16,19 @@ in
     };
     dataDir = lib.mkOption {
       type = lib.types.path;
-      default = "${config.homelab.mounts.slow}/${service}";
+      default = "${config.homelab.mounts.slow}/${service}/data";
     };
     logDir = lib.mkOption {
       type = lib.types.path;
-      default = "${config.homelab.mounts.config}/${service}";
+      default = "${config.homelab.mounts.config}/${service}/log";
     };
     cacheDir = lib.mkOption {
       type = lib.types.path;
-      default = "${config.homelab.mounts.config}/${service}";
+      default = "${config.homelab.mounts.config}/${service}/cache";
     };
     configDir = lib.mkOption {
       type = lib.types.path;
-      default = "${config.homelab.mounts.config}/${service}";
+      default = "${config.homelab.mounts.config}/${service}/config";
     };
 
     url = lib.mkOption {
@@ -77,11 +77,10 @@ in
       user = homelab.user;
       group = homelab.group;
 
-      logDir = cfg.logDir;
-      cacheDir = cfg.cacheDir;
-      openFirewall = cfg.openFirewall;
-      dataDir = cfg.dataDir;
-      configDir = cfg.configDir;
+      logDir = lib.mkDefault cfg.logDir;
+      cacheDir = lib.mkDefault cfg.cacheDir;
+      dataDir = lib.mkDefault cfg.dataDir;
+      configDir = lib.mkDefault cfg.configDir;
 
     };
     services.caddy.virtualHosts."${cfg.url}" = {
