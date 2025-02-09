@@ -18,7 +18,7 @@ in
       default = "homepage.${homelab.baseDomain}";
     };
 
-    misc = lib.mkOption {
+    external = lib.mkOption {
       default = [ ];
       type = lib.types.listOf (
         lib.types.attrsOf (
@@ -136,7 +136,7 @@ in
                 };
               });
         })
-        ++ [ { Misc = cfg.misc; } ]
+        ++ [ { External = cfg.external; } ]
         ++ [
           {
             Glances =
