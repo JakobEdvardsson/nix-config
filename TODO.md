@@ -1,22 +1,15 @@
-- [ ] Hyprland
-- [ ] Hyprland Nvidia option
-- [x] Rofi
-- [x] Waybar
-- [ ] Hypridle
-- [x] Hyprlock
-- [ ] xdg-desktop-portal
-- [ ] Authentication Agent
-- [ ] Make configs optional
-- [ ] Tailscale
-- [ ] Kitty / ghosty
+# TODO:
 
-  - [x] UserSettings
-  - [x] Keybinds
-  - [ ] ENVariables.conf
-  - [x] Display.conf
-  - [ ] Startup_Apps.conf
-  - [ ] UserDecorAnimations.conf
-  - [ ] UserSettings.conf
-  - [ ] WindowRules.conf
-  - [ ] WorkspaceRules.conf
-  - [ ] Notification when battery is low
+## Config
+
+- [ ] Kitty
+
+## Homelab
+
+- [ ] Usb HDD spindown
+- [ ] Immich
+- [ ] Arr
+- [ ] SMB
+- [ ] Tailscale
+- [ ] Backup
+- [ ] Sync / Backup
