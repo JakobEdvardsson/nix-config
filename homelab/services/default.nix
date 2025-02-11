@@ -16,7 +16,7 @@
     ];
     security.acme = {
       acceptTerms = true;
-      defaults.email = "jakob@edvardsson.tech";
+      defaults.email = config.hostSpec.email;
       certs.${config.homelab.baseDomain} = {
         reloadServices = [ "caddy.service" ];
         domain = "${config.homelab.baseDomain}";
