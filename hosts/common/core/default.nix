@@ -26,6 +26,7 @@
   hostSpec = {
     username = "jakobe";
     handle = "JakobEdvardsson";
+    email = "jakob@edvardsson.tech";
   };
 
   networking.hostName = config.hostSpec.hostName;

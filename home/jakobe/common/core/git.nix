@@ -9,6 +9,8 @@
   programs = {
     git = {
       enable = true;
+      userName = config.hostSpec.handle;
+      userEmail = config.hostSpec.email;
     };
     gh = {
       enable = true;
