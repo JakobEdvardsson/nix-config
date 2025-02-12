@@ -54,5 +54,6 @@
   imports = [
     ./homepage
     ./jellyfin
+    ./adguard
   ];
 }
