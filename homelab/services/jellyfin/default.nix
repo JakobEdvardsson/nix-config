@@ -20,7 +20,7 @@ in
     };
     url = lib.mkOption {
       type = lib.types.str;
-      default = "jellyfin.${homelab.baseDomain}";
+      default = "jellyfinv2.${homelab.baseDomain}";
     };
     homepage.name = lib.mkOption {
       type = lib.types.str;
