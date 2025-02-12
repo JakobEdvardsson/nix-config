@@ -25,7 +25,7 @@
   #
   hostSpec = {
     username = "jakobe";
-    handle = "JakobEdvardsson";
+    handle = "Jakob Edvardsson";
     email = "jakob@edvardsson.tech";
   };
 
