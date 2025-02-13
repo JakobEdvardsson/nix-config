@@ -11,7 +11,7 @@
     ./media
     ./tools
     ./xdg.nix
-    ./programming
+    ./development
 
     ./wm
   ];
