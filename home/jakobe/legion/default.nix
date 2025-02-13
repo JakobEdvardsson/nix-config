@@ -17,7 +17,7 @@
       monitor = ./monitor.conf;
       nvidia = true;
     };
-    programming.enable = true;
+    development.enable = true;
     tools.enable = true;
     media.enable = true;
     comms.enable = true;

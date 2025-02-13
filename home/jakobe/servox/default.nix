@@ -16,7 +16,7 @@
       enable = true;
       monitor = ./monitor.conf;
     };
-    programming.enable = true;
+    development.enable = true;
     tools.enable = true;
     media.enable = true;
     comms.enable = true;
