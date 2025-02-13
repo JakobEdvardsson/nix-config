@@ -51,7 +51,7 @@ in
         filtering = {
           rewrites = [
             {
-              domain = "*.edvardsson.tech";
+              domain = "*.${homelab.baseDomain}";
               answer = "192.168.50.20";
             }
           ];
