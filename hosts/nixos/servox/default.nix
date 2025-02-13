@@ -78,6 +78,11 @@
   #
   # ========== Host Specification ==========
   #
+
+  customOption.tailscale = {
+    enable = true;
+  };
+
   swapDevices = [
     {
       device = "/var/lib/swapfile";
