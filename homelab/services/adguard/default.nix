@@ -61,6 +61,13 @@ in
           parental_enabled = false; # Parental control-based DNS requests filtering.
           safe_search = {
             enabled = true; # Enforcing "Safe search" option for search engines, when possible.
+            bing = true;
+            duckduckgo = true;
+            ecosia = true;
+            google = true;
+            pixabay = true;
+            yandex = true;
+            youtube = false;
           };
         };
 
