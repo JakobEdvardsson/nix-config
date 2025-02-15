@@ -86,19 +86,13 @@ in
             };
           }
           {
-            Downloads = {
-              header = true;
-              style = "column";
-            };
-          }
-          {
             Media = {
               header = true;
               style = "column";
             };
           }
           {
-            Services = {
+            External = {
               header = true;
               style = "column";
             };
@@ -113,9 +107,6 @@ in
           homepageCategories = [
             "Arr"
             "Media"
-            "Downloads"
-            "Services"
-            "Smart Home"
           ];
           hl = config.homelab.services;
           homepageServices =
