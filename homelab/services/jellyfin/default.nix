@@ -40,6 +40,10 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = [
+      pkgs.jellyfin
+      pkgs.jellyfin-ffmpeg
+    ];
     nixpkgs.overlays = with pkgs; [
       (final: prev: {
         jellyfin-web = prev.jellyfin-web.overrideAttrs (
