@@ -46,11 +46,15 @@
   # ========== Host Specification ==========
   #
 
-  customOption.tailscale = {
-    enable = true;
-    advertisedRoute = [
-      "192.168.50.0/24"
-    ];
+  customOption = {
+    intel-quicksync.enable = true;
+
+    tailscale = {
+      enable = true;
+      advertisedRoute = [
+        "192.168.50.0/24"
+      ];
+    };
   };
 
   fileSystems.${config.homelab.mounts.slow} = {
