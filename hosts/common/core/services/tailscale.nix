@@ -42,7 +42,8 @@ in
       enable = true;
       authKeyFile = config.sops.secrets.tailscaleAuthKey.path;
       extraUpFlags =
-        lib.optionals (cfg.advertisedRoute != [ ]) [
+        [ "--accept-routes" ]
+        ++ lib.optionals (cfg.advertisedRoute != [ ]) [
           "--advertise-routes=${lib.concatStringsSep "," cfg.advertisedRoute}"
         ]
         ++ [ "--reset" ];
