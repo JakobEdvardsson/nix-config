@@ -66,6 +66,12 @@ in
         };
         jellyfin.enable = true;
         adguard.enable = true;
+        bazarr.enable = true;
+        prowlarr.enable = true;
+        radarr.enable = true;
+        sonarr.enable = true;
+        jellyseerr.enable = true;
+
         # paperless = {
         #   enable = true;
         #   passwordFile = config.sops.secrets.paperlessPassword.path;
