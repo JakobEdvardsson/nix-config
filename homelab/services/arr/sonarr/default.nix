@@ -1,11 +1,11 @@
 {
   config,
-  pkgs,
   lib,
+  pkgs,
   ...
 }:
 let
-  service = "jellyfin";
+  service = "sonarr";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
 in
@@ -20,48 +20,30 @@ in
     };
     url = lib.mkOption {
       type = lib.types.str;
-      default = "jellyfinv2.${homelab.baseDomain}";
+      default = "${service}.${homelab.baseDomain}";
     };
     homepage.name = lib.mkOption {
       type = lib.types.str;
-      default = "Jellyfin";
+      default = "Sonarr";
     };
     homepage.description = lib.mkOption {
       type = lib.types.str;
-      default = "The Free Software Media System";
+      default = "TV show collection manager";
     };
     homepage.icon = lib.mkOption {
       type = lib.types.str;
-      default = "jellyfin.svg";
+      default = "sonarr.svg";
     };
     homepage.category = lib.mkOption {
       type = lib.types.str;
-      default = "Media";
+      default = "Arr";
     };
   };
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [
-      pkgs.jellyfin
-      pkgs.jellyfin-ffmpeg
-    ];
-    nixpkgs.overlays = with pkgs; [
-      (final: prev: {
-        jellyfin-web = prev.jellyfin-web.overrideAttrs (
-          finalAttrs: previousAttrs: {
-            installPhase = ''
-              runHook preInstall
-
-              # this is the important line
-              sed -i "s#</head>#<script src=\"configurationpage?name=skip-intro-button.js\"></script></head>#" dist/index.html
-
-              mkdir -p $out/share
-              cp -a dist $out/share/jellyfin-web
-
-              runHook postInstall
-            '';
-          }
-        );
-      })
+    # FIX: Remove once fixed https://discourse.nixos.org/t/solved-sonarr-is-broken-in-24-11-unstable-aka-how-the-hell-do-i-use-nixpkgs-config-permittedinsecurepackages/56828/13
+    nixpkgs.config.permittedInsecurePackages = [
+      "dotnet-sdk-6.0.428"
+      "aspnetcore-runtime-6.0.36"
     ];
     services.${service} = {
       enable = true;
@@ -71,8 +53,9 @@ in
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''
-        reverse_proxy http://127.0.0.1:8096
+        reverse_proxy http://127.0.0.1:8989
       '';
     };
   };
+
 }

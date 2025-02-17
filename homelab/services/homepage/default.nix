@@ -86,19 +86,13 @@ in
             };
           }
           {
-            Downloads = {
-              header = true;
-              style = "column";
-            };
-          }
-          {
             Media = {
               header = true;
               style = "column";
             };
           }
           {
-            Services = {
+            External = {
               header = true;
               style = "column";
             };
@@ -113,15 +107,12 @@ in
           homepageCategories = [
             "Arr"
             "Media"
-            "Downloads"
-            "Services"
-            "Smart Home"
           ];
           hl = config.homelab.services;
           homepageServices =
             x:
             (lib.attrsets.filterAttrs (
-              name: value: value ? homepage && value.homepage.category == x
+              name: value: value ? enable && value.enable && value ? homepage && value.homepage.category == x
             ) homelab.services);
         in
         lib.lists.forEach homepageCategories (cat: {
