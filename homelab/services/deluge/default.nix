@@ -34,7 +34,7 @@ in
     };
     homepage.category = lib.mkOption {
       type = lib.types.str;
-      default = "Downloads";
+      default = "Arr";
     };
   };
   config = lib.mkIf cfg.enable {
