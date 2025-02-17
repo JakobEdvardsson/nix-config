@@ -28,6 +28,7 @@
         environmentFile = config.homelab.cloudflare.dnsCredentialsFile;
       };
     };
+
     services.caddy = {
       enable = true;
       globalConfig = ''
@@ -44,7 +45,6 @@
             redir https://{host}{uri}
           '';
         };
-
       };
     };
 
@@ -55,5 +55,12 @@
     ./homepage
     ./jellyfin
     ./adguard
+    ./arr/bazarr
+    ./arr/prowlarr
+    ./arr/radarr
+    ./arr/sonarr
+    ./arr/jellyseerr
+    ./wireguard-netns
+    ./deluge
   ];
 }

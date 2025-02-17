@@ -6,6 +6,7 @@ in
   config = {
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
+      wireguardCredentials = { };
     };
 
     homelab = {
@@ -47,7 +48,7 @@ in
           external = [
             {
               AsusRouter = {
-                href = "http://192.168.50.1";
+                href = "https://router.edvardsson.tech";
                 siteMonitor = "http://192.168.50.1";
                 description = "Asus Router";
                 icon = "asus-router.svg";
@@ -55,7 +56,7 @@ in
             }
             {
               HomeAssistant = {
-                href = "http://192.168.50.10:8123";
+                href = "https://home-assistant.edvardsson.tech";
                 siteMonitor = "http://192.168.50.10:8123";
                 description = "Home Assistant";
                 icon = "home-assistant";
@@ -66,6 +67,20 @@ in
         };
         jellyfin.enable = true;
         adguard.enable = true;
+        bazarr.enable = true;
+        prowlarr.enable = true;
+        radarr.enable = true;
+        sonarr.enable = true;
+        jellyseerr.enable = true;
+        deluge.enable = true;
+
+        wireguard-netns = {
+          enable = true;
+          configFile = config.sops.secrets.wireguardCredentials.path;
+          privateIP = "10.2.0.2";
+          dnsIP = "10.2.0.1";
+        };
+
         # paperless = {
         #   enable = true;
         #   passwordFile = config.sops.secrets.paperlessPassword.path;
@@ -116,5 +131,21 @@ in
         # };
       };
     };
+    services.caddy.virtualHosts = {
+      "home-assistant.edvardsson.tech" = {
+        useACMEHost = config.homelab.baseDomain;
+        extraConfig = ''
+          reverse_proxy http://192.168.50.10:8123
+        '';
+      };
+      "router.edvardsson.tech" = {
+        useACMEHost = config.homelab.baseDomain;
+        extraConfig = ''
+          reverse_proxy http://192.168.50.1
+        '';
+      };
+
+    };
+
   };
 }
