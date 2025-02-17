@@ -47,7 +47,7 @@ in
           external = [
             {
               AsusRouter = {
-                href = "http://192.168.50.1";
+                href = "https://router.edvardsson.tech";
                 siteMonitor = "http://192.168.50.1";
                 description = "Asus Router";
                 icon = "asus-router.svg";
@@ -55,7 +55,7 @@ in
             }
             {
               HomeAssistant = {
-                href = "http://192.168.50.10:8123";
+                href = "https://home-assistant.edvardsson.tech";
                 siteMonitor = "http://192.168.50.10:8123";
                 description = "Home Assistant";
                 icon = "home-assistant";
@@ -122,5 +122,21 @@ in
         # };
       };
     };
+    services.caddy.virtualHosts = {
+      "home-assistant.edvardsson.tech" = {
+        useACMEHost = config.homelab.baseDomain;
+        extraConfig = ''
+          reverse_proxy http://192.168.50.10:8123
+        '';
+      };
+      "router.edvardsson.tech" = {
+        useACMEHost = config.homelab.baseDomain;
+        extraConfig = ''
+          reverse_proxy http://192.168.50.1
+        '';
+      };
+
+    };
+
   };
 }
