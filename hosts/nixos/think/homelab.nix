@@ -6,6 +6,7 @@ in
   config = {
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
+      wireguardCredentials = { };
     };
 
     homelab = {
@@ -71,6 +72,14 @@ in
         radarr.enable = true;
         sonarr.enable = true;
         jellyseerr.enable = true;
+        deluge.enable = true;
+
+        wireguard-netns = {
+          enable = true;
+          configFile = config.sops.secrets.wireguardCredentials.path;
+          privateIP = "10.2.0.2";
+          dnsIP = "10.2.0.1";
+        };
 
         # paperless = {
         #   enable = true;

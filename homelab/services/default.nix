@@ -60,5 +60,7 @@
     ./arr/radarr
     ./arr/sonarr
     ./arr/jellyseerr
+    ./wireguard-netns
+    ./deluge
   ];
 }
