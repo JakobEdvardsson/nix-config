@@ -11,4 +11,7 @@
     #
     ../common/optional
   ];
+  config.customHome = {
+    development.enable = true;
+  };
 }
