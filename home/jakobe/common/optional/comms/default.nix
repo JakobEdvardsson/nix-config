@@ -19,6 +19,7 @@ in
       vesktop
       teams-for-linux
       zoom-us
+      slack
     ];
   };
 }
