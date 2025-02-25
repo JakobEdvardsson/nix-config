@@ -54,6 +54,11 @@ in
               domain = "*.${homelab.baseDomain}";
               answer = "192.168.50.20";
             }
+            {
+              domain = "www.${homelab.baseDomain}";
+              answer = "A";
+            }
+
           ];
           protection_enabled = true;
           filtering_enabled = true;
