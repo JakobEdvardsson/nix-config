@@ -73,6 +73,7 @@
 
   home.packages = with pkgs; [
     # Packages that don't have custom configs go here
+    direnv
     btop # resource monitor
     coreutils # basic gnu utils
     curl
