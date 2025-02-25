@@ -75,8 +75,9 @@
 
   ];
 
-  customOption.tailscale = {
-    enable = true;
+  customOption = {
+    tailscale.enable = true;
+    nix-ld.enable = true;
   };
 
   specialisation = {

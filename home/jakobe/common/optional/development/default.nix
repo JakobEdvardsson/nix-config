@@ -15,6 +15,10 @@ in
   };
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
+      # programming
+      nodejs
+      bun
+
       # tooling
       gcc
       gnumake

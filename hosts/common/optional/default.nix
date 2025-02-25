@@ -7,5 +7,6 @@
   #imports = (lib.custom.scanPaths ./.);
   imports = [
     ./intel-quicksync.nix
+    ./nix-ld.nix
   ];
 }
