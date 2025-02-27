@@ -21,6 +21,7 @@ in
 
       # tooling
       gcc
+      gdb
       gnumake
 
       # networkig tools
