@@ -93,6 +93,9 @@ lspconfig["lua_ls"].setup({
 	},
 })
 
+lspconfig["tailwindcss"].setup({
+	capabilities = capabilities,
+})
 lspconfig["pyright"].setup({
 	capabilities = capabilities,
 })

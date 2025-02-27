@@ -13,7 +13,6 @@
   home.packages = with pkgs; [
     eza
     bat
-    bat-extras.batdiff
     bat-extras.batgrep
     ripgrep
     bat-extras.batman
@@ -44,7 +43,6 @@
 
       #-------------Bat related------------
       cat = "bat --paging=never";
-      diff = "batdiff";
       rg = "batgrep";
       man = "batman";
 
