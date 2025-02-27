@@ -92,6 +92,12 @@ in
             };
           }
           {
+            Services = {
+              header = true;
+              style = "column";
+            };
+          }
+          {
             External = {
               header = true;
               style = "column";
@@ -107,6 +113,7 @@ in
           homepageCategories = [
             "Arr"
             "Media"
+            "Services"
           ];
           hl = config.homelab.services;
           homepageServices =
