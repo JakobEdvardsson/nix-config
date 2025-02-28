@@ -40,7 +40,7 @@ nixos-generate-config --show-hardware-config > ~/nix-config/hosts/nixos/<hostnam
 ```
 
 ```bash
-sudo nix run 'github:nix-community/disko/latest#disko-install' -- --flake '.#<hostname>'
+sudo nix --experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --flake '.#<hostname>'
 ```
 
 - Update hardware.nix && build system
@@ -64,4 +64,12 @@ nix-shell -p age --run 'age-keygen -y ~/.config/sops/age/keys.txt' # Verify same
 
 ```bash
 sops updatekeys secrets.yaml # Update sops to also use the new key
+```
+
+- Edit hosts/common/users/primary/default.nix to unset temporary set a password
+
+```nix
+hashedPasswordFile = sopsHashedPasswordFile; # Comment out to disable password
+#password = lib.mkForce "nixos"; # Uncomment to set temporary password until sops passwords work
+
 ```
