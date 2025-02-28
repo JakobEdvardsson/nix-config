@@ -40,7 +40,7 @@ nixos-generate-config --show-hardware-config > ~/nix-config/hosts/nixos/<hostnam
 ```
 
 ```bash
-sudo nix --experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --flake '.#<hostname>'
+sudo nix --experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --flake '.#<hostname>' --disk <disk-name> <disk-device>
 ```
 
 - Update hardware.nix && build system
