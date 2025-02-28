@@ -6,10 +6,6 @@
   ...
 }:
 {
-
-  imports = [ ../../common/disk/btrfs.nix ];
-  disko.devices.disk.main.device = "/dev/sda";
-
   fileSystems.${config.homelab.mounts.slow} = {
     device = "/dev/disk/by-uuid/1e3795b5-c1e2-4c6d-9663-1600b4efa33e";
     options = [

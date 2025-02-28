@@ -6,15 +6,21 @@
 - Import disko disk layout
 
 ```nix
-  imports = [ ./disko-config.nix ];
-  disko.devices.disk.main.device = "/dev/<disk>";
+#example
+inputs.disko.nixosModules.disko
+(lib.custom.relativeToRoot "hosts/common/disks/btrfs.nix")
+{
+  _module.args = {
+    disk = "/dev/nvme0n1";
+  };
+}
 ```
 
 - Boot from a NixOS installer
 - Clone repo
 
 ```bash
-nix-shell -p git
+nix-shell -p git vim
 cd ~ && git clone https://github.com/jakobedvardsson/nix-config
 cd nix-config
 ```
@@ -26,7 +32,16 @@ cd nix-config
 password = lib.mkForce "nixos"; # Uncomment to set temporary password until sops passwords work
 ```
 
+- Update hardware.nix and remove disk mentions
+<!-- TODO: remove the need for hardware config -->
+
+```bash
+nixos-generate-config --show-hardware-config > ~/nix-config/hosts/nixos/<hostname>/hardware.nix
+```
+
+```bash
 sudo nix run 'github:nix-community/disko/latest#disko-install' -- --flake '.#<hostname>'
+```
 
 - Update hardware.nix && build system
 

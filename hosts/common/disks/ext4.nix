@@ -3,10 +3,12 @@
   ...
 }:
 # USAGE in your configuration.nix.
-# Update devices to match your hardware.
+# inputs.disko.nixosModules.disko
+# (lib.custom.relativeToRoot "hosts/common/disks/btrfs.nix")
 # {
-#  imports = [ ./disko-config.nix ];
-#  disko.devices.disk.main.device = "/dev/sda";
+#   _module.args = {
+#     disk = "/dev/nvme0n1";
+#   };
 # }
 {
   disko.devices = {
@@ -17,11 +19,12 @@
         content = {
           type = "gpt";
           partitions = {
+            boot = {
+              size = "1M";
+              type = "EF02"; # for grub MBR
+            };
             ESP = {
-              priority = 1;
-              name = "ESP";
-              start = "1M";
-              end = "128M";
+              size = "1G";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -33,13 +36,9 @@
             root = {
               size = "100%";
               content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ]; # Override existing partition
+                type = "filesystem";
+                format = "ext4";
                 mountpoint = "/";
-                mountOptions = [
-                  "compress=zstd"
-                  "noatime"
-                ];
               };
             };
           };
