@@ -3,12 +3,19 @@
 - Create new host under hosts/nixos/<hostname>
 - Create new home under home/jakobe/<hostname>
 
-- Install nixos on the new machine
+- Import disko disk layout
+
+```nix
+  imports = [ ./disko-config.nix ];
+  disko.devices.disk.main.device = "/dev/<disk>";
+```
+
+- Boot from a NixOS installer
 - Clone repo
 
 ```bash
 nix-shell -p git
-git clone https://github.com/jakobedvardsson/nix-config
+cd ~ && git clone https://github.com/jakobedvardsson/nix-config
 cd nix-config
 ```
 
@@ -19,10 +26,12 @@ cd nix-config
 password = lib.mkForce "nixos"; # Uncomment to set temporary password until sops passwords work
 ```
 
+sudo nix run 'github:nix-community/disko/latest#disko-install' -- --flake '.#<hostname>'
+
 - Update hardware.nix && build system
 
 ```bash
-nixos-generate-config --show-hardware-config > ~/nix-config/hosts/nixos/think/hardware.nix
+nixos-generate-config --show-hardware-config > ~/nix-config/hosts/nixos/<hostname>/hardware.nix
 sudo nixos-rebuild boot --flake .#<hostname>
 ```
 
