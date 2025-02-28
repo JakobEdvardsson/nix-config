@@ -19,10 +19,20 @@
     #
     ./hardware.nix
     ./homelab.nix
-    ./disk-management.nix
+    ./external-disk.nix
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
     inputs.hardware.nixosModules.common-pc
+    #
+    # ========== Disk Layout ==========
+    #
+    inputs.disko.nixosModules.disko
+    (lib.custom.relativeToRoot "hosts/common/disks/btrfs.nix")
+    {
+      _module.args = {
+        disk = "/dev/nvme0n1";
+      };
+    }
 
     #
     # ========== Misc Inputs ==========
