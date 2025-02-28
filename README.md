@@ -43,6 +43,11 @@ nixos-generate-config --show-hardware-config > ~/nix-config/hosts/nixos/<hostnam
 sudo nix --experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --flake '.#<hostname>' --disk <disk-name> <disk-device>
 ```
 
+```bash
+#example:
+sudo nix --experimental-features "nix-command flakes" run 'github:nix-community/disko/latest#disko-install' -- --flake '.#think' --disk main /dev/nvme0n1
+```
+
 - Update hardware.nix && build system
 
 ```bash
