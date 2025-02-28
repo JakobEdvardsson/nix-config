@@ -21,6 +21,7 @@
     "usbhid"
     "sd_mod"
     "uas"
+    "usb_storage"
   ];
 
   boot.initrd.kernelModules = [ ];
