@@ -41,12 +41,16 @@ in
     services.tailscale = {
       enable = true;
       authKeyFile = config.sops.secrets.tailscaleAuthKey.path;
+      useRoutingFeatures = "both";
+      openFirewall = true;
       extraUpFlags =
-        [ "--accept-routes" ]
+        [
+          "--accept-routes"
+          "--reset"
+        ]
         ++ lib.optionals (cfg.advertisedRoute != [ ]) [
           "--advertise-routes=${lib.concatStringsSep "," cfg.advertisedRoute}"
-        ]
-        ++ [ "--reset" ];
+        ];
     };
   };
 }
