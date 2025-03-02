@@ -22,5 +22,6 @@
     media.enable = true;
     comms.enable = true;
     browser.enable = true;
+    syncthing.enable = true;
   };
 }

@@ -14,5 +14,6 @@
     ./development
 
     ./wm
+    ./syncthing
   ];
 }
