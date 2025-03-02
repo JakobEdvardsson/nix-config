@@ -47,7 +47,7 @@ in
           enable = true;
           external = [
             {
-              AsusRouter = {
+              "Asus Router" = {
                 href = "https://router.edvardsson.tech";
                 siteMonitor = "http://192.168.50.1";
                 description = "Asus Router";
@@ -55,11 +55,19 @@ in
               };
             }
             {
-              HomeAssistant = {
+              "Home Assistant" = {
                 href = "https://home-assistant.edvardsson.tech";
                 siteMonitor = "http://192.168.50.10:8123";
                 description = "Home Assistant";
                 icon = "home-assistant";
+              };
+            }
+            {
+              "Local Syncthing" = {
+                href = "http://127.0.0.1:8384/";
+                siteMonitor = "http://127.0.0.1:8384/";
+                description = "Local Syncthing";
+                icon = "syncthing";
               };
             }
 
@@ -73,6 +81,7 @@ in
         sonarr.enable = true;
         jellyseerr.enable = true;
         deluge.enable = true;
+        syncthing.enable = true;
 
         wireguard-netns = {
           enable = true;

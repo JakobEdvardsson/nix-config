@@ -62,5 +62,6 @@
     ./arr/jellyseerr
     ./wireguard-netns
     ./deluge
+    ./syncthing
   ];
 }
