@@ -63,5 +63,6 @@
     ./wireguard-netns
     ./deluge
     ./syncthing
+    ./immich
   ];
 }
