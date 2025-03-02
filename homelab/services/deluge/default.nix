@@ -40,6 +40,8 @@ in
   config = lib.mkIf cfg.enable {
     services.deluge = {
       enable = true;
+      user = hl.user;
+      group = hl.group;
       web = {
         enable = true;
       };
@@ -80,8 +82,8 @@ in
           JoinsNamespaceOf = "deluged.service";
         };
         serviceConfig = {
-          User = hl.user;
-          Group = hl.group;
+          User = config.services.deluge.user;
+          Group = config.services.deluge.group;
           ExecStart = "${pkgs.systemd}/lib/systemd/systemd-socket-proxyd --exit-idle-time=5min 127.0.0.1:58846";
           PrivateNetwork = "yes";
         };
