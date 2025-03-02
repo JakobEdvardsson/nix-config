@@ -73,15 +73,18 @@ in
 
           ];
         };
+        # Arr
         jellyfin.enable = true;
-        adguard.enable = true;
         bazarr.enable = true;
         prowlarr.enable = true;
         radarr.enable = true;
         sonarr.enable = true;
         jellyseerr.enable = true;
         deluge.enable = true;
+
+        adguard.enable = true;
         syncthing.enable = true;
+        immich.enable = true;
 
         wireguard-netns = {
           enable = true;
