@@ -93,6 +93,7 @@
       bind Q kill-session
       bind x swap-pane -D
       bind-key -T copy-mode-vi v send-keys -X begin-selection
+      bind * setw synchronize-panes # Do the same command on all panes
 
       bind-key -n "M-Left" previous-window   # Switch to previous window
       bind-key -n "M-Right" next-window   # Switch to next window
