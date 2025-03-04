@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  pkgs,
+  inputs,
   ...
 }:
 let
@@ -10,6 +10,10 @@ let
   homelab = config.homelab;
 in
 {
+  #TODO: remove when settings in stable nixos
+  disabledModules = [ "${inputs.nixpkgs}/nixos/modules/services/misc/sonarr.nix" ];
+  imports = [ "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/servarr/sonarr.nix" ];
+
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption {
       description = "Enable ${service}";
@@ -40,6 +44,9 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
+    sops.secrets = {
+      "${service}ApiKey" = { };
+    };
     # FIX: Remove once fixed https://discourse.nixos.org/t/solved-sonarr-is-broken-in-24-11-unstable-aka-how-the-hell-do-i-use-nixpkgs-config-permittedinsecurepackages/56828/13
     nixpkgs.config.permittedInsecurePackages = [
       "dotnet-sdk-6.0.428"
@@ -49,6 +56,9 @@ in
       enable = true;
       user = homelab.user;
       group = homelab.group;
+      environmentFiles = [
+        config.sops.secrets."${service}ApiKey".path
+      ];
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
