@@ -1,19 +1,10 @@
-{
-  config,
-  lib,
-  inputs,
-  ...
-}:
+{ config, lib, ... }:
 let
-  service = "radarr";
+  service = "unpackerr";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
 in
 {
-  #TODO: remove when settings in stable nixos
-  disabledModules = [ "${inputs.nixpkgs}/nixos/modules/services/misc/radarr.nix" ];
-  imports = [ "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/servarr/radarr.nix" ];
-
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption {
       description = "Enable ${service}";
@@ -28,7 +19,7 @@ in
     };
     homepage.name = lib.mkOption {
       type = lib.types.str;
-      default = "Radarr";
+      default = "Unpackerr";
     };
     homepage.description = lib.mkOption {
       type = lib.types.str;
@@ -36,7 +27,7 @@ in
     };
     homepage.icon = lib.mkOption {
       type = lib.types.str;
-      default = "radarr.svg";
+      default = "unpackerr.svg";
     };
     homepage.category = lib.mkOption {
       type = lib.types.str;
@@ -44,17 +35,10 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    sops.secrets = {
-      "${service}ApiKey" = { };
-    };
-
     services.${service} = {
       enable = true;
       user = homelab.user;
       group = homelab.group;
-      environmentFiles = [
-        config.sops.secrets."${service}ApiKey".path
-      ];
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
@@ -63,4 +47,5 @@ in
       '';
     };
   };
+
 }
