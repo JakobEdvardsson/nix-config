@@ -36,6 +36,7 @@
     {
       self,
       nixpkgs,
+      home-manager,
       ...
     }@inputs:
     let
@@ -78,6 +79,24 @@
             lib = extendedLib; # Use the extended library
           };
           modules = [ ./hosts/nixos/think ];
+        };
+      };
+      homeConfigurations."jakobe" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        modules = [
+          ./home/jakobe/wsl
+          inputs.stylix.homeManagerModules.stylix
+
+        ];
+        extraSpecialArgs = {
+          inherit inputs outputs;
+          lib = extendedLib; # Use the extended library
+          hostSpec = {
+            username = "jakobe";
+            hostName = "wsl-host";
+            handle = "Jakob Edvardsson";
+            email = "jakob@edvardsson.tech";
+          };
         };
       };
     };
