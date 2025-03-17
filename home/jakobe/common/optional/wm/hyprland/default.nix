@@ -49,6 +49,7 @@ in
     # required packages for Hyprland
     home.packages = with pkgs; [
       kitty
+      wl-clipboard
     ];
 
     wayland.windowManager.hyprland = {
