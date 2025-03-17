@@ -53,10 +53,12 @@
         "$mod SHIFT, tab, workspace, m-1"
 
         # Screenshot
-        ",PRINT, exec, screenshot monitor" # Screenshot monitor
-        "$mod,PRINT, exec, screenshot window" # Screenshot window
-        "ALT,PRINT, exec, screenshot region" # Screenshot region
-        "SHIFT,PRINT, exec, screenshot region swappy" # Screenshot region then edit
+        # Screenshot a window
+        "$mod, PRINT, exec, ${pkgs.hyprshot}/bin/hyprshot -m window"
+        # Screenshot a monitor
+        ",PRINT, exec, ${pkgs.hyprshot}/bin/hyprshot -m output"
+        # Screenshot a region
+        "SHIFT, PRINT, exec, ${pkgs.hyprshot}/bin/hyprshot -m region"
 
         # Scroll through existing workspaces with mod + scroll
         "$mod, mouse_down, workspace, e+1"
