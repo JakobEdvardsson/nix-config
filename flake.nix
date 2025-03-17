@@ -49,11 +49,13 @@
       forAllSystems = nixpkgs.lib.genAttrs systems;
 
       # Extend the library with custom functions
-      extendedLib = nixpkgs.lib.extend (
-        self: super: {
-          custom = import ./lib { inherit (nixpkgs) lib; };
-        }
-      );
+      extendedLib =
+        ((nixpkgs.lib // home-manager.lib).extend (
+          self: super: {
+            custom = import ./lib { inherit (nixpkgs) lib; };
+          }
+        )).extend
+          (_: _: home-manager.lib);
     in
     {
       # Enables `nix fmt` at root of repo to format all nix files
