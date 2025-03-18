@@ -101,7 +101,7 @@
     wget # downloader
     zip # zip compression
     killall # kill process
-
+    nh # Yet another nix cli helper
   ];
 
   nix = {
