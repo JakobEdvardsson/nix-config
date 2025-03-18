@@ -18,6 +18,7 @@ in
       # programming
       nodejs
       bun
+      go
 
       # tooling
       gcc
