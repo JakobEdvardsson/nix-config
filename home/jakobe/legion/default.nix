@@ -11,7 +11,7 @@
     #
     ../common/optional
   ];
-  config.customHome = {
+  customHome = {
     hyprland = {
       enable = true;
       monitor = ./monitor.conf;
@@ -23,5 +23,15 @@
     comms.enable = true;
     browser.enable = true;
     syncthing.enable = true;
+
   };
+  dconf = {
+    enable = true;
+    settings = {
+      "com/github/stunkymonkey/nautilus-open-any-terminal" = {
+        terminal = "kitty";
+      };
+    };
+  };
+
 }
