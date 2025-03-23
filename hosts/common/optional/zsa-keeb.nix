@@ -1,7 +1,9 @@
 { pkgs, ... }:
 {
   hardware.keyboard.zsa.enable = true;
-  environment.systemPackages = [
-    pkgs.keymapp
+  hardware.keyboard.qmk.enable = true;
+  environment.systemPackages = with pkgs; [
+    keymapp
+    qmk
   ];
 }

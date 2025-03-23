@@ -46,6 +46,7 @@ in
   environment.systemPackages = [
     pkgs.just
     pkgs.rsync
+    config.boot.kernelPackages.perf
   ];
 
   # Import the user's personal/home configurations, unless the environment is minimal

@@ -33,7 +33,7 @@
       FLAKE = "$HOME/nix-config";
       SHELL = "fish";
       BROWSER = "brave";
-      FILES = "thunar";
+      FILES = "nautilus";
       TERM = "kitty";
       TERMINAL = "kitty";
       VISUAL = "nvim";
