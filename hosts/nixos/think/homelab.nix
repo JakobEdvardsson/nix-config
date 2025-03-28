@@ -73,73 +73,23 @@ in
 
           ];
         };
-        # Arr
-        jellyfin.enable = true;
-        bazarr.enable = true;
-        prowlarr.enable = true;
-        radarr.enable = true;
-        sonarr.enable = true;
-        jellyseerr.enable = true;
-        deluge.enable = true;
+        # # Arr
+        # jellyfin.enable = true;
+        # bazarr.enable = true;
+        # prowlarr.enable = true;
+        # radarr.enable = true;
+        # sonarr.enable = true;
+        # jellyseerr.enable = true;
+        # deluge.enable = true;
 
         adguard.enable = true;
         syncthing.enable = true;
-        immich.enable = true;
 
-        wireguard-netns = {
-          enable = true;
-          configFile = config.sops.secrets.wireguardCredentials.path;
-          privateIP = "10.2.0.2";
-          dnsIP = "10.2.0.1";
-        };
-
-        # paperless = {
-        #   enable = true;
-        #   passwordFile = config.sops.secrets.paperlessPassword.path;
-        # };
-        # sabnzbd.enable = true;
-        # sonarr.enable = true;
-        # radarr.enable = true;
-        # bazarr.enable = true;
-        # prowlarr.enable = true;
-        # navidrome = {
-        #   enable = true;
-        #   environmentFile = config.sops.secrets.navidromeEnv.path;
-        # };
-        # nextcloud = {
-        #   enable = true;
-        #   adminpassFile = config.sops.secrets.nextcloudAdminPassword.path;
-        #   cloudflared = {
-        #     tunnelId = "cc246d42-a03d-41d4-97e2-48aa15d47297";
-        #     credentialsFile = config.sops.secrets.nextcloudCloudflared.path;
-        #   };
-        # };
-        # vaultwarden = {
-        #   enable = true;
-        #   cloudflared = {
-        #     tunnelId = "3bcbbc74-3667-4504-9258-f272ce006a18";
-        #     credentialsFile = config.sops.secrets.vaultwardenCloudflared.path;
-        #   };
-        # };
-        # microbin = {
-        #   enable = true;
-        #   cloudflared = {
-        #     tunnelId = "216d72b6-6b2b-412f-90bc-1a44c1264871";
-        #     credentialsFile = config.sops.secrets.microbinCloudflared.path;
-        #   };
-        # };
-        # audiobookshelf.enable = true;
-        # deluge.enable = true;
-        # deemix.enable = true;
-        # slskd = {
-        #   enable = true;
-        #   environmentFile = config.sops.secrets.slskdEnv.path;
-        # };
         # wireguard-netns = {
         #   enable = true;
         #   configFile = config.sops.secrets.wireguardCredentials.path;
-        #   privateIP = "10.100.0.2";
-        #   dnsIP = "10.100.0.1";
+        #   privateIP = "10.2.0.2";
+        #   dnsIP = "10.2.0.1";
         # };
       };
     };

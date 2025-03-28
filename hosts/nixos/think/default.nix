@@ -19,7 +19,6 @@
     #
     ./hardware.nix
     ./homelab.nix
-    ./external-disk.nix
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
     inputs.hardware.nixosModules.common-pc
