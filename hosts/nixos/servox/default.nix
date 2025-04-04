@@ -58,7 +58,7 @@
       # "hosts/common/optional/services/printing.nix" # CUPS
       "hosts/common/optional/audio.nix" # pipewire and cli controls
       # "hosts/common/optional/bluetooth.nix" # bluetooth and blueman
-      "hosts/common/optional/libvirt.nix" # vm tools
+      #"hosts/common/optional/libvirt.nix" # vm tools
       # "hosts/common/optional/gaming.nix" # steam, gamescope, gamemode, and related hardware
       # "hosts/common/optional/msmtp.nix" # for sending email notifications
       # "hosts/common/optional/obsidian.nix" # wiki
@@ -125,8 +125,6 @@
   };
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  services.qemuGuest.enable = true;
 
   systemd.services.systemd-suspend.environment.SYSTEMD_SLEEP_FREEZE_USER_SESSIONS = "false";
   # https://github.com/NixOS/nixpkgs/issues/369376
