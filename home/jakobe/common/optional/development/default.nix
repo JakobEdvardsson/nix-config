@@ -24,6 +24,7 @@ in
       gcc
       gdb
       gnumake
+      vscode-fhs
 
       # networkig tools
       dnsutils
