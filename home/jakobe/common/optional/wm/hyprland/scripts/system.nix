@@ -21,6 +21,7 @@ let
             "󰍃 Logout"
             " Suspend"
             "󰑐 Reboot"
+            "󱂬 Hibernate"
             "󰿅 Shutdown"
           )
 
@@ -40,6 +41,9 @@ let
               ;;
             "Reboot")
               systemctl reboot
+              ;;
+            "Hibernate")
+              systemctl hibernate
               ;;
             "Shutdown")
               systemctl poweroff
