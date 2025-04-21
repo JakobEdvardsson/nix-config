@@ -32,10 +32,10 @@
         vue-language-server
         typescript-language-server
         nodePackages.typescript-language-server
-        sourcekit-lsp
         eslint_d
         gopls
         clang-tools
+        vscode-langservers-extracted
 
         #nodePackages.vls
         lua-language-server

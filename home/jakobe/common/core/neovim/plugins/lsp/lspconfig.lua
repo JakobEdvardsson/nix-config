@@ -53,7 +53,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- Enable autocompletion capabilities for LSP servers
-local capabilities = cmp_nvim_lsp.default_capabilities()
+-- local capabilities = cmp_nvim_lsp.default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- Change the Diagnostic symbols in the sign column (gutter)
 local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
@@ -111,13 +113,13 @@ lspconfig["yamlls"].setup({
 lspconfig["bashls"].setup({
 	capabilities = capabilities,
 })
-lspconfig["sourcekit"].setup({
-	capabilities = capabilities,
-})
 lspconfig["gopls"].setup({
 	capabilities = capabilities,
 })
 lspconfig["clangd"].setup({
+	capabilities = capabilities,
+})
+lspconfig["cssls"].setup({
 	capabilities = capabilities,
 })
 
