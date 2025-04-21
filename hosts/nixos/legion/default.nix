@@ -80,6 +80,18 @@
     nix-ld.enable = true;
   };
 
+  # Hibernate
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 32 * 1024;
+    }
+  ];
+
+  boot.kernelParams = ["resume_offset=28895232"];
+  boot.resumeDevice = "/dev/disk/by-uuid/0661ad46-7c3d-48e2-b964-e874f3b6c37a";
+  powerManagement.enable = true;
+
   specialisation = {
     on-the-go.configuration = {
       system.nixos.tags = [ "on-the-go" ];
