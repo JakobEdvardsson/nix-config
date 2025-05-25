@@ -8,7 +8,6 @@ let
   # sshPort = config.hostSpec.networking.ports.tcp.ssh;
   sshPort = 22;
 in
-
 {
   services.openssh = {
     enable = true;

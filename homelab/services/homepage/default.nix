@@ -1,8 +1,4 @@
-{
-  config,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 let
   service = "homepage-dashboard";
   cfg = config.homelab.services.homepage;
@@ -10,9 +6,7 @@ let
 in
 {
   options.homelab.services.homepage = {
-    enable = lib.mkEnableOption {
-      description = "Enable ${service}";
-    };
+    enable = lib.mkEnableOption { description = "Enable ${service}"; };
     url = lib.mkOption {
       type = lib.types.str;
       default = "homepage.${homelab.baseDomain}";
@@ -24,18 +18,10 @@ in
         lib.types.attrsOf (
           lib.types.submodule {
             options = {
-              description = lib.mkOption {
-                type = lib.types.str;
-              };
-              href = lib.mkOption {
-                type = lib.types.str;
-              };
-              siteMonitor = lib.mkOption {
-                type = lib.types.str;
-              };
-              icon = lib.mkOption {
-                type = lib.types.str;
-              };
+              description = lib.mkOption { type = lib.types.str; };
+              href = lib.mkOption { type = lib.types.str; };
+              siteMonitor = lib.mkOption { type = lib.types.str; };
+              icon = lib.mkOption { type = lib.types.str; };
             };
           }
         )

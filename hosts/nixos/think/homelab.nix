@@ -70,7 +70,6 @@ in
                 icon = "syncthing";
               };
             }
-
           ];
         };
         # # Arr
@@ -106,8 +105,6 @@ in
           reverse_proxy http://192.168.50.1
         '';
       };
-
     };
-
   };
 }

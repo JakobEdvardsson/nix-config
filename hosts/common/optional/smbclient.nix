@@ -1,5 +1,4 @@
-#FIX: change this
-
+# FIX: change this
 # create a systemd service to automatically mount the ghost mediashare at boot
 { pkgs, ... }:
 {

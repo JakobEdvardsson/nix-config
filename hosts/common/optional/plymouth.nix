@@ -9,7 +9,9 @@
       enable = true;
       theme = lib.mkForce "hexagon_hud";
       themePackages = [
-        (pkgs.adi1090x-plymouth-themes.override { selected_themes = [ "hexagon_hud" ]; })
+        (pkgs.adi1090x-plymouth-themes.override {
+          selected_themes = [ "hexagon_hud" ];
+        })
       ];
     };
     consoleLogLevel = 0;

@@ -5,7 +5,6 @@
   ...
 }:
 {
-
   wayland.windowManager.hyprland.settings = {
     #
     # ========== Aanimation ==========

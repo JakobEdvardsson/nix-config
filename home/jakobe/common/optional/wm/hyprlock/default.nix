@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customHome.hyprlock;
 in
 {
-
   options.customHome.hyprlock = {
     enable = lib.mkEnableOption "Enable hyprlock as the lockscreen for Wayland.";
   };
@@ -23,7 +21,7 @@ in
           blur_size = 5;
           brightness = 0.5;
           contrast = 1.0;
-          noise = 0.02;
+          noise = 2.0e-2;
         };
 
         input-field = {

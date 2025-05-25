@@ -12,7 +12,6 @@ let
   ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 
   sopsHashedPasswordFile = config.sops.secrets."passwords/${hostSpec.username}".path;
-
 in
 {
   users.mutableUsers = false; # Only allow declarative credentials; Required for password to be set via sops during system activation!

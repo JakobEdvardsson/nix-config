@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customOption.tailscale;
 in
 {
-
   options.customOption.tailscale = {
     enable = lib.mkEnableOption "Enable tailscale";
     advertisedRoute = lib.mkOption {
@@ -25,7 +23,6 @@ in
         Advertised Route
       '';
     };
-
   };
 
   config = lib.mkIf cfg.enable {

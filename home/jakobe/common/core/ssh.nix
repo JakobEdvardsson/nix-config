@@ -13,7 +13,5 @@
         ServerAliveCountMax 3
     '';
   };
-  home.packages = with pkgs; [
-    sshfs
-  ];
+  home.packages = with pkgs; [ sshfs ];
 }

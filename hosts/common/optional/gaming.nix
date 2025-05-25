@@ -20,9 +20,7 @@
               libXScrnSaver
               ;
 
-            inherit (pkgs.stdenv.cc.cc)
-              lib
-              ;
+            inherit (pkgs.stdenv.cc.cc) lib;
 
             inherit (pkgs)
               libpng

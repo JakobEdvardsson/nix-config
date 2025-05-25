@@ -111,7 +111,6 @@ let
     "application/vnd.sun.xml.writer.global" = writer;
     "application/vnd.sun.xml.writer.template" = writer;
     "application/vnd.wordperfect" = writer;
-
   };
   removals = {
     # Calibre steals odt association from libreoffic so need to remove

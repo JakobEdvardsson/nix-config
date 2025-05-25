@@ -1,4 +1,4 @@
-#NOTE: Actions prepended with `hy3;` are specific to the hy3 hyprland plugin
+# NOTE: Actions prepended with `hy3;` are specific to the hy3 hyprland plugin
 {
   config,
   lib,
@@ -70,7 +70,6 @@
         # Custom
         "$shiftMod,E, exec, emoji-picker" # Emoji picker with wofi
         "$shiftMod,N, exec, night-shift" # Toggle night shift
-
       ]
       ++ (builtins.concatLists (
         builtins.genList (

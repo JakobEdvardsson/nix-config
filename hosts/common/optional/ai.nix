@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customOption.ai;
 in
 {
-
   options.customOption.ai = {
     enable = lib.mkEnableOption "Enable ai";
   };

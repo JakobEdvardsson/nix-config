@@ -43,9 +43,7 @@
     let
       inherit (self) outputs;
 
-      systems = [
-        "x86_64-linux"
-      ];
+      systems = [ "x86_64-linux" ];
 
       forAllSystems = nixpkgs.lib.genAttrs systems;
 
@@ -60,7 +58,7 @@
     in
     {
       # Enables `nix fmt` at root of repo to format all nix files
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
       nixosConfigurations = {
         legion = nixpkgs.lib.nixosSystem {
           specialArgs = {
@@ -89,7 +87,6 @@
         modules = [
           ./home/jakobe/wsl
           inputs.stylix.homeManagerModules.stylix
-
         ];
         extraSpecialArgs = {
           inherit inputs outputs;

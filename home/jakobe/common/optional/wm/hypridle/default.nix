@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customHome.hypridle;
 in
 {
-
   options.customHome.hypridle = {
     enable = lib.mkEnableOption "Enable hypridle as the idle state manager for Wayland.";
 
@@ -34,7 +32,6 @@ in
     services.hypridle = {
       enable = true;
       settings = {
-
         general = {
           ignore_dbus_inhibit = false;
           lock_cmd = "pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock";

@@ -5,7 +5,6 @@
   ...
 }:
 {
-
   imports = [
     #./thunar.nix # file manager
     ./nautilus.nix # file manager
@@ -18,6 +17,5 @@
     enable = true;
   };
 
-  environment.systemPackages = [
-  ];
+  environment.systemPackages = [ ];
 }

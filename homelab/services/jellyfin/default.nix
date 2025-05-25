@@ -11,9 +11,7 @@ let
 in
 {
   options.homelab.services.${service} = {
-    enable = lib.mkEnableOption {
-      description = "Enable ${service}";
-    };
+    enable = lib.mkEnableOption { description = "Enable ${service}"; };
     configDir = lib.mkOption {
       type = lib.types.str;
       default = "/var/lib/${service}";

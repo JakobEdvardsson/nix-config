@@ -12,12 +12,12 @@ in
 {
   #TODO: remove when settings in stable nixos
   disabledModules = [ "${inputs.nixpkgs}/nixos/modules/services/misc/radarr.nix" ];
-  imports = [ "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/servarr/radarr.nix" ];
+  imports = [
+    "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/servarr/radarr.nix"
+  ];
 
   options.homelab.services.${service} = {
-    enable = lib.mkEnableOption {
-      description = "Enable ${service}";
-    };
+    enable = lib.mkEnableOption { description = "Enable ${service}"; };
     configDir = lib.mkOption {
       type = lib.types.str;
       default = "/var/lib/${service}";
@@ -52,9 +52,7 @@ in
       enable = true;
       user = homelab.user;
       group = homelab.group;
-      environmentFiles = [
-        config.sops.secrets."${service}ApiKey".path
-      ];
+      environmentFiles = [ config.sops.secrets."${service}ApiKey".path ];
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;

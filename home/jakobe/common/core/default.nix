@@ -41,7 +41,6 @@
       MANPAGER = "batman"; # see ./cli/bat.nix
     };
     preferXdgDirectories = true; # whether to make programs use XDG directories whenever supported
-
   };
   #TODO:(xdg) maybe move this to its own xdg.nix?
   # xdg packages are pulled in below

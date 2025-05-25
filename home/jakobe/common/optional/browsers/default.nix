@@ -13,7 +13,6 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-
     programs.brave = {
       enable = true;
       commandLineArgs = [

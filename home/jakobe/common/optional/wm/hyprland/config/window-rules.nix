@@ -5,13 +5,11 @@
   ...
 }:
 {
-
   wayland.windowManager.hyprland.settings = {
     #
     # ========== Window Rules ==========
     #
     windowrule = [
-
       #windowrule = noblur,gamescope
       #windowrule = fullscreen,gamescope
       #windowrule = workspace 6 silent,^(gamescope)$
@@ -29,11 +27,9 @@
       "float, title:^(Save As)(.*)$"
       "float, title:^(Library)(.*)$"
       "float, title:^(Accounts)(.*)$"
-
     ];
     # WINDOWRULE v2
     windowrulev2 = [
-
       # windowrule v2 - position
       #  center,floating:1 # warning, it cause even the menu to float and center.
       "center, class:([Tt]hunar), title:(File Operation Progress)"

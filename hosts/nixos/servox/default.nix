@@ -1,10 +1,9 @@
-#############################################################
+# ############################################################
 #
 #  Servox - Server VM
 #  Ryzen 5 5700X, Amd Radeon 6950xt
 #
 ###############################################################
-
 {
   inputs,
   lib,
@@ -66,13 +65,11 @@
       # "hosts/common/optional/thunar.nix" # file manager
       "hosts/common/optional/mpv.nix" # media player
       "hosts/common/optional/zsa-keeb.nix" # Moonlander keeb flashing stuff
-
     ])
     #
     # ========== Ghost Specific ==========
     #
     # ./samba.nix
-
   ];
 
   #

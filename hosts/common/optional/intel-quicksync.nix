@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customOption.intel-quicksync;
 in
 {
-
   options.customOption.intel-quicksync = {
     enable = lib.mkEnableOption "Enable intel-quicksync";
   };

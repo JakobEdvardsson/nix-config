@@ -6,9 +6,7 @@
   ...
 }:
 {
-  home.packages = with pkgs; [
-    vim
-  ];
+  home.packages = with pkgs; [ vim ];
   programs = {
     neovim = {
       enable = true;
@@ -54,7 +52,6 @@
 
         tree-sitter-grammars.tree-sitter-markdown
         tree-sitter-grammars.tree-sitter-markdown-inline
-
       ];
       plugins = with pkgs.vimPlugins; [
         plenary-nvim
@@ -102,7 +99,6 @@
         render-markdown-nvim
         markdown-preview-nvim
         nvim-colorizer-lua # View colors in nvim
-
       ];
       extraLuaConfig = ''
         ${builtins.readFile ./options.lua}

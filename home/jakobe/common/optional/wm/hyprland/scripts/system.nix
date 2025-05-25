@@ -5,7 +5,6 @@
 #- - `powermenu` - Open power dropdown menu. (${pkgs.rofi-wayland}/bin/rofi)
 #- - `lock` - Lock the screen. (hyprlock)
 { pkgs, ... }:
-
 let
   powermenu =
     pkgs.writeShellScriptBin "powermenu"
@@ -95,7 +94,6 @@ let
       ''
         ${pkgs.hyprlock}/bin/hyprlock
       '';
-
 in
 {
   home.packages = [

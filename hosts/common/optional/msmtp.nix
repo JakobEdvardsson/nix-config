@@ -1,5 +1,4 @@
-#FIX: change this
-
+# FIX: change this
 { config, ... }:
 {
   sops.secrets = {

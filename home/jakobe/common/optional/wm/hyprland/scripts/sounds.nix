@@ -7,7 +7,6 @@
 #- - `sound-set [value]` sets the volume to the given value.
 #- - `sound-toggle` toggles the mute state of the default audio sink.
 { pkgs, ... }:
-
 let
   increments = "5";
 

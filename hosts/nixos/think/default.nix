@@ -1,10 +1,9 @@
-#############################################################
+# ############################################################
 #
 #  Think - ThinkCentre M70q Gen 3 Tiny
 #  Intel Core i5-12400T
 #
 ###############################################################
-
 {
   inputs,
   lib,
@@ -48,7 +47,6 @@
 
       "hosts/common/optional/services/openssh.nix" # allow remote SSH access
       "hosts/common/optional/plymouth.nix" # fancy boot screen
-
     ])
   ];
 
@@ -61,9 +59,11 @@
 
     tailscale = {
       enable = true;
-      /* advertisedRoute = [
-        "192.168.50.0/24"
-      ]; */
+      /*
+        advertisedRoute = [
+          "192.168.50.0/24"
+        ];
+      */
     };
   };
 
