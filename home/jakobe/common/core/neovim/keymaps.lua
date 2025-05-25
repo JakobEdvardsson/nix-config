@@ -52,13 +52,10 @@ keymap.set("n", "<leader>bo", "<cmd>enew<CR>", { desc = "Open new buffer" })
 keymap.set("n", "<leader><leader>", ":Telescope buffers<CR>", { desc = "List buffers" })
 
 keymap.set("n", "<leader>bn", ":bnext<CR>", { desc = "Next buffer" })
-keymap.set("n", "<leader>bb", ":bnext<CR>", { desc = "Next buffer" })
-keymap.set("n", "<leader>b<RIGHT>", ":bnext<CR>", { desc = "Next buffer" })
+keymap.set("n", "<S-Right>", ":bnext<CR>", { desc = "Next buffer" })
 
 keymap.set("n", "<leader>bp", ":bprev<CR>", { desc = "Previous buffer" })
-keymap.set("n", "<leader>bB", ":bprev<CR>", { desc = "Previous buffer" })
-keymap.set("n", "<leader>b<LEFT>", ":bprev<CR>", { desc = "Previous buffer" })
-keymap.set("n", "<leader>b<leader>", ":bprev<CR>", { desc = "Previous buffer" })
+keymap.set("n", "<S-LEFT>", ":bprev<CR>", { desc = "Previous buffer" })
 
 --keymap.set("n", "<leader>bx", ":bdelete!<CR>", { desc = "Delete buffer" })
 -- Delete buffer without closing split windows

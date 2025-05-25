@@ -17,6 +17,7 @@ in
     home.packages = with pkgs; [
       # programming
       nodejs
+      python3
       bun
       go
 
@@ -25,6 +26,8 @@ in
       gdb
       gnumake
       vscode-fhs
+      act #local github action runner
+      live-server
 
       # networkig tools
       dnsutils

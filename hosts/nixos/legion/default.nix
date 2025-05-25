@@ -64,7 +64,7 @@
       # "hosts/common/optional/obsidian.nix" # wiki
       "hosts/common/optional/plymouth.nix" # fancy boot screen
       # "hosts/common/optional/thunar.nix" # file manager
-      "hosts/common/optional/vlc.nix" # media player
+      "hosts/common/optional/mpv.nix" # media player
       "hosts/common/optional/zsa-keeb.nix" # Moonlander keeb flashing stuff
 
     ])
@@ -78,6 +78,9 @@
   customOption = {
     tailscale.enable = true;
     nix-ld.enable = true;
+    docker.enable = true;
+    droidcam.enable = true;
+    ai.enable = true;
   };
 
   # Hibernate
@@ -88,7 +91,7 @@
     }
   ];
 
-  boot.kernelParams = ["resume_offset=28895232"];
+  boot.kernelParams = [ "resume_offset=28895232" ];
   boot.resumeDevice = "/dev/disk/by-uuid/0661ad46-7c3d-48e2-b964-e874f3b6c37a";
   powerManagement.enable = true;
 
