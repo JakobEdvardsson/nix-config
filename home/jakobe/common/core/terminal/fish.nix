@@ -62,6 +62,10 @@
       # Always attemp to attach to session requires: newSession = true;
       mux = "tmux a";
 
+      # kitty
+      s = "kitten ssh";
+      icat = "kitten icat";
+
       # Less used ones:
       lsblk = "lsblk -o name,mountpoint,label,size,type,uuid";
       weather = "${pkgs.curl}/bin/curl -4 http://wttr.in/Malmö";

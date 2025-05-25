@@ -14,7 +14,7 @@ in
 
     monitor = lib.mkOption {
       default = "";
-      type = lib.types.path;
+      type = lib.types.str;
       description = ''
         Path to monitor config
       '';

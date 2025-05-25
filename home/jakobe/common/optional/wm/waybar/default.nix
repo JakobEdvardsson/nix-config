@@ -160,10 +160,11 @@ in
           "custom/logo" = {
             format = "  ";
             tooltip = false;
-            on-click = ''
-              ${config.home.sessionVariables.BROWSER} https://home-manager-options.extranix.com/ &&
-                          ${config.home.sessionVariables.BROWSER} https://search.nixos.org/packages & ''; # Open nixos and homemanager search
+            on-click = "${config.home.sessionVariables.BROWSER} https://search.nixos.org/packages";
+            on-click-middle = "${config.home.sessionVariables.BROWSER} https://github.com/nixOS/nixpkgs";
+            on-click-right = "${config.home.sessionVariables.BROWSER} https://home-manager-options.extranix.com/";
           };
+
           "custom/swaync" = {
             "tooltip" = true;
             "tooltip-format" = ''

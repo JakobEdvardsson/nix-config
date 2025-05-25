@@ -64,9 +64,6 @@ keymap.set("n", "<leader>bv", ":vsplit | bnext<CR>", { desc = "Vertical split wi
 keymap.set("n", "<leader>bh", ":split | bnext<CR>", { desc = "Horizontal split with next buffer" })
 
 -- terminal
-keymap.set("n", "<leader><CR>", "<cmd>term<CR>a", { desc = "Open a terminal" })
-keymap.set("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-
 keymap.set("n", "<leader>xx", function()
 	vim.diagnostic.disable()
 end, { desc = "Disable diagnostic" })
