@@ -5,6 +5,9 @@
   ...
 }:
 {
+
+  imports = lib.custom.scanPaths ./.;
+
   options.homelab.services = {
     enable = lib.mkEnableOption "Settings and services for the homelab";
   };
@@ -34,35 +37,18 @@
       globalConfig = ''
         auto_https off
       '';
-      virtualHosts = {
-        "http://${config.homelab.baseDomain}" = {
-          extraConfig = ''
-            redir https://{host}{uri}
-          '';
-        };
-        "http://*.${config.homelab.baseDomain}" = {
-          extraConfig = ''
-            redir https://{host}{uri}
-          '';
-        };
-      };
+      # virtualHosts = {
+      #   "http://${config.homelab.baseDomain}" = {
+      #     extraConfig = ''
+      #       redir https://{host}{uri}
+      #     '';
+      #   };
+      #   "http://*.${config.homelab.baseDomain}" = {
+      #     extraConfig = ''
+      #       redir https://{host}{uri}
+      #     '';
+      #   };
+      #};
     };
-
-    #TODO: If needed, add podman
   };
-
-  imports = [
-    ./homepage
-    ./jellyfin
-    ./adguard
-    ./arr/bazarr
-    ./arr/prowlarr
-    ./arr/radarr
-    ./arr/sonarr
-    ./arr/jellyseerr
-    ./wireguard-netns
-    ./deluge
-    ./syncthing
-    ./immich
-  ];
 }
