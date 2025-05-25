@@ -3,7 +3,7 @@ let
   # FIXME:(xdg) That should use config options and just reference whatever is configured as the default
   browser = [ "brave.desktop" ];
   editor = [ "nvim.desktop" ];
-  media = [ "vlc.desktop" ];
+  media = [ "mpv.desktop" ];
   writer = [ "libreoffice-writer.desktop" ];
   spreadsheet = [ "libreoffice-calc.desktop" ];
   slidedeck = [ "libreoffice-impress.desktop" ];

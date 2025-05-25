@@ -100,6 +100,7 @@
         nui-nvim
         img-clip-nvim
         render-markdown-nvim
+        markdown-preview-nvim
         nvim-colorizer-lua # View colors in nvim
 
       ];

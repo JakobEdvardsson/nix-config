@@ -64,7 +64,7 @@
       # "hosts/common/optional/obsidian.nix" # wiki
       "hosts/common/optional/plymouth.nix" # fancy boot screen
       # "hosts/common/optional/thunar.nix" # file manager
-      "hosts/common/optional/vlc.nix" # media player
+      "hosts/common/optional/mpv.nix" # media player
       "hosts/common/optional/zsa-keeb.nix" # Moonlander keeb flashing stuff
 
     ])

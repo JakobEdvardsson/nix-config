@@ -26,6 +26,9 @@ in
 
       # Media production
       obs-studio
+
+      # Office suite
+      libreoffice
     ];
   };
 }

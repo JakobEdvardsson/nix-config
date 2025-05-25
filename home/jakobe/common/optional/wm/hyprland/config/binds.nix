@@ -22,7 +22,8 @@
         "CTRL ALT, Delete, exec, hyprctl dispatch exit 0"
         "$mod, Q, killactive,"
         "$mod SHIFT, Q, exec, kill-active-process"
-        "$mod, F, fullscreen"
+        "$mod, F, fullscreen, 1"
+        "$mod CTRL, F, fullscreen"
         "$mod SHIFT, F, togglefloating,"
         "$mod ALT, F, exec, hyprctl dispatch workspaceopt allfloat"
 

@@ -19,7 +19,10 @@
       sensible
       {
         plugin = resurrect;
-        extraConfig = ''set -g @resurrect-strategy-nvim "session"'';
+        extraConfig = ''
+          set -g @resurrect-strategy-nvim "session"
+          set -g @resurrect-dir '~/.local/share/tmux/resurrect'
+        '';
       }
       {
         plugin = continuum;
