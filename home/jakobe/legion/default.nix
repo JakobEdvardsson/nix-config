@@ -14,7 +14,7 @@
   customHome = {
     hyprland = {
       enable = true;
-      monitor = ./monitor.conf;
+      monitor = "/home/jakobe/nix-config/home/jakobe/legion/monitor.conf";
       #nvidia = true;
     };
     development.enable = true;
@@ -23,13 +23,5 @@
     comms.enable = true;
     browser.enable = true;
     syncthing.enable = true;
-  };
-  dconf = {
-    enable = true;
-    settings = {
-      "com/github/stunkymonkey/nautilus-open-any-terminal" = {
-        terminal = "kitty";
-      };
-    };
   };
 }
