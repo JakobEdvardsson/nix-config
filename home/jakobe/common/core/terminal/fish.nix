@@ -6,9 +6,7 @@
   ...
 }:
 {
-  imports = [
-    inputs.nix-index-database.hmModules.nix-index
-  ];
+  imports = [ inputs.nix-index-database.hmModules.nix-index ];
 
   home.packages = with pkgs; [
     eza
@@ -67,7 +65,6 @@
       # Less used ones:
       lsblk = "lsblk -o name,mountpoint,label,size,type,uuid";
       weather = "${pkgs.curl}/bin/curl -4 http://wttr.in/Malmö";
-
     };
     functions = {
       fish_greeting = "";
@@ -90,7 +87,6 @@
           printf "$argv" | fish_clipboard_copy
         end
       '';
-
     };
   };
 

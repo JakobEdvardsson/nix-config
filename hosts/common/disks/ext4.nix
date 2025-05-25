@@ -1,7 +1,4 @@
-{
-  disk,
-  ...
-}:
+{ disk, ... }:
 # USAGE in your configuration.nix.
 # inputs.disko.nixosModules.disko
 # (lib.custom.relativeToRoot "hosts/common/disks/btrfs.nix")

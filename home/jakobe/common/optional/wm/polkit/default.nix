@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customHome.polkit;
 in
 {
-
   options.customHome.polkit = {
     enable = lib.mkEnableOption "Enable polkit for Wayland.";
   };

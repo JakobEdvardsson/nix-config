@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customOption.nix-ld;
 in
 {
-
   options.customOption.nix-ld = {
     enable = lib.mkEnableOption "Enable nix-ld";
   };

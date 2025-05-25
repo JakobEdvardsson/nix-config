@@ -1,11 +1,10 @@
-#############################################################
+# ############################################################
 #
 #  Legion - Main Laptop
 #  NixOS running on Lenovo Legion 7 16achg6
 #  Ryzen 5 5800H, Nvidia RTX 3080 mobile, 16GB RAM
 #
 ###############################################################
-
 {
   inputs,
   lib,
@@ -66,13 +65,11 @@
       # "hosts/common/optional/thunar.nix" # file manager
       "hosts/common/optional/mpv.nix" # media player
       "hosts/common/optional/zsa-keeb.nix" # Moonlander keeb flashing stuff
-
     ])
     #
     # ========== Ghost Specific ==========
     #
     # ./samba.nix
-
   ];
 
   customOption = {
@@ -104,9 +101,7 @@
         prime.sync.enable = lib.mkForce false;
       };
 
-      imports = [
-        inputs.hardware.nixosModules.common-gpu-nvidia-disable
-      ];
+      imports = [ inputs.hardware.nixosModules.common-gpu-nvidia-disable ];
     };
   };
 

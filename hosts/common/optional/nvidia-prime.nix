@@ -5,14 +5,11 @@
   ...
 }:
 {
-
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware = {
-
     nvidia = {
-
       # Modesetting is required.
       modesetting.enable = true;
 
@@ -51,7 +48,6 @@
         amdgpuBusId = "PCI:6:0:0";
         nvidiaBusId = "PCI:1:0:0";
       };
-
     };
 
     graphics = {

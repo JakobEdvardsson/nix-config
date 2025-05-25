@@ -34,12 +34,8 @@ in
         '''
       '';
     };
-    privateIP = lib.mkOption {
-      type = lib.types.str;
-    };
-    dnsIP = lib.mkOption {
-      type = lib.types.str;
-    };
+    privateIP = lib.mkOption { type = lib.types.str; };
+    dnsIP = lib.mkOption { type = lib.types.str; };
   };
   config = lib.mkIf cfg.enable {
     systemd.services."netns@" = {

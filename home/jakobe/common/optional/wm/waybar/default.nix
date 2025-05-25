@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customHome.waybar;
 in
 {
-
   options.customHome.waybar = {
     enable = lib.mkEnableOption "Enable waybar as the bar for Wayland.";
   };
@@ -27,7 +25,6 @@ in
 
       # Bluetooth
       blueman
-
     ];
 
     programs.waybar = {
@@ -53,9 +50,7 @@ in
             "custom/logo"
             "hyprland/workspaces"
           ];
-          modules-center = [
-            "clock"
-          ];
+          modules-center = [ "clock" ];
           modules-right = [
             "tray"
             "memory"
@@ -108,8 +103,12 @@ in
             ];
             format-ethernet = "󰌘";
             format-disconnected = "󰖪";
-            tooltip-format-wifi = "{icon} {essid}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
-            tooltip-format-ethernet = "󰀂  {ifname}\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}";
+            tooltip-format-wifi = ''
+              {icon} {essid}
+              ⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}'';
+            tooltip-format-ethernet = ''
+              󰀂  {ifname}
+              ⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}'';
             tooltip-format-disconnected = "Disconnected";
             on-click = "nm-connection-editor & ";
             on-click-middle = "nm-applet &";
@@ -126,7 +125,9 @@ in
 
             tooltip-format = "{num_connections} connected";
             tooltip-format-disabled = "Bluetooth Disabled";
-            tooltip-format-connected = "{num_connections} connected\n{device_enumerate}";
+            tooltip-format-connected = ''
+              {num_connections} connected
+              {device_enumerate}'';
             tooltip-format-enumerate-connected = "{device_alias}";
             tooltip-format-enumerate-connected-battery = "{device_alias}: {device_battery_percentage}%";
 
@@ -159,12 +160,15 @@ in
           "custom/logo" = {
             format = "  ";
             tooltip = false;
-            on-click = "${config.home.sessionVariables.BROWSER} https://home-manager-options.extranix.com/ &&
-            ${config.home.sessionVariables.BROWSER} https://search.nixos.org/packages & "; # Open nixos and homemanager search
+            on-click = ''
+              ${config.home.sessionVariables.BROWSER} https://home-manager-options.extranix.com/ &&
+                          ${config.home.sessionVariables.BROWSER} https://search.nixos.org/packages & ''; # Open nixos and homemanager search
           };
           "custom/swaync" = {
             "tooltip" = true;
-            "tooltip-format" = "Left Click= Launch Notification Center\nRight Click= Do not Disturb";
+            "tooltip-format" = ''
+              Left Click= Launch Notification Center
+              Right Click= Do not Disturb'';
             "format" = "{} {icon}";
             "format-icons" = {
               "notification" = "<span foreground='red'><sup></sup></span>";

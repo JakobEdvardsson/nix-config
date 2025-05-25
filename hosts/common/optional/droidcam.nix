@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customOption.droidcam;
 in
 {
-
   options.customOption.droidcam = {
     enable = lib.mkEnableOption "Enable droidcam";
   };

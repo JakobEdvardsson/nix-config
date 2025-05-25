@@ -6,10 +6,7 @@
   ...
 }:
 {
-
-  imports = [
-    inputs.stylix.nixosModules.stylix
-  ];
+  imports = [ inputs.stylix.nixosModules.stylix ];
 
   # host-wide styling
   stylix = {

@@ -12,7 +12,6 @@
   ...
 }:
 let
-
   configDirectory = "${config.hostSpec.home}/nix-config";
   hostname = config.hostSpec.hostName;
 
@@ -69,7 +68,6 @@ let
 
         read -p "Press enter to exit..."
       '';
-
 in
 {
   home.packages = [ nixy ];

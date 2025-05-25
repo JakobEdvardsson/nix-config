@@ -23,7 +23,6 @@
     comms.enable = true;
     browser.enable = true;
     syncthing.enable = true;
-
   };
   dconf = {
     enable = true;
@@ -33,5 +32,4 @@
       };
     };
   };
-
 }

@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customHome.development;
 in
 {
-
   options.customHome.development = {
     enable = lib.mkEnableOption "Enable development tooling";
   };
@@ -26,7 +24,7 @@ in
       gdb
       gnumake
       vscode-fhs
-      act #local github action runner
+      act # local github action runner
       live-server
 
       # networkig tools

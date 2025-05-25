@@ -11,9 +11,7 @@ let
 in
 {
   options.homelab.services.${service} = {
-    enable = lib.mkEnableOption {
-      description = "Enable ${service}";
-    };
+    enable = lib.mkEnableOption { description = "Enable ${service}"; };
     url = lib.mkOption {
       type = lib.types.str;
       default = "adguard.${homelab.baseDomain}";
@@ -58,7 +56,6 @@ in
               domain = "www.${homelab.baseDomain}";
               answer = "A";
             }
-
           ];
           protection_enabled = true;
           filtering_enabled = true;
@@ -105,5 +102,4 @@ in
       '';
     };
   };
-
 }

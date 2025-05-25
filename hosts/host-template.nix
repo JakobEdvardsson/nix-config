@@ -1,8 +1,4 @@
-{
-  inputs,
-  lib,
-  ...
-}:
+{ inputs, lib, ... }:
 let
 in
 {

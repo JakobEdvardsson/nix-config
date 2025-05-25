@@ -4,12 +4,10 @@
   config,
   ...
 }:
-
 let
   cfg = config.customHome.rofi-wayland;
 in
 {
-
   options.customHome.rofi-wayland = {
     enable = lib.mkEnableOption "Enable waybar as the bar for Wayland.";
   };
