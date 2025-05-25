@@ -22,6 +22,7 @@ in
               href = lib.mkOption { type = lib.types.str; };
               siteMonitor = lib.mkOption { type = lib.types.str; };
               icon = lib.mkOption { type = lib.types.str; };
+              category = lib.mkOption { type = lib.types.str; };
             };
           }
         )
