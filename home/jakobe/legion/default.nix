@@ -15,7 +15,7 @@
     hyprland = {
       enable = true;
       monitor = "/home/jakobe/nix-config/home/jakobe/legion/monitor.conf";
-      #nvidia = true;
+      nvidia = true;
     };
     development.enable = true;
     tools.enable = true;

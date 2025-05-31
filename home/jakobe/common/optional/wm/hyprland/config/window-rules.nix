@@ -6,91 +6,188 @@
 }:
 {
   wayland.windowManager.hyprland.settings = {
-    #
-    # ========== Window Rules ==========
-    #
     windowrule = [
-      #windowrule = noblur,gamescope
-      #windowrule = fullscreen,gamescope
-      #windowrule = workspace 6 silent,^(gamescope)$
+      "tag +browser, class:^([Ff]irefox|org.mozilla.firefox|[Ff]irefox-esr|[Ff]irefox-bin)$"
+      "tag +browser, class:^([Gg]oogle-chrome(-beta|-dev|-unstable)?)$"
+      "tag +browser, class:^(chrome-.+-Default)$ # Chrome PWAs"
+      "tag +browser, class:^([Cc]hromium)$"
+      "tag +browser, class:^([Mm]icrosoft-edge(-stable|-beta|-dev|-unstable))$"
+      "tag +browser, class:^(Brave-browser(-beta|-dev|-unstable)?)$"
+      "tag +browser, class:^([Tt]horium-browser|[Cc]achy-browser)$"
+      "tag +browser, class:^(zen-alpha|zen)$"
 
-      # windowrule Position
-      "center,^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)"
-      "center,^([Ww]hatsapp-for-linux)$"
-      "center,^([Ff]erdium)$"
+      # notif tags
+      "tag +notif, class:^(swaync-control-center|swaync-notification-window|swaync-client|class)$"
 
-      # Dialogs
-      "float, title:^(Open File)(.*)$"
-      "float, title:^(Select a File)(.*)$"
-      "float, title:^(Choose wallpaper)(.*)$"
-      "float, title:^(Open Folder)(.*)$"
-      "float, title:^(Save As)(.*)$"
-      "float, title:^(Library)(.*)$"
-      "float, title:^(Accounts)(.*)$"
-    ];
-    # WINDOWRULE v2
-    windowrulev2 = [
-      # windowrule v2 - position
-      #  center,floating:1 # warning, it cause even the menu to float and center.
-      "center, class:([Tt]hunar), title:(File Operation Progress)"
-      "center, class:([Tt]hunar), title:(Confirm to replace files)"
-      "move 72% 7%,title:^(Picture-in-Picture)$"
-      # move 72% 7%,title:^(Firefox)$
+      # KooL settings tag
+      "tag +KooL_Cheat, title:^(KooL Quick Cheat Sheet)$"
+      "tag +KooL_Settings, title:^(KooL Hyprland Settings)$"
+      "tag +KooL-Settings, class:^(nwg-displays|nwg-look)$"
 
-      # windowrule v2 to avoid idle for fullscreen apps
-      "idleinhibit fullscreen, class:^(*)$"
-      "idleinhibit fullscreen, title:^(*)$"
+      # terminal tags
+      "tag +terminal, class:^(Alacritty|kitty|kitty-dropterm)$"
+
+      # email tags
+      "tag +email, class:^([Tt]hunderbird|org.gnome.Evolution)$"
+      "tag +email, class:^(eu.betterbird.Betterbird)$"
+
+      # project tags
+      "tag +projects, class:^(codium|codium-url-handler|VSCodium)$"
+      "tag +projects, class:^(VSCode|code-url-handler)$"
+      "tag +projects, class:^(jetbrains-.+)$ # JetBrains IDEs"
+
+      # screenshare tags
+      "tag +screenshare, class:^(com.obsproject.Studio)$"
+
+      # IM tags
+      "tag +im, class:^([Dd]iscord|[Ww]ebCord|[Vv]esktop)$"
+      "tag +im, class:^([Ff]erdium)$"
+      "tag +im, class:^([Ww]hatsapp-for-linux)$"
+      "tag +im, class:^(ZapZap|com.rtosta.zapzap)$ "
+      "tag +im, class:^(org.telegram.desktop|io.github.tdesktop_x64.TDesktop)$"
+      "tag +im, class:^(teams-for-linux)$"
+
+      # game tags
+      "tag +games, class:^(gamescope)$"
+      "tag +games, class:^(steam_app_\d+)$"
+
+      # gamestore tags
+      "tag +gamestore, class:^([Ss]team)$"
+      "tag +gamestore, title:^([Ll]utris)$"
+      "tag +gamestore, class:^(com.heroicgameslauncher.hgl)$"
+
+      # file-manager tags
+      "tag +file-manager, class:^([Tt]hunar|org.gnome.Nautilus|[Pp]cmanfm-qt)$"
+      "tag +file-manager, class:^(app.drey.Warp)$"
+
+      # wallpaper tags
+      "tag +wallpaper, class:^([Ww]aytrogen)$"
+
+      # multimedia tags
+      "tag +multimedia, class:^([Aa]udacious)$"
+
+      # multimedia-video tags
+      "tag +multimedia_video, class:^([Mm]pv|vlc)$"
+
+      # settings tags
+      "tag +settings, title:^(ROG Control)$"
+      "tag +settings, class:^(wihotspot(-gui)?)$ # wifi hotspot"
+      "tag +settings, class:^([Bb]aobab|org.gnome.[Bb]aobab)$ # Disk usage analyzer"
+      "tag +settings, class:^(gnome-disks|wihotspot(-gui)?)$"
+      "tag +settings, title:(Kvantum Manager)"
+      "tag +settings, class:^(file-roller|org.gnome.FileRoller)$ # archive manager"
+      "tag +settings, class:^(nm-applet|nm-connection-editor|blueman-manager)$"
+      "tag +settings, class:^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$"
+      "tag +settings, class:^(qt5ct|qt6ct|[Yy]ad)$"
+      "tag +settings, class:(xdg-desktop-portal-gtk)"
+      "tag +settings, class:^(org.kde.polkit-kde-authentication-agent-1)$"
+      "tag +settings, class:^([Rr]ofi)$"
+
+      # viewer tags
+      "tag +viewer, class:^(gnome-system-monitor|org.gnome.SystemMonitor|io.missioncenter.MissionCenter)$ # system monitor"
+      "tag +viewer, class:^(evince)$ # document viewer "
+      "tag +viewer, class:^(eog|org.gnome.Loupe)$ # image viewer"
+
+      # Some special override rules
+      "noblur, tag:multimedia_video*"
+      "opacity 1.0, tag:multimedia_video*"
+
+      # POSITION
+      # "center,floating:1 # warning, it cause even the menu to float and center.
+      "center, tag:KooL_Cheat*"
+      "center, class:([Tt]hunar), title:negative:(.*[Tt]hunar.*)"
+      "center, title:^(ROG Control)$"
+      "center, tag:KooL-Settings*"
+      "center, title:^(Keybindings)$"
+      "center, class:^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$"
+      "center, class:^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$"
+      "center, class:^([Ff]erdium)$"
+      "move 72% 7%,title:^(Picture-in-Picture)$ "
+      #"move 72% 7%,title:^(Firefox)$
+
+      # windowrule to avoid idle for fullscreen apps
+      #"idleinhibit fullscreen, class:^(*)$
+      #"idleinhibit fullscreen, title:^(*)$
       "idleinhibit fullscreen, fullscreen:1"
 
-      # windowrule v2 move to workspace
-      "workspace 1, class:^([Tt]hunderbird)$"
+      # windowrule move to workspace
+      "workspace 1, tag:email*"
+      "workspace 2, tag:browser*"
+      #"workspace 3, class:^([Tt]hunar)$"
+      #"workspace 3, tag:projects*
+      "workspace 5, tag:gamestore*"
+      "workspace 7, tag:im*"
+      "workspace 8, tag:games*"
 
-      "workspace 1, class:^(VSCode|code-url-handler)$"
-      "workspace 1, class:^(zed|dev.zed.Zed)$"
-      "workspace 1, class:^(jetbrains-.+)$ # JetBrains IDEs"
-
-      "workspace 2, class:^([Ff]irefox|org.mozilla.firefox|[Ff]irefox-esr)$"
-      "workspace 2, class:^(brave-browser)$"
-      "workspace 2, class:^([Mm]icrosoft-edge(-stable|-beta|-dev|-unstable)?)$"
-      "workspace 2, class:^([Gg]oogle-chrome(-beta|-dev|-unstable)?)$"
-      # workspace 3, class:^([Tt]hunar)$
-      "workspace 4, class:^(com.obsproject.Studio)$"
-      "workspace 5, class:^([Ss]team)$"
-      "workspace 5, class:^([Ll]utris)$"
-      "workspace 7, class:^([Dd]iscord|[Ww]ebCord|[Vv]esktop)$"
-      "workspace 7, class:^([Ff]erdium)$"
-      "workspace 7, class:^([Ww]hatsapp-for-linux)$"
-
-      # windowrule v2 move to workspace (silent)
+      # windowrule move to workspace (silent)
+      "workspace 4 silent, tag:screenshare*"
       "workspace 6 silent, class:^(virt-manager)$"
-      "workspace 9 silent, class:^([Aa]udacious)$"
+      "workspace 6 silent, class:^(.virt-manager-wrapped)$"
+      "workspace 9 silent, tag:multimedia*"
 
-      # windowrule v2 - float
-      "float, class:^(org.kde.polkit-kde-authentication-agent-1)$"
+      # FLOAT
+      "float, tag:KooL_Cheat*"
+      "float, tag:wallpaper*"
+      "float, tag:settings*"
+      "float, tag:viewer*"
+      "float, tag:KooL-Settings*"
       "float, class:([Zz]oom|onedriver|onedriver-launcher)$"
-      "float, class:([Tt]hunar), title:(File Operation Progress)"
-      "float, class:([Tt]hunar), title:(Confirm to replace files)"
-      "float, class:(xdg-desktop-portal-gtk)"
       "float, class:(org.gnome.Calculator), title:(Calculator)"
-      "float, class:(codium|codium-url-handler|VSCodium), title:(Add Folder to Workspace)"
-      "float, class:^([Rr]ofi)$"
-      "float, class:^(eog|org.gnome.Loupe)$ # image viewer"
-      "float, class:^(pavucontrol|org.pulseaudio.pavucontrol|com.saivert.pwvucontrol)$"
-      "float, class:^(nwg-look|qt5ct|qt6ct)$"
       "float, class:^(mpv|com.github.rafostar.Clapper)$"
-      "float, class:^(nm-applet|nm-connection-editor|blueman-manager)$"
-      "float, class:^(gnome-system-monitor|org.gnome.SystemMonitor)$ # system monitor"
-      "float, class:^(yad)$ # icon browser"
-      "float, class:^(wihotspot(-gui)?)$ # wifi hotspot"
-      "float, class:^(evince)$ # document viewer"
-      "float, class:^(file-roller|org.gnome.FileRoller)$ # archive manager"
-      "float, class:^([Bb]aobab|org.gnome.[Bb]aobab)$ # Disk usage analyzer"
-      "float, title:(Kvantum Manager)"
-      "float, class:^([Ss]team)$,title:^((?![Ss]team).*|[Ss]team [Ss]ettings)$"
       "float, class:^([Qq]alculate-gtk)$"
-      "float, class:^([Ww]hatsapp-for-linux)$"
+      #"float, class:^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$
       "float, class:^([Ff]erdium)$"
       "float, title:^(Picture-in-Picture)$"
+      #"float, title:^(Firefox)$
+
+      # windowrule - ######### float popups and dialogue #######
+      "float, title:^(Authentication Required)$"
+      "center, title:^(Authentication Required)$"
+      "float, class:(codium|codium-url-handler|VSCodium), title:negative:(.*codium.*|.*VSCodium.*)"
+      "float, class:^(com.heroicgameslauncher.hgl)$, title:negative:(Heroic Games Launcher)"
+      "float, class:^([Ss]team)$, title:negative:^([Ss]team)$"
+      "float, class:([Tt]hunar), title:negative:(.*[Tt]hunar.*)"
+
+      "float, title:^(Add Folder to Workspace)$"
+      "size 70% 60%, title:^(Add Folder to Workspace)$"
+      "center, title:^(Add Folder to Workspace)$"
+
+      "float, title:^(Save As)$"
+      "size 70% 60%, title:^(Save As)$"
+      "center, title:^(Save As)$"
+
+      "float, initialTitle:(Open Files)"
+      "size 70% 60%, initialTitle:(Open Files)"
+
+      "float, title:^(SDDM Background)$ #KooL's Dots YAD for setting SDDM background"
+      "center, title:^(SDDM Background)$ #KooL's Dots YAD for setting SDDM background"
+      "size 16% 12%, title:^(SDDM Background)$ #KooL's Dots YAD for setting SDDM background"
+      # END of float popups and dialogue #######
+
+      # SIZE
+      "size 65% 90%, tag:KooL_Cheat*"
+      "size 70% 70%, tag:wallpaper*"
+      "size 70% 70%, tag:settings*"
+      "size 60% 70%, class:^([Ww]hatsapp-for-linux|ZapZap|com.rtosta.zapzap)$"
+      "size 60% 70%, class:^([Ff]erdium)$"
+
+      #"size 25% 25%, title:^(Picture-in-Picture)$
+      #"size 25% 25%, title:^(Firefox)$
+
+      # PINNING
+      "pin, title:^(Picture-in-Picture)$"
+      #"pin,title:^(Firefox)$
+
+      # windowrule - extras
+      "keepaspectratio, title:^(Picture-in-Picture)$"
+
+      # BLUR & FULLSCREEN
+      "noblur, tag:games*"
+      "fullscreen, tag:games*"
+
+      #"bordercolor rgb(EE4B55) rgb(880808), fullscreen:1
+      #"bordercolor rgb(282737) rgb(1E1D2D), floating:1
+      #"opacity 0.8 0.8, pinned:1
     ];
   };
 }

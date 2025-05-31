@@ -18,8 +18,6 @@
 
   networking.hostName = config.hostSpec.hostName;
 
-  # Force home-manager to use global packages
-  home-manager.useGlobalPkgs = true;
   # If there is a conflict file that is backed up, use this extension
   home-manager.backupFileExtension = "backup";
   # home-manager.useUserPackages = true;
@@ -70,10 +68,16 @@
         "flakes"
       ];
 
-      # Hyprland cache
-      substituters = [ "https://hyprland.cachix.org" ];
+      # cache
+      substituters = [
+        "https://hyprland.cachix.org"
+        "https://nixpkgs-wayland.cachix.org"
+        "https://nix-community.cachix.org"
+      ];
       trusted-public-keys = [
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
+        "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
     };
   };
