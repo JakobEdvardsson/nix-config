@@ -26,8 +26,6 @@ in
       description = "Enable Nvidia option for hyprland. Offload render to gpu";
     };
 
-    #TODO:
-    # Nvidia options
   };
 
   imports = [
@@ -79,25 +77,71 @@ in
         #
         env = lib.concatLists [
           [
-            "NIXOS_OZONE_WL,1" # For ozone-based and Electron apps
-            "MOZ_ENABLE_WAYLAND,1" # For Firefox Wayland
-            "MOZ_WEBRENDER,1" # For Firefox Wayland
+
+            "AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0" # fixes screen tearing
+            "GDK_BACKEND,wayland,x11,*"
+            "QT_QPA_PLATFORM,wayland;xcb"
+            "CLUTTER_BACKEND,wayland"
+
+            #Run SDL2 applications on Wayland.
+            #Remove or set to x11 if games that provide older versions of SDL cause compatibility issues
+            #"SDL_VIDEODRIVER,wayland"
+
+            # xdg Specifications
+            "XDG_CURRENT_DESKTOP,Hyprland"
+            "XDG_SESSION_DESKTOP,Hyprland"
             "XDG_SESSION_TYPE,wayland"
-            "WLR_NO_HARDWARE_CURSORS,1"
-            "WLR_RENDERER_ALLOW_SOFTWARE,1"
-            "QT_QPA_PLATFORM,wayland"
+
+            # QT Variables
+            "QT_AUTO_SCREEN_SCALE_FACTOR,1"
+            "QT_WAYLAND_DISABLE_WINDOWDECORATION,1"
+            "QT_QPA_PLATFORMTHEME,qt5ct"
+            "QT_QPA_PLATFORMTHEME,qt6ct"
+
+            # hyprland-qt-support
+            "QT_QUICK_CONTROLS_STYLE,org.hyprland.style"
+
+            # xwayland apps scale fix (useful if you are use monitor scaling).
+            # Set same value if you use scaling in Monitors.conf
+            # 1 is 100% 1.5 is 150%
+            # see https://wiki.hyprland.org/Configuring/XWayland/
+            "GDK_SCALE,1.5"
+            "QT_SCALE_FACTOR,1.5"
+
+            # firefox
+            "MOZ_ENABLE_WAYLAND,1"
+
+            # electron >28 apps (may help) ##
+            # https://www.electronjs.org/docs/latest/api/environment-variables
+            "ELECTRON_OZONE_PLATFORM_HINT,auto" # auto selects Wayland if possible, X11 otherwise
           ]
           (
             if cfg.nvidia then
               [
-                "LIBVA_DRIVER_NAME,nvidia"
-                "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-                "NVD_BACKEND,direct"
-                # additional ENV's for nvidia. Caution, activate with care
-                "GBM_BACKEND,nvidia-drm"
-                "__NV_PRIME_RENDER_OFFLOAD,1"
-                "__VK_LAYER_NV_optimus,NVIDIA_only"
-                "WLR_DRM_NO_ATOMIC,1"
+
+                "AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1" #https://github.com/hyprwm/aquamarine/issues/171
+                # "LIBVA_DRIVER_NAME,nvidia"
+                # "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+                # "NVD_BACKEND,direct"
+                # ""
+                #
+                # # additional ENV's for nvidia. Caution, activate with care
+                # "GBM_BACKEND,nvidia-drm"
+                #
+                # "__GL_GSYNC_ALLOWED,1" # adaptive Vsync
+                # "__NV_PRIME_RENDER_OFFLOAD,1"
+                # "__VK_LAYER_NV_optimus,NVIDIA_only"
+                # "WLR_DRM_NO_ATOMIC,1"
+                #
+                # # FOR VM and POSSIBLY NVIDIA
+                # # LIBGL_ALWAYS_SOFTWARE software mesa rendering
+                # #"LIBGL_ALWAYS_SOFTWARE,1" # Warning. May cause hyprland to crash
+                # "WLR_RENDERER_ALLOW_SOFTWARE,1"
+                #
+                # # nvidia firefox (for hardware acceleration on FF)?
+                # # check this post https://github.com/elFarto/nvidia-vaapi-driver#configuration
+                # "MOZ_DISABLE_RDD_SANDBOX,1"
+                # "EGL_PLATFORM,wayland"
               ]
             else
               [ ]
