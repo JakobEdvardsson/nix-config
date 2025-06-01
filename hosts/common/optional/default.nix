@@ -8,5 +8,7 @@
     ./droidcam.nix
     ./ai.nix
     ./services/docker.nix
+    ./nvidia-prime.nix
+    ./nvidia.nix
   ];
 }

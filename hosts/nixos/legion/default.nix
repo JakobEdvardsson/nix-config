@@ -51,7 +51,7 @@
       #TODO: implement/remove
 
       "hosts/common/optional/hyprland.nix" # window manager
-      "hosts/common/optional/nvidia-prime.nix" # nvidia-prime
+      #"hosts/common/optional/nvidia-prime.nix" # nvidia-prime
       # "hosts/common/optional/services/greetd.nix" # display manager
       # "hosts/common/optional/services/openssh.nix" # allow remote SSH access
       # "hosts/common/optional/services/printing.nix" # CUPS
@@ -66,13 +66,10 @@
       "hosts/common/optional/mpv.nix" # media player
       "hosts/common/optional/zsa-keeb.nix" # Moonlander keeb flashing stuff
     ])
-    #
-    # ========== Ghost Specific ==========
-    #
-    # ./samba.nix
   ];
 
   customOption = {
+    nvidia-prime.enable = true;
     tailscale.enable = true;
     nix-ld.enable = true;
     docker.enable = true;
@@ -93,14 +90,10 @@
   powerManagement.enable = true;
 
   specialisation = {
-    on-the-go.configuration = {
-      system.nixos.tags = [ "on-the-go" ];
-      hardware.nvidia = {
-        prime.offload.enable = lib.mkForce true;
-        prime.offload.enableOffloadCmd = lib.mkForce true;
-        prime.sync.enable = lib.mkForce false;
-      };
-
+    amd.configuration = {
+      system.nixos.tags = [ "amd" ];
+      customOption.nvidia-prime.enable = lib.mkForce false;
+      customOption.nvidia.enable = lib.mkForce false;
       imports = [ inputs.hardware.nixosModules.common-gpu-nvidia-disable ];
     };
   };

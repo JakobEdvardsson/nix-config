@@ -5,28 +5,15 @@
   ...
 }:
 let
-  cfg = config.customOption.nvidia-prime;
+  cfg = config.customOption.nvidia;
 in
 {
-  options.customOption.nvidia-prime = {
-    enable = lib.mkEnableOption "Enable nvidia-prime";
-
-    amdgpuBusId = lib.mkOption {
-      type = lib.types.str;
-      default = "PCI:6:0:0";
-      description = "PCI Bus ID of the AMD GPU";
-    };
-
-    nvidiaBusId = lib.mkOption {
-      type = lib.types.str;
-      default = "PCI:1:0:0";
-      description = "PCI Bus ID of the Nvidia GPU";
-    };
+  options.customOption.nvidia = {
+    enable = lib.mkEnableOption "Enable nvidia";
   };
-
   config = lib.mkIf cfg.enable {
     # Load nvidia driver for Xorg and Wayland
-    services.xserver.videoDrivers = [ "nvidia" "modesetting" "amdgpu" ];
+    services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
 
     boot = {
       blacklistedKernelModules = [ "nouveau" ];
@@ -64,18 +51,7 @@ in
 
         # Optionally, you may need to select the appropriate driver version for your specific GPU.
         package = config.boot.kernelPackages.nvidiaPackages.production;
-
-        prime = {
-          offload = {
-            enable = true;
-            enableOffloadCmd = true;
-          };
-          # Make sure to use the correct Bus ID values for your system!
-          amdgpuBusId = cfg.amdgpuBusId;
-          nvidiaBusId = cfg.nvidiaBusId;
-        };
       };
-
       graphics = {
         enable = true;
         enable32Bit = true;
@@ -90,14 +66,5 @@ in
         ];
       };
     };
-    environment.systemPackages = with pkgs; [
-      vaapiVdpau
-      libvdpau
-      libvdpau-va-gl
-      nvidia-vaapi-driver
-      vdpauinfo
-      libva
-      libva-utils
-    ];
   };
 }
