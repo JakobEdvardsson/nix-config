@@ -10,12 +10,6 @@ let
   homelab = config.homelab;
 in
 {
-  #TODO: remove when settings in stable nixos
-  disabledModules = [ "${inputs.nixpkgs}/nixos/modules/services/misc/sonarr.nix" ];
-  imports = [
-    "${inputs.nixpkgs-unstable}/nixos/modules/services/misc/servarr/sonarr.nix"
-  ];
-
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     configDir = lib.mkOption {
@@ -47,11 +41,11 @@ in
     sops.secrets = {
       "${service}ApiKey" = { };
     };
-    # FIX: Remove once fixed https://discourse.nixos.org/t/solved-sonarr-is-broken-in-24-11-unstable-aka-how-the-hell-do-i-use-nixpkgs-config-permittedinsecurepackages/56828/13
-    nixpkgs.config.permittedInsecurePackages = [
-      "dotnet-sdk-6.0.428"
-      "aspnetcore-runtime-6.0.36"
-    ];
+    # # FIX: Remove once fixed https://discourse.nixos.org/t/solved-sonarr-is-broken-in-24-11-unstable-aka-how-the-hell-do-i-use-nixpkgs-config-permittedinsecurepackages/56828/13
+    # nixpkgs.config.permittedInsecurePackages = [
+    #   "dotnet-sdk-6.0.428"
+    #   "aspnetcore-runtime-6.0.36"
+    # ];
     services.${service} = {
       enable = true;
       user = homelab.user;

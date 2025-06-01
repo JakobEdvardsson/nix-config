@@ -102,6 +102,7 @@ in
             "Media"
             "Services"
           ];
+          # TODO: Render external
           hl = config.homelab.services;
           homepageServices =
             x:

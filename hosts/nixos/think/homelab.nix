@@ -43,6 +43,8 @@ in
           };
         */
         # homepage icons can be found at https://github.com/homarr-labs/dashboard-icons
+
+        # Categories: Arr, Media, Services
         homepage = {
           enable = true;
           external = [
@@ -52,6 +54,7 @@ in
                 siteMonitor = "http://192.168.50.1";
                 description = "Asus Router";
                 icon = "asus-router.svg";
+                category = "Services";
               };
             }
             {
@@ -60,6 +63,7 @@ in
                 siteMonitor = "http://192.168.50.10:8123";
                 description = "Home Assistant";
                 icon = "home-assistant";
+                category = "Services";
               };
             }
             {
@@ -68,6 +72,7 @@ in
                 siteMonitor = "http://127.0.0.1:8384/";
                 description = "Local Syncthing";
                 icon = "syncthing";
+                category = "Services";
               };
             }
           ];
