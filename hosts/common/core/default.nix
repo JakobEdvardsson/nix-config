@@ -16,6 +16,7 @@
       "homelab"
       "hosts/common/core/services"
       "hosts/common/users/primary"
+      "hosts/common/users/deploy.nix"
       "hosts/common/optional"
     ])
     (lib.custom.scanPaths ./.)
