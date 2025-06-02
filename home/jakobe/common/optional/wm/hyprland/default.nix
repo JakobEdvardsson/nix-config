@@ -78,7 +78,7 @@ in
         env = lib.concatLists [
           [
 
-            "AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0" # fixes screen tearing
+            #"AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0" # fixes screen tearing
             "GDK_BACKEND,wayland,x11,*"
             "QT_QPA_PLATFORM,wayland;xcb"
             "CLUTTER_BACKEND,wayland"
