@@ -13,7 +13,10 @@ in
   };
   config = lib.mkIf cfg.enable {
     # Load nvidia driver for Xorg and Wayland
-    services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
+    services.xserver.videoDrivers = [
+      "nvidia"
+      "modesetting"
+    ];
 
     boot = {
       blacklistedKernelModules = [ "nouveau" ];
