@@ -14,7 +14,7 @@ mkdir -p hosts/nixos/<hostname>
 mkdir -p home/jakobe/<hostname>
 ```
 
-3. Import a disko disk layout in your `flake.nix`:
+3. Import a disko disk layout in `flake.nix`:
 
 ```nix
 inputs.disko.nixosModules.disko
@@ -32,7 +32,7 @@ inputs.disko.nixosModules.disko
 
 1. Boot into a NixOS installer ISO.
 
-2. Clone your config repo:
+2. Clone config repo:
 
 ```bash
 nix-shell -p git vim disko
@@ -75,7 +75,7 @@ nix-shell -p ssh-to-age --run 'cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-ag
 
 3. Add that public key to `.sops.yaml` as a new host entry.
 
-4. Copy the private key to your local machine:
+4. Copy the private key to local machine:
 
 ```bash
 nix-shell -p ssh-to-age --run 'sudo ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key -o ~/.config/sops/age/keys.txt'
@@ -88,7 +88,7 @@ nix-shell -p age --run 'age-keygen -y ~/.config/sops/age/keys.txt'  # Confirm it
 sops updatekeys secrets.yaml
 ```
 
-6. Commit and push your changes.
+6. Commit and push changes.
 
 ---
 
@@ -118,5 +118,40 @@ hashedPasswordFile = sopsHashedPasswordFile;
 
 ```bash
 sudo nixos-rebuild switch --flake .#<hostname>
+```
+
+---
+
+### Optional: Remote Deploy via `deploy` User
+
+Once a machine is up and running, you can manage it remotely using the restricted `deploy` user.
+
+#### 1. Enable `deploy` User
+
+In host configuration (`hosts/nixos/<hostname>/default.nix` or similar):
+
+```nix
+customOption.deploy.enable = true;
+```
+
+#### 2. Add Public Key
+
+Add SSH public key to `hosts/common/users/primary/keys` so they are included in deploy's authorizedKeys.
+
+#### 3. Rebuild to apply changes
+
+```bash
+sudo nixos-rebuild switch --flake .#<hostname>
+```
+
+#### 4. Deploy Remotely
+
+From management machine, deploy updates with:
+
+```bash
+nixos-rebuild switch \
+  --flake .#<hostname> \
+  --target-host deploy@<hostname> \
+  --use-remote-sudo
 ```
 
