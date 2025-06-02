@@ -1,12 +1,22 @@
-# Setup for new host
+## NixOS Install Guide
 
-- Create new host under hosts/nixos/<hostname>
-- Create new home under home/jakobe/<hostname>
+### Prepare Host Configuration
 
-- Import disko disk layout
+1. Create a new host config:
+
+```bash
+mkdir -p hosts/nixos/<hostname>
+```
+
+2. Create a matching home-manager config:
+
+```bash
+mkdir -p home/jakobe/<hostname>
+```
+
+3. Import a disko disk layout in your `flake.nix`:
 
 ```nix
-#example
 inputs.disko.nixosModules.disko
 (lib.custom.relativeToRoot "hosts/common/disks/btrfs.nix")
 {
@@ -16,64 +26,97 @@ inputs.disko.nixosModules.disko
 }
 ```
 
-- Boot from a NixOS installer
-- Clone repo
+---
+
+### Install NixOS
+
+1. Boot into a NixOS installer ISO.
+
+2. Clone your config repo:
 
 ```bash
 nix-shell -p git vim disko
-cd && git clone https://github.com/jakobedvardsson/nix-config
+git clone https://github.com/jakobedvardsson/nix-config
 cd nix-config
 ```
 
-- Edit hosts/common/users/primary/default.nix to temporary set a password
+3. Temporarily enable password login by editing `hosts/common/users/primary/default.nix`:
 
 ```nix
-#hashedPasswordFile = sopsHashedPasswordFile; # Comment out to disable password
-password = lib.mkForce "nixos"; # Uncomment to set temporary password until sops passwords work
+#hashedPasswordFile = sopsHashedPasswordFile;  # Comment out
+password = lib.mkForce "nixos";               # Add this temporarily
 ```
 
-- Add hardware.nix
+4. Generate `hardware.nix`:
 
 ```bash
-nixos-generate-config --show-hardware-config --no-filesystems > ~/nix-config/hosts/nixos/<hostname>/hardware.nix
+nixos-generate-config --show-hardware-config --no-filesystems > hosts/nixos/<hostname>/hardware.nix
 ```
 
-- Installation
+5. Partition and install:
 
 ```bash
 nix-shell -p disko
-sudo disko --mode disko --flake .#name
-sudo nixos-install --no-channel-copy --flake .#name
+sudo disko --mode disko --flake .#<hostname>
+sudo nixos-install --no-channel-copy --flake .#<hostname>
 ```
 
-- From remote machine, ssh into the new machine
-- Create key derived from host ssh key
+---
+
+### SOPS Key Setup
+
+1. SSH into the new machine.
+
+2. Extract the age identity from the host SSH key:
 
 ```bash
-nix-shell -p ssh-to-age --run 'cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age' # Get age key from host ssh key (add to .sops.yaml as a new host)
-nix-shell -p ssh-to-age --run 'sudo ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key -o ~/.config/sops/age/keys.txt' # Get private-key to keys.txt
-nix-shell -p age --run 'age-keygen -y ~/.config/sops/age/keys.txt' # Verify same public key
+nix-shell -p ssh-to-age --run 'cat /etc/ssh/ssh_host_ed25519_key.pub | ssh-to-age'
 ```
 
-- On the remote machine, add the public age key to .sops.yaml as a new host
-- Update the keys for sops
+3. Add that public key to `.sops.yaml` as a new host entry.
+
+4. Copy the private key to your local machine:
 
 ```bash
-sops updatekeys secrets.yaml # Update sops to also use the new key
+nix-shell -p ssh-to-age --run 'sudo ssh-to-age -private-key -i /etc/ssh/ssh_host_ed25519_key -o ~/.config/sops/age/keys.txt'
+nix-shell -p age --run 'age-keygen -y ~/.config/sops/age/keys.txt'  # Confirm it matches
 ```
 
-- Commit and push changed
+5. Update secrets:
 
-- On the new machine, clone repo
+```bash
+sops updatekeys secrets.yaml
+```
+
+6. Commit and push your changes.
+
+---
+
+### Final Boot
+
+1. Back on the new machine:
 
 ```bash
 cd && git clone https://github.com/jakobedvardsson/nix-config
 cd nix-config
-```
-
-- Build the system
-
-```bash
 sudo nixos-rebuild boot --flake .#<hostname>
 reboot
 ```
+
+2. **Revert the temporary password override**:
+   Edit `hosts/common/users/primary/default.nix` and undo the temporary password setting:
+
+```nix
+# Remove or comment this:
+password = lib.mkForce "nixos";
+
+# Restore this:
+hashedPasswordFile = sopsHashedPasswordFile;
+```
+
+3. Apply the change:
+
+```bash
+sudo nixos-rebuild switch --flake .#<hostname>
+```
+
