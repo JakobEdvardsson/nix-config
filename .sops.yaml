@@ -3,6 +3,7 @@ keys:
     - &jakobe age13garmejyv5uf29qqkstwv0xxv27ydnfj04akgygmkwhdy9fdjchqgslc69
   - &hosts:
     - &legion age1av32s3h9jy0mh7d7rfgrksg3eh94259vrc4cyhmm04mk5g4t3c2qcw2ve9
+    - &think age1l745y2dgr9yn8kxflzyxgssu9s83ysqyx9aszvcvzxr7esh0hpkql5mv03
 
 creation_rules:
   - path-regex: secrets.yaml$
@@ -10,3 +11,4 @@ creation_rules:
       - age:
           - *jakobe
           - *legion
+          - *think
