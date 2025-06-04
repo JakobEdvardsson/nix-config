@@ -25,7 +25,7 @@
     # ========== Disk Layout ==========
     #
     inputs.disko.nixosModules.disko
-    (lib.custom.relativeToRoot "hosts/common/disks/btrfs.nix")
+    (lib.custom.relativeToRoot "hosts/common/disks/ext4.nix")
     {
       _module.args = {
         disk = "/dev/nvme0n1";
