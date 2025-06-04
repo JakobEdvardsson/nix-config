@@ -10,7 +10,7 @@ in
     };
 
     homelab = {
-      enable = true;
+      enable = false;
       baseDomain = "edvardsson.tech";
       cloudflare.dnsCredentialsFile = config.sops.secrets.cloudflareDnsApiCredentials.path;
       timeZone = "Europe/Stockholm";
@@ -77,19 +77,19 @@ in
         # };
       };
     };
-    services.caddy.virtualHosts = {
-      "home-assistant.edvardsson.tech" = {
-        useACMEHost = config.homelab.baseDomain;
-        extraConfig = ''
-          reverse_proxy http://192.168.50.10:8123
-        '';
-      };
-      "router.edvardsson.tech" = {
-        useACMEHost = config.homelab.baseDomain;
-        extraConfig = ''
-          reverse_proxy http://192.168.50.1
-        '';
-      };
-    };
+    # services.caddy.virtualHosts = {
+    #   "home-assistant.edvardsson.tech" = {
+    #     useACMEHost = config.homelab.baseDomain;
+    #     extraConfig = ''
+    #       reverse_proxy http://192.168.50.10:8123
+    #     '';
+    #   };
+    #   "router.edvardsson.tech" = {
+    #     useACMEHost = config.homelab.baseDomain;
+    #     extraConfig = ''
+    #       reverse_proxy http://192.168.50.1
+    #     '';
+    #   };
+    # };
   };
 }
