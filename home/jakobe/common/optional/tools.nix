@@ -26,6 +26,8 @@ in
       # Media production
       obs-studio
 
+      proton-pass
+
       # Office suite
       libreoffice
     ];
