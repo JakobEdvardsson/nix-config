@@ -19,7 +19,9 @@ in
     users.users.deploy = {
       isNormalUser = true;
       group = "deploy";
-      shell = pkgs.nologin; # prevents interactive shell access
+      home = "/home/deploy";
+      createHome = true;
+      shell = "/run/current-system/sw/bin/nologin"; # prevents interactive shell access
       openssh.authorizedKeys.keys = lib.lists.forEach pubKeys (key: builtins.readFile key);
     };
 
@@ -29,7 +31,6 @@ in
       Match User deploy
         PasswordAuthentication no
         PermitTTY no
-        PermitUserEnvironment no
         AllowTcpForwarding no
         X11Forwarding no
     '';
