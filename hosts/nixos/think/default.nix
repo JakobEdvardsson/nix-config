@@ -56,15 +56,15 @@
 
   customOption = {
     intel-quicksync.enable = true;
-
-    tailscale = {
-      enable = true;
-      /*
-        advertisedRoute = [
-          "192.168.50.0/24"
-        ];
-      */
-    };
+    deploy.enable = true;
+    # tailscale = {
+    #   enable = true;
+    #   /*
+    #     advertisedRoute = [
+    #       "192.168.50.0/24"
+    #     ];
+    #   */
+    # };
   };
 
   hostSpec = {
