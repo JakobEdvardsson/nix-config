@@ -86,8 +86,8 @@ in
         # jellyseerr.enable = true;
         # deluge.enable = true;
 
-        adguard.enable = true;
-        syncthing.enable = true;
+        # adguard.enable = true;
+        # syncthing.enable = true;
 
         # wireguard-netns = {
         #   enable = true;
