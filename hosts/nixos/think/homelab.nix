@@ -19,29 +19,9 @@ in
         slow = "/mnt/slow";
         fast = "/mnt/fast";
       };
-      /*
-        samba = {
-          enable = true;
-          passwordFile = config.sops.secrets.sambaPassword.path;
-          shares = {
-            Backups = {
-              path = "${hl.mounts.merged}/Backups";
-            };
-          };
-        };
-      */
+
       services = {
         enable = true;
-        /*
-          backup = {
-            enable = true;
-            passwordFile = config.sops.secrets.resticPassword.path;
-            s3.enable = true;
-            s3.url = "https://s3.eu-central-003.backblazeb2.com/notthebee-ojfca-backups";
-            s3.environmentFile = config.sops.secrets.resticBackblazeEnv.path;
-            local.enable = true;
-          };
-        */
         # homepage icons can be found at https://github.com/homarr-labs/dashboard-icons
 
         # Categories: Arr, Media, Services
