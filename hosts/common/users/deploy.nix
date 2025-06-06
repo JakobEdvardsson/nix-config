@@ -20,8 +20,8 @@ in
       isNormalUser = true;
       group = "deploy";
       home = "/home/deploy";
+      password = null;
       createHome = true;
-      shell = "/run/current-system/sw/bin/nologin"; # prevents interactive shell access
       openssh.authorizedKeys.keys = lib.lists.forEach pubKeys (key: builtins.readFile key);
     };
 
