@@ -4,6 +4,7 @@ keys:
   - &hosts:
     - &legion age1av32s3h9jy0mh7d7rfgrksg3eh94259vrc4cyhmm04mk5g4t3c2qcw2ve9
     - &think age1l745y2dgr9yn8kxflzyxgssu9s83ysqyx9aszvcvzxr7esh0hpkql5mv03
+    - &servox age16xykveuznspsezaadqxx0rnpv7vtw7gzn8c98egsy83q25dcyycsuh6czn
 
 creation_rules:
   - path-regex: secrets.yaml$
@@ -12,3 +13,4 @@ creation_rules:
           - *jakobe
           - *legion
           - *think
+          - *servox
