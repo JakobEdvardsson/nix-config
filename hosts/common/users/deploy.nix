@@ -21,7 +21,6 @@ in
       group = "deploy";
       home = "/home/deploy";
       password = null;
-      createHome = true;
       openssh.authorizedKeys.keys = lib.lists.forEach pubKeys (key: builtins.readFile key);
     };
 
