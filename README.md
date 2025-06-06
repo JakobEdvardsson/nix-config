@@ -155,3 +155,13 @@ nixos-rebuild switch \
   --use-remote-sudo
 ```
 
+
+---
+
+### Tailscale
+
+Start the Tailscale daemon and authenticate:
+
+```bash
+sudo tailscale up --accept-routes
+
