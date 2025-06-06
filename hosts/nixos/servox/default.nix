@@ -74,7 +74,7 @@
 
   customOption = {
     deploy.enable = true;
-    tailscale.enable = true;
+    #tailscale.enable = true;
     nix-ld.enable = true;
   };
 
