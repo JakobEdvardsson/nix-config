@@ -88,7 +88,7 @@ nix-shell -p age --run 'age-keygen -y ~/.config/sops/age/keys.txt'  # Confirm it
 sops updatekeys secrets.yaml
 ```
 
-6. Commit and push changes.
+6. **Commit and push changes**
 
 ---
 
