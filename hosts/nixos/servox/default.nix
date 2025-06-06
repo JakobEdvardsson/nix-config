@@ -25,17 +25,13 @@
     #
     # ========== Disk Layout ==========
     #
-    #TODO: implement/remove
-
-    /*
-      inputs.disko.nixosModules.disko
-      (lib.custom.relativeToRoot "hosts/common/disk/hybrid.nix")
-      {
-        _module.args = {
-          disk = "/dev/disk/by-uuid/071edf10-af7a-4c50-8619-e54c2888a852";
-        };
-      }
-    */
+    inputs.disko.nixosModules.disko
+    (lib.custom.relativeToRoot "hosts/common/disks/ext4.nix")
+    {
+      _module.args = {
+        disk = "/dev/nvme0n1";
+      };
+    }
 
     #
     # ========== Misc Inputs ==========
