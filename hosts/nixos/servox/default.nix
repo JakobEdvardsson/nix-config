@@ -89,9 +89,10 @@
     enable = true;
     package = inputs.nixpkgs-unstable.legacyPackages.x86_64-linux.ollama;
     acceleration = "rocm";
-    environmentVariables = {
-      HCC_AMDGPU_TARGET = "gfx1031"; # used to be necessary, but doesn't seem to anymore
-    };
+    openFirewall = true;
+    # environmentVariables = {
+    #   HCC_AMDGPU_TARGET = "gfx1031"; # used to be necessary, but doesn't seem to anymore
+    # };
     rocmOverrideGfx = "10.3.1";
   };
 
