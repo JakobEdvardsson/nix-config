@@ -10,8 +10,8 @@ in
     };
 
     homelab = {
-      enable = false;
-      baseDomain = "edvardsson.tech";
+      enable = true;
+      baseDomain = "edvardsson.dev";
       cloudflare.dnsCredentialsFile = config.sops.secrets.cloudflareDnsApiCredentials.path;
       timeZone = "Europe/Stockholm";
       mounts = {
