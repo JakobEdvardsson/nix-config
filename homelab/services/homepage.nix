@@ -33,6 +33,7 @@ in
     services.glances.enable = true;
     services.${service} = {
       enable = true;
+      allowedHosts = "localhost:8082,127.0.0.1:8082,0.0.0.0:8082,${cfg.url}";
       customCSS = ''
         body, html {
           font-family: SF Pro Display, Helvetica, Arial, sans-serif !important;

@@ -1,11 +1,1 @@
-config/.config/dconf/user
-config/.config/fish/fish_variables
-config/.config/qt5ct/qt5ct.conf
-config/.config/qt6ct/qt6ct.conf
-config/.config/Thunar/accels.scm
-config/.config/xfce4/xfconf/xfce-perchannel-xml/thunar.xml
-config/.config/dconf/user
-config/.config/fish/fish_variables
-config/.config/fish/completions
-config/.config/Thunar/accels.scm
-config/.tmux/plugins
+result
