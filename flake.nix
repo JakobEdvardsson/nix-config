@@ -85,15 +85,15 @@
       homeConfigurations."jakobe" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
-          ./home/jakobe/wsl
-          inputs.stylix.homeManagerModules.stylix
+          ./home/jakobe/work
+          inputs.stylix.homeModules.stylix
         ];
         extraSpecialArgs = {
           inherit inputs outputs;
           lib = extendedLib; # Use the extended library
           hostSpec = {
             username = "jakobe";
-            hostName = "wsl-host";
+            hostName = "work";
             handle = "Jakob Edvardsson";
             email = "jakob@edvardsson.tech";
           };
