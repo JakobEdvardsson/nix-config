@@ -86,7 +86,7 @@
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         modules = [
           ./home/jakobe/work
-          inputs.stylix.homeModules.stylix
+          inputs.stylix.homeManagerModules.stylix
         ];
         extraSpecialArgs = {
           inherit inputs outputs;
