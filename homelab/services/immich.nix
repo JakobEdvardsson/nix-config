@@ -7,14 +7,6 @@ in
 {
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    configDir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/${service}";
-    };
-    mediaDir = lib.mkOption {
-      type = lib.types.path;
-      default = "${config.homelab.mounts.fast}/Photos/Immich";
-    };
     url = lib.mkOption {
       type = lib.types.str;
       default = "immich.${homelab.baseDomain}";
@@ -37,17 +29,17 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    systemd.tmpfiles.rules = [ "d ${cfg.mediaDir} 0775 immich ${homelab.group} - -" ];
+    #systemd.tmpfiles.rules = [ "d ${cfg.mediaDir} 0775 immich ${homelab.group} - -" ];
     systemd.services."immich-server".serviceConfig.PrivateDevices = lib.mkForce false;
     users.users.immich.extraGroups = [
       "video"
       "render"
     ];
     services.immich = {
-      group = homelab.group;
+      accelerationDevices = null;
+      #group = homelab.group;
       enable = true;
       port = 2283;
-      mediaLocation = "${cfg.mediaDir}";
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;

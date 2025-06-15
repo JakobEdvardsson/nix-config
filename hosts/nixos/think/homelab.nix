@@ -66,6 +66,11 @@ in
         # jellyseerr.enable = true;
         # deluge.enable = true;
 
+        # Immich
+        immich = {
+          enable = true;
+        };
+
         # adguard.enable = true;
         # syncthing.enable = true;
 
@@ -77,6 +82,32 @@ in
         # };
       };
     };
+
+    # NFS Storage
+    fileSystems."/mnt/immich" = {
+      device = "tower:/mnt/user/immich";
+      fsType = "nfs";
+      options = [
+        "x-systemd.automount"
+        "x-systemd.device-timeout=10"
+        "_netdev"
+        "nofail"
+        "noresvport"
+        "nfsvers=4"
+        "rsize=1048576"
+        "wsize=1048576"
+        "hard"
+        "timeo=600"
+        "retrans=2"
+      ];
+      neededForBoot = false;
+    };
+
+    systemd.services."immich-server" = {
+      after = [ "mnt-immich.mount" ];
+      requires = [ "mnt-immich.mount" ];
+    };
+
     # services.caddy.virtualHosts = {
     #   "home-assistant.edvardsson.tech" = {
     #     useACMEHost = config.homelab.baseDomain;

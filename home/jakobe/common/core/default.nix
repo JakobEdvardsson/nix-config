@@ -74,6 +74,7 @@
     # Packages that don't have custom configs go here
     direnv
     btop # resource monitor
+    htop # resource monitor
     coreutils # basic gnu utils
     curl
     dust # disk usage
