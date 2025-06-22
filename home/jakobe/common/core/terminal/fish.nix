@@ -39,6 +39,11 @@
       du = "du -ch";
       free = "free -m";
 
+      #trash
+      tp = "trash-put";
+      tl = "trash-list";
+      tempty = "trash-empty";
+
       #-------------Bat related------------
       cat = "bat --paging=never";
       rg = "batgrep";
@@ -61,6 +66,7 @@
 
       # Always attemp to attach to session requires: newSession = true;
       mux = "tmux a";
+      k = "kubectl";
 
       # kitty
       s = "kitten ssh";
@@ -78,10 +84,6 @@
       "....." = "cd ../../../..";
       tree = "eza -T $argv";
 
-      #trash
-      tp = "trash-put $argv";
-      tl = "trash-list $argv";
-      tempty = "trash-empty $argv";
       rm = "echo 'Stop using rm, use tp (or trash-put) instead'";
 
       copy = ''
