@@ -1,0 +1,40 @@
+name: "Flake.lock: update Nix dependencies"
+
+on:
+  workflow_dispatch: # allows manual triggering
+  schedule:
+    - cron: "0 3 * * 6" # At 03:00 on Saturday
+
+jobs:
+  nix-flake-update:
+    permissions:
+      contents: write
+      id-token: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - uses: DeterminateSystems/update-flake-lock@main
+        id: update
+        with:
+          pr-title: "Update Nix flake inputs"
+          pr-labels: |
+            dependencies
+            automated
+
+      - name: "Debug: Show update-flake-lock outputs"
+        env: "JSON_OUTPUT: ${{ toJSON(steps.update.outputs) }}"
+        run: |
+          echo "PLZ WORK: ${{ steps.update.outputs }}"
+          echo "$JSON_OUTPUT"
+          env
+
+      - name: Merge PR
+        if: steps.update.outputs.pr-number != ''
+        run: gh pr merge --auto --merge "${{ steps.update.outputs.pr-number }}"
+        env:
+          GH_TOKEN: ${{ github.token }}
