@@ -7,8 +7,10 @@
     ./nix-ld.nix
     ./droidcam.nix
     ./ai.nix
-    ./services/docker.nix
     ./nvidia-prime.nix
     ./nvidia.nix
+
+    # Services folder
+    ./services
   ];
 }

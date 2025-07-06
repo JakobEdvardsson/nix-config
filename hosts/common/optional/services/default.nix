@@ -2,5 +2,8 @@
 { lib, ... }:
 {
   #imports = (lib.custom.scanPaths ./.);
-  imports = [ ./docker.nix ];
+  imports = [
+    ./docker.nix
+    ./comin.nix
+  ];
 }
