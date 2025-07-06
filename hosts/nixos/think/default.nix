@@ -55,6 +55,7 @@
   #
 
   customOption = {
+    comin.enable = true;
     intel-quicksync.enable = true;
     deploy.enable = true;
     tailscale.enable = true;
