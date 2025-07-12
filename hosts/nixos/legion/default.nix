@@ -50,7 +50,8 @@
       #
       #TODO: implement/remove
 
-      "hosts/common/optional/hyprland.nix" # window manager
+      #"hosts/common/optional/hyprland.nix" # window manager
+      "hosts/common/optional/kde.nix"
       #"hosts/common/optional/nvidia-prime.nix" # nvidia-prime
       # "hosts/common/optional/services/greetd.nix" # display manager
       # "hosts/common/optional/services/openssh.nix" # allow remote SSH access
@@ -73,8 +74,7 @@
     tailscale.enable = true;
     nix-ld.enable = true;
     docker.enable = true;
-    droidcam.enable = true;
-    ai.enable = true;
+    #ai.enable = true;
   };
 
   # Hibernate
