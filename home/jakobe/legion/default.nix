@@ -12,11 +12,11 @@
     ../common/optional
   ];
   customHome = {
-    hyprland = {
-      enable = true;
-      monitor = "/home/jakobe/nix-config/home/jakobe/legion/monitor.conf";
-      #nvidia = true;
-    };
+    # hyprland = {
+    #   enable = true;
+    #   monitor = "/home/jakobe/nix-config/home/jakobe/legion/monitor.conf";
+    #   #nvidia = true;
+    # };
     development.enable = true;
     tools.enable = true;
     media.enable = true;
