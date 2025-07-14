@@ -11,6 +11,7 @@
       enable = true;
       userName = config.hostSpec.handle;
       userEmail = config.hostSpec.email;
+      extraConfig.init.defaultBranch = "main";
     };
     gh = {
       enable = true;

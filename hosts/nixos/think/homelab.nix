@@ -66,10 +66,11 @@ in
         # jellyseerr.enable = true;
         # deluge.enable = true;
 
-        # Immich
-        immich = {
-          enable = true;
-        };
+        immich.enable = true;
+
+        grafana.enable = true;
+        monitoring.enable = true; #prometheus
+
 
         # adguard.enable = true;
         # syncthing.enable = true;
@@ -84,6 +85,7 @@ in
     };
 
     # NFS Storage
+    # Immich
     fileSystems."/mnt/immich" = {
       device = "tower:/mnt/user/immich";
       fsType = "nfs";

@@ -41,7 +41,10 @@ in
 
   # No matter what environment we are in we want these tools
   programs.fish.enable = true;
-  programs.git.enable = true;
+  programs.git = {
+    enable = true;
+    config.init.defaultBranch = "main";
+  };
   environment.systemPackages = [
     pkgs.just
     pkgs.rsync
