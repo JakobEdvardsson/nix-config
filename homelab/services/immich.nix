@@ -28,24 +28,50 @@ in
       default = "Media";
     };
   };
-  config = lib.mkIf cfg.enable {
-    #systemd.tmpfiles.rules = [ "d ${cfg.mediaDir} 0775 immich ${homelab.group} - -" ];
-    systemd.services."immich-server".serviceConfig.PrivateDevices = lib.mkForce false;
-    users.users.immich.extraGroups = [
-      "video"
-      "render"
-    ];
-    services.immich = {
-      accelerationDevices = null;
-      #group = homelab.group;
-      enable = true;
-      port = 2283;
-    };
-    services.caddy.virtualHosts."${cfg.url}" = {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://${config.services.immich.host}:${toString config.services.immich.port}
-      '';
-    };
-  };
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      #systemd.tmpfiles.rules = [ "d ${cfg.mediaDir} 0775 immich ${homelab.group} - -" ];
+      systemd.services."immich-server".serviceConfig.PrivateDevices = lib.mkForce false;
+      users.users.immich.extraGroups = [
+        "video"
+        "render"
+      ];
+      services.immich = {
+        accelerationDevices = null;
+        #group = homelab.group;
+        enable = true;
+        port = 2283;
+      };
+      services.caddy.virtualHosts."${cfg.url}" = {
+        useACMEHost = homelab.baseDomain;
+        extraConfig = ''
+          reverse_proxy http://${config.services.immich.host}:${toString config.services.immich.port}
+        '';
+      };
+    })
+
+    (lib.mkIf homelab.services.monitoring.enable {
+      services = {
+        immich.environment = {
+          IMMICH_TELEMETRY_INCLUDE = "all";
+          IMMICH_API_METRICS_PORT = "2284";
+          IMMICH_MICROSERVICES_METRICS_PORT = "2285";
+        };
+        prometheus.scrapeConfigs = [
+          {
+            job_name = "immich";
+            static_configs = [
+              {
+                targets = [
+                  "localhost:${config.services.immich.environment.IMMICH_API_METRICS_PORT}"
+                  "localhost:${config.services.immich.environment.IMMICH_MICROSERVICES_METRICS_PORT}"
+                ];
+              }
+            ];
+          }
+        ];
+      };
+    })
+
+  ];
 }
