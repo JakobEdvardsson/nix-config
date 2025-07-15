@@ -113,7 +113,7 @@ lspconfig["yamlls"].setup({
 	settings = {
 		yaml = {
 			schemas = {
-				kubernetes = "*.yaml",
+				-- https://www.schemastore.org/
 				["http://json.schemastore.org/github-workflow"] = ".github/workflows/*",
 				["http://json.schemastore.org/github-action"] = ".github/action.{yml,yaml}",
 				["http://json.schemastore.org/ansible-stable-2.9"] = "roles/tasks/*.{yml,yaml}",
@@ -126,8 +126,10 @@ lspconfig["yamlls"].setup({
 				["https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json"] = "*api*.{yml,yaml}",
 				["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "*docker-compose*.{yml,yaml}",
 				["https://raw.githubusercontent.com/argoproj/argo-workflows/master/api/jsonschema/schema.json"] = "*flow*.{yml,yaml}",
+				["https://json.schemastore.org/app-config"] = "app-config.*.{yml,yaml}",
+				kubernetes = "*.yaml",
 			},
-			validate = true,
+			validate = false,
 			format = {
 				enable = true,
 			},

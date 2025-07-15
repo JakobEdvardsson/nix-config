@@ -10,7 +10,7 @@ opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
 opt.shiftwidth = 2 -- 2 spaces for indent width
 opt.expandtab = true -- expand tab to spaces
 opt.autoindent = true -- copy indent from current line when starting new one
-vim.opt.scrolloff = 10 -- Minimal number of screen lines to keep above and below the cursor.
+vim.opt.scrolloff = 20 -- Minimal number of screen lines to keep above and below the cursor.
 
 opt.wrap = false
 
@@ -57,3 +57,17 @@ vim.filetype.add({
 
 -- Fix some issues with fish when using tmux-vim-navigator
 vim.opt.shell = "/usr/bin/env bash"
+
+-- break lines for Markdown
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "markdown",
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.linebreak = true
+    vim.opt_local.showbreak = "↪"
+  end,
+})
+
+-- spell check
+vim.opt.spell = true
+vim.opt.spelllang = { "en_us" }
