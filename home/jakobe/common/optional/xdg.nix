@@ -1,6 +1,13 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
-  # FIXME:(xdg) That should use config options and just reference whatever is configured as the default
+
+  cfg = config.customHome.xdg;
+
   browser = [ "brave.desktop" ];
   editor = [ "nvim.desktop" ];
   media = [ "mpv.desktop" ];
@@ -122,15 +129,22 @@ let
   };
 in
 {
-  xdg.mime.enable = true;
-  xdg.mimeApps.enable = true;
-  xdg.mimeApps.defaultApplications = associations;
-  xdg.mimeApps.associations.removed = removals;
-  xdg.mimeApps.associations.added = associations;
+  options.customHome.tools = {
+    enable = lib.mkEnableOption "Nice to have tools";
+  };
 
-  home.packages = builtins.attrValues {
-    inherit (pkgs)
-      handlr-regex # better xdg-open for desktop apps
-      ;
+  config = lib.mkIf cfg.enable {
+
+    xdg.mime.enable = false;
+    xdg.mimeApps.enable = true;
+    xdg.mimeApps.defaultApplications = associations;
+    xdg.mimeApps.associations.removed = removals;
+    xdg.mimeApps.associations.added = associations;
+
+    home.packages = builtins.attrValues {
+      inherit (pkgs)
+        handlr-regex # better xdg-open for desktop apps
+        ;
+    };
   };
 }
