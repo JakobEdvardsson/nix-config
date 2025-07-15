@@ -5,6 +5,17 @@
   config,
   ...
 }:
+let
+  maximize-nvim = pkgs.vimUtils.buildVimPlugin {
+    name = "maximize.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "declancm";
+      repo = "maximize.nvim";
+      rev = "d688b66344b03ee6e5a32a0a40af85d174490af8";
+      sha256 = "1jslz00qiq3va95xnmsjiy9nwck8xykacv9627qfd5xfwigyy2dg";
+    };
+  };
+in
 {
   home.packages = with pkgs; [ vim ];
   programs = {
@@ -54,6 +65,7 @@
         tree-sitter-grammars.tree-sitter-markdown-inline
       ];
       plugins = with pkgs.vimPlugins; [
+        maximize-nvim # custom
         plenary-nvim
         # Theme
 

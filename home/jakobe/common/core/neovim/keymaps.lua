@@ -77,3 +77,14 @@ vim.api.nvim_set_keymap("n", "<C-Left>", ":TmuxNavigateLeft<CR>", { noremap = tr
 vim.api.nvim_set_keymap("n", "<C-Down>", ":TmuxNavigateDown<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-Up>", ":TmuxNavigateUp<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<C-Right>", ":TmuxNavigateRight<CR>", { noremap = true, silent = true })
+
+-- Relative screen move
+vim.api.nvim_set_keymap("n", "<Down>", "v:count ? '<Down>' : 'gj'", { noremap = true, expr = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Up>", "v:count ? '<Up>' : 'gk'", { noremap = true, expr = true, silent = true })
+vim.api.nvim_set_keymap("v", "<Down>", "v:count ? '<Down>' : 'gj'", { noremap = true, expr = true, silent = true })
+vim.api.nvim_set_keymap("v", "<Up>", "v:count ? '<Up>' : 'gk'", { noremap = true, expr = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "j", "v:count ? 'j' : 'gj'", { noremap = true, expr = true, silent = true })
+vim.api.nvim_set_keymap("n", "k", "v:count ? 'k' : 'gk'", { noremap = true, expr = true, silent = true })
+vim.api.nvim_set_keymap("v", "j", "v:count ? 'j' : 'gj'", { noremap = true, expr = true, silent = true })
+vim.api.nvim_set_keymap("v", "k", "v:count ? 'k' : 'gk'", { noremap = true, expr = true, silent = true })
