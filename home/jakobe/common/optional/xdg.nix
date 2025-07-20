@@ -5,7 +5,6 @@
   ...
 }:
 let
-
   cfg = config.customHome.xdg;
 
   browser = [ "brave.desktop" ];
@@ -129,8 +128,8 @@ let
   };
 in
 {
-  options.customHome.tools = {
-    enable = lib.mkEnableOption "Nice to have tools";
+  options.customHome.xdg = {
+    enable = lib.mkEnableOption "xdg";
   };
 
   config = lib.mkIf cfg.enable {
