@@ -6,14 +6,25 @@
   ...
 }:
 let
+  # nix-prefetch-github owner repo
   maximize-nvim = pkgs.vimUtils.buildVimPlugin {
     name = "maximize.nvim";
     src = pkgs.fetchFromGitHub {
       owner = "declancm";
       repo = "maximize.nvim";
       rev = "d688b66344b03ee6e5a32a0a40af85d174490af8";
-      sha256 = "1jslz00qiq3va95xnmsjiy9nwck8xykacv9627qfd5xfwigyy2dg";
+      hash = "sha256-rwnvX+Sul+bwESZtpqbvaDJuk49SV9tLUnvgiAH4VMs=";
     };
+  };
+  oil-lsp-diagnostics = pkgs.vimUtils.buildVimPlugin {
+    name = "oil-lsp-diagnostics.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "JezerM";
+      repo = "oil-lsp-diagnostics.nvim";
+      rev = "";
+      hash = "sha256-E8jukH3I8XDdgrG4XHCo9AuFbY0sLX24pjk054xmB9E=";
+    };
+    doCheck = false; # ⬅ disables the check
   };
 in
 {
@@ -65,10 +76,9 @@ in
         tree-sitter-grammars.tree-sitter-markdown-inline
       ];
       plugins = with pkgs.vimPlugins; [
-        maximize-nvim # custom
         plenary-nvim
-        # Theme
-
+        oil-nvim
+        oil-git-status-nvim
         vim-tmux-navigator
         nvim-surround
         substitute-nvim
@@ -111,6 +121,10 @@ in
         render-markdown-nvim
         markdown-preview-nvim
         nvim-colorizer-lua # View colors in nvim
+
+        # Custom
+        maximize-nvim
+        oil-lsp-diagnostics
       ];
       extraLuaConfig = ''
         ${builtins.readFile ./options.lua}
@@ -143,6 +157,8 @@ in
         ${builtins.readFile ./plugins/harpoon.lua}
         ${builtins.readFile ./plugins/scope.lua}
         ${builtins.readFile ./plugins/colorizer.lua}
+        ${builtins.readFile ./plugins/oil.lua}
+
 
         lspconfig.ts_ls.setup({
         	capabilities = capabilities,
