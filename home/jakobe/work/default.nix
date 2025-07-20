@@ -19,9 +19,9 @@
     ../common/core/fonts.nix
   ];
 
-  customHome = {
-    development.enable = true;
-  };
+  # customHome = {
+  #   development.enable = true;
+  # };
 
   inherit hostSpec;
 
