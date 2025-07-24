@@ -81,7 +81,7 @@
 
       bind c new-window -c '#{pane_current_path}'
       bind C new-session -c '#{pane_current_path}'
-      bind s choose-session
+      bind s choose-session -O name
       bind p previous-window
       bind n next-window
       bind * list-clients
