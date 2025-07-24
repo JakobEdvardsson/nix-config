@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
       - uses: DeterminateSystems/update-flake-lock@main
         id: update
         with:
@@ -26,12 +28,12 @@ jobs:
 
       - uses: cachix/install-nix-action@v27
       - uses: DeterminateSystems/magic-nix-cache-action@main
-
       - run: |
           nix flake check -L
 
+
       - name: Merge PR
-        if: success() # only runs if all previous steps succeeded
-        run: gh pr merge --auto --rebase ${{ steps.update.outputs.pull-request-number }}
+        if: success()  # only runs if all previous steps succeeded
+        run: "gh pr merge --auto --rebase ${{ steps.update.outputs.pull-request-number }}"
         env:
           GH_TOKEN: ${{ github.token }}
