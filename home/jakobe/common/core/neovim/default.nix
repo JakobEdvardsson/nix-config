@@ -21,7 +21,7 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "JezerM";
       repo = "oil-lsp-diagnostics.nvim";
-      rev = "";
+      rev = "e04e3c387262b958fee75382f8ff66eae9d037f4";
       hash = "sha256-E8jukH3I8XDdgrG4XHCo9AuFbY0sLX24pjk054xmB9E=";
     };
     doCheck = false; # ⬅ disables the check
