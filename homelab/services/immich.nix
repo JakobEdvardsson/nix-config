@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   service = "immich";
   cfg = config.homelab.services.${service};
@@ -41,6 +46,7 @@ in
         #group = homelab.group;
         enable = true;
         port = 2283;
+        openFirewall = true;
       };
       services.caddy.virtualHosts."${cfg.url}" = {
         useACMEHost = homelab.baseDomain;
@@ -51,27 +57,47 @@ in
     })
 
     (lib.mkIf homelab.services.monitoring.enable {
-      services = {
-        immich.environment = {
-          IMMICH_TELEMETRY_INCLUDE = "all";
-          IMMICH_API_METRICS_PORT = "2284";
-          IMMICH_MICROSERVICES_METRICS_PORT = "2285";
+      services.immich.host = "0.0.0.0";
+
+      services.prometheus.scrapeConfigs = [
+        {
+          job_name = "immich";
+          static_configs = [
+            {
+              targets = [ "10.0.0.34:9183" ];
+            }
+          ];
+        }
+      ];
+
+      sops.secrets = {
+        prometheusImmichToken = { };
+      };
+
+      virtualisation.podman = {
+        enable = true;
+        autoPrune.enable = true;
+        dockerCompat = true;
+      };
+
+      virtualisation.oci-containers.backend = "podman";
+
+      virtualisation.oci-containers.containers."immich_exporter" = {
+        image = "friendlyfriend/prometheus-immich-exporter";
+        environment = {
+          "IMMICH_HOST" = "10.0.0.34";
+          "IMMICH_PORT" = "2283";
+          "EXPORTER_PORT" = "9183";
+          "EXPORTER_LOG_LEVEL" = "DEBUG";
         };
-        prometheus.scrapeConfigs = [
-          {
-            job_name = "immich";
-            static_configs = [
-              {
-                targets = [
-                  "localhost:${config.services.immich.environment.IMMICH_API_METRICS_PORT}"
-                  "localhost:${config.services.immich.environment.IMMICH_MICROSERVICES_METRICS_PORT}"
-                ];
-              }
-            ];
-          }
+
+        ports = [ "9183:9183/tcp" ];
+        log-driver = "journald";
+        extraOptions = [
+          "--network=host"
+          "--env-file=${config.sops.secrets.prometheusImmichToken.path}"
         ];
       };
     })
-
   ];
 }
