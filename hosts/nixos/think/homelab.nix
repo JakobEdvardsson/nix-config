@@ -7,6 +7,7 @@ in
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
       wireguardCredentials = { };
+      prometheusResticToken = { };
     };
 
     homelab = {
@@ -101,6 +102,20 @@ in
           }
         ];
       }
+      {
+        job_name = "restic-tower";
+        basic_auth = {
+          username = "jakobe";
+          password = "${config.sops.secrets.prometheusResticToken.path}";
+        };
+        refresh_interval = "5s";
+        static_configs = [
+          {
+            targets = [ "tower:8000" ];
+          }
+        ];
+      }
+
     ];
 
     # services.caddy.virtualHosts = {
