@@ -7,7 +7,10 @@ in
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
       wireguardCredentials = { };
-      prometheusResticToken = { };
+      prometheusResticToken = {
+        owner = "${config.services.prometheus.exporters.restic-tower.user}";
+        group = "${config.services.prometheus.exporters.restic-tower.group}";
+      };
     };
 
     homelab = {
