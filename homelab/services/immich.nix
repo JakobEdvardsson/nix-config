@@ -64,7 +64,7 @@ in
           job_name = "immich";
           static_configs = [
             {
-              targets = [ "10.0.0.34:9183" ];
+              targets = [ "${config.hostSpec.hostName}:9183" ];
             }
           ];
         }
@@ -85,7 +85,7 @@ in
       virtualisation.oci-containers.containers."immich_exporter" = {
         image = "friendlyfriend/prometheus-immich-exporter";
         environment = {
-          "IMMICH_HOST" = "10.0.0.34";
+          "IMMICH_HOST" = config.hostSpec.hostName;
           "IMMICH_PORT" = "2283";
           "EXPORTER_PORT" = "9183";
           "EXPORTER_LOG_LEVEL" = "DEBUG";
