@@ -94,7 +94,7 @@ in
     # external monitoring
     services.prometheus.scrapeConfigs = [
       {
-        job_name = "node";
+        job_name = "node-tower";
         static_configs = [
           {
             targets = [ "tower:9100" ];
