@@ -29,24 +29,6 @@ in
           enable = true;
           external = [
             {
-              "Asus Router" = {
-                href = "https://router.edvardsson.tech";
-                siteMonitor = "http://192.168.50.1";
-                description = "Asus Router";
-                icon = "asus-router.svg";
-                category = "Services";
-              };
-            }
-            {
-              "Home Assistant" = {
-                href = "https://home-assistant.edvardsson.tech";
-                siteMonitor = "http://192.168.50.10:8123";
-                description = "Home Assistant";
-                icon = "home-assistant";
-                category = "Services";
-              };
-            }
-            {
               "Local Syncthing" = {
                 href = "http://127.0.0.1:8384/";
                 siteMonitor = "http://127.0.0.1:8384/";
