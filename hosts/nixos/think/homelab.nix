@@ -51,8 +51,7 @@ in
         immich.enable = true;
 
         grafana.enable = true;
-        monitoring.enable = true; #prometheus
-
+        monitoring.enable = true; # prometheus
 
         # adguard.enable = true;
         # syncthing.enable = true;
@@ -91,6 +90,18 @@ in
       after = [ "mnt-immich.mount" ];
       requires = [ "mnt-immich.mount" ];
     };
+
+    # external monitoring
+    services.prometheus.scrapeConfigs = [
+      {
+        job_name = "node";
+        static_configs = [
+          {
+            targets = [ "tower:9100" ];
+          }
+        ];
+      }
+    ];
 
     # services.caddy.virtualHosts = {
     #   "home-assistant.edvardsson.tech" = {
