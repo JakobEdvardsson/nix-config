@@ -7,7 +7,7 @@ in
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
       wireguardCredentials = { };
-      prometheusResticToken = {
+      resticServerTowerToken = {
         owner = "prometheus";
         group = "prometheus";
       };
@@ -109,7 +109,7 @@ in
         job_name = "restic-tower";
         basic_auth = {
           username = "jakobe";
-          password_file = "${config.sops.secrets.prometheusResticToken.path}";
+          password_file = "${config.sops.secrets.resticServerTowerToken.path}";
         };
         scrape_interval = "5s";
         static_configs = [
