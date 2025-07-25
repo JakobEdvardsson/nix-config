@@ -8,8 +8,8 @@ in
       cloudflareDnsApiCredentials = { };
       wireguardCredentials = { };
       prometheusResticToken = {
-        owner = "${config.services.prometheus.exporters.restic-tower.user}";
-        group = "${config.services.prometheus.exporters.restic-tower.group}";
+        owner = "prometheus";
+        group = "prometheus";
       };
     };
 
