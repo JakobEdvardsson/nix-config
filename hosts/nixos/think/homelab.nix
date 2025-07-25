@@ -108,7 +108,7 @@ in
           username = "jakobe";
           password = "${config.sops.secrets.prometheusResticToken.path}";
         };
-        refresh_interval = "5s";
+        scrape_interval = "5s";
         static_configs = [
           {
             targets = [ "tower:8000" ];

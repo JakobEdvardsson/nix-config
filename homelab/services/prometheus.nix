@@ -43,7 +43,7 @@ in
         }
         {
           job_name = "prometheus";
-          refresh_interval = "5s";
+          scrape_interval = "5s";
           static_configs = [
             {
               targets = [ "localhost:${toString config.services.${service}.port}" ];
