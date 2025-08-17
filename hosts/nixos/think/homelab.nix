@@ -53,6 +53,8 @@ in
         grafana.enable = true;
         monitoring.enable = true; # prometheus
 
+        cockpit.enable = true;
+
         # adguard.enable = true;
         # syncthing.enable = true;
 
