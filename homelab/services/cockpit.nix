@@ -32,6 +32,7 @@ in
     services.cockpit = {
       enable = true;
       port = 9091;
+      openFirewall = true;
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
