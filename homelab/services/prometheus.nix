@@ -37,7 +37,10 @@ in
           job_name = "node";
           static_configs = [
             {
-              targets = [ "localhost:${toString config.services.${service}.exporters.node.port}" ];
+              targets = [
+                "localhost:${toString config.services.${service}.exporters.node.port}"
+                "tower:9100"
+              ];
             }
           ];
         }
@@ -52,6 +55,10 @@ in
         }
       ];
     };
+    #
+    # services.prometheus.alertmanager = {
+    #   enable = true;
+    # };
 
     services.prometheus.exporters.node = {
       enable = true;
