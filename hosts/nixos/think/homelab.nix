@@ -7,10 +7,6 @@ in
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
       wireguardCredentials = { };
-      prometheusResticToken = {
-        owner = "prometheus";
-        group = "prometheus";
-      };
     };
 
     homelab = {
@@ -94,32 +90,6 @@ in
       after = [ "mnt-immich.mount" ];
       requires = [ "mnt-immich.mount" ];
     };
-
-    # external monitoring
-    services.prometheus.scrapeConfigs = [
-      {
-        job_name = "node-tower";
-        static_configs = [
-          {
-            targets = [ "tower:9100" ];
-          }
-        ];
-      }
-      {
-        job_name = "restic-tower";
-        basic_auth = {
-          username = "jakobe";
-          password_file = "${config.sops.secrets.prometheusResticToken.path}";
-        };
-        scrape_interval = "5s";
-        static_configs = [
-          {
-            targets = [ "tower:8000" ];
-          }
-        ];
-      }
-
-    ];
 
     # services.caddy.virtualHosts = {
     #   "home-assistant.edvardsson.tech" = {
