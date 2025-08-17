@@ -32,6 +32,9 @@ in
     services.cockpit = {
       enable = true;
       port = 9091;
+      allowed-origins = [
+        "https://${cfg.url}"
+      ];
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
