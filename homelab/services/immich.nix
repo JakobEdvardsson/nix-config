@@ -88,7 +88,6 @@ in
           "IMMICH_HOST" = config.hostSpec.hostName;
           "IMMICH_PORT" = "2283";
           "EXPORTER_PORT" = "9183";
-          "EXPORTER_LOG_LEVEL" = "DEBUG";
         };
 
         ports = [ "9183:9183/tcp" ];
