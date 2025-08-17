@@ -31,6 +31,7 @@ in
   config = lib.mkIf cfg.enable {
     services.cockpit = {
       enable = true;
+      port = 9091;
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
