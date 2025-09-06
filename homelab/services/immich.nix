@@ -6,8 +6,7 @@ let
   optionsFn = import ../options.nix;
 in {
   options.homelab.services.${service} = optionsFn {
-    inherit lib service homelab cfg;
-    dataDir = "${cfg.mediaLocation}";
+    inherit lib service config homelab;
     homepage = {
       description = "Self-hosted photo and video management solution";
       icon = "immich.svg";
