@@ -1,4 +1,8 @@
-{ lib, service, homelab, cfg, dataDir, homepage ? { } }: {
+{ lib, service, config, homelab, homepage ? { } }:
+let
+  # Normalize a nullable value (str or [str ...]) into a list of strings.
+  asList = v: if v == null then [ ] else if builtins.isList v then v else [ v ];
+in {
   enable = lib.mkEnableOption { description = "Enable ${service}"; };
   url = lib.mkOption {
     type = lib.types.str;
@@ -6,10 +10,9 @@
   };
   dataDirs = lib.mkOption {
     type = lib.types.listOf lib.types.str;
-    default = lib.optional (cfg ? mediaLocation && cfg.mediaLocation != null)
-      cfg.mediaLocation
-      ++ lib.optional (cfg ? dataDir && cfg.dataDir != null) cfg.dataDir
-      ++ lib.optional (cfg ? location && cfg.location != null) cfg.location;
+    default = asList (config.services.${service}.mediaLocation or null)
+      ++ asList (config.services.${service}.dataDir or null)
+      ++ asList (config.services.${service}.location or null);
   };
   homepage.name = lib.mkOption {
     type = lib.types.str;

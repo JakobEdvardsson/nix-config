@@ -1,4 +1,14 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  # Get all enabled homelab services with dataDirs
+  enabledServices = lib.attrsets.filterAttrs
+    (name: svc: svc ? enable && svc.enable && svc ? dataDirs)
+    config.homelab.services;
+
+  # Flatten all dataDirs into a single list
+  allDataDirs = lib.flatten
+    (lib.attrsets.mapAttrsToList (name: svc: svc.dataDirs) enabledServices);
+in {
   sops.secrets = {
     resticThinkTowerRepo = {
       owner = "restic";
@@ -37,9 +47,7 @@
         package = pkgs.writeShellScriptBin "restic" ''
           exec /run/wrappers/bin/restic "$@"
         '';
-        paths = [
-          "${config.services.immich.mediaLocation}"
-          "${config.services.grafana.dataDir}"
+        paths = allDataDirs ++ [
           "${config.services.mysqlBackup.location}"
           "${config.services.postgresqlBackup.location}"
         ];
