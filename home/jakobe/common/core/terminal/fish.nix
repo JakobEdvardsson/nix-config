@@ -41,8 +41,8 @@
 
       #-------------Bat related------------
       cat = "bat --paging=never";
-      rg = "batgrep";
-      man = "batman";
+      # rg = "batgrep";
+      # man = "batman";
 
       # git;
       gl =
