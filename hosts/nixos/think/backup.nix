@@ -50,6 +50,7 @@ in {
         paths = allDataDirs ++ [
           "${config.services.mysqlBackup.location}"
           "${config.services.postgresqlBackup.location}"
+          "${config.services.grafana.dataDir}"
         ];
         repository = "rest:http://@tower:8000/think";
         timerConfig = {
