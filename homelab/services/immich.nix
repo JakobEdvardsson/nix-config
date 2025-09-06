@@ -1,30 +1,17 @@
-{ pkgs, config, lib, ... }:
+{ config, lib, ... }:
 let
   service = "immich";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
+  optionsFn = import ../options.nix;
 in {
-  options.homelab.services.${service} = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "immich.${homelab.baseDomain}";
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Immich";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "Self-hosted photo and video management solution";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "immich.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Media";
+  options.homelab.services.${service} = optionsFn {
+    inherit lib service homelab cfg;
+    dataDir = "${cfg.mediaLocation}";
+    homepage = {
+      description = "Self-hosted photo and video management solution";
+      icon = "immich.svg";
+      category = "Media";
     };
   };
   config = lib.mkMerge [
@@ -35,7 +22,6 @@ in {
       users.users.immich.extraGroups = [ "video" "render" ];
       services.immich = {
         accelerationDevices = null;
-        #group = homelab.group;
         enable = true;
         port = 2283;
         openFirewall = true;
