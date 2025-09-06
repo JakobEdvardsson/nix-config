@@ -50,7 +50,7 @@
     comin.enable = true;
     intel-quicksync.enable = true;
     deploy.enable = true;
-    tailscale.enable = true;
+    # tailscale.enable = true; #FIX: enable once https://github.com/NixOS/nixpkgs/issues/438765 is fixed
   };
 
   hostSpec = { hostName = "think"; };
