@@ -3,8 +3,7 @@ let
   service = "cockpit";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
-in
-{
+in {
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     url = lib.mkOption {
@@ -32,9 +31,7 @@ in
     services.cockpit = {
       enable = true;
       port = 9091;
-      allowed-origins = [
-        "https://${cfg.url}"
-      ];
+      allowed-origins = [ "https://${cfg.url}" ];
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;

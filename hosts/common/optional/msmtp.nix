@@ -1,6 +1,5 @@
 # FIX: change this
-{ config, ... }:
-{
+{ config, ... }: {
   sops.secrets = {
     "passwords/msmtp" = {
       owner = config.users.users.${config.hostSpec.username}.name;

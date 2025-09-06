@@ -1,15 +1,9 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
-let
-  cfg = config.customHome.hypridle;
-in
-{
+{ pkgs, lib, config, ... }:
+let cfg = config.customHome.hypridle;
+in {
   options.customHome.hypridle = {
-    enable = lib.mkEnableOption "Enable hypridle as the idle state manager for Wayland.";
+    enable = lib.mkEnableOption
+      "Enable hypridle as the idle state manager for Wayland.";
 
     lock-screen.enable = lib.mkOption {
       default = true;
@@ -41,40 +35,22 @@ in
 
         # Dynamically generate listener based on options
         listener = lib.concatLists [
-          (
-            if cfg.lock-screen.enable then
-              [
-                {
-                  timeout = 300;
-                  on-timeout = "pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock";
-                }
-              ]
-            else
-              [ ]
-          )
-          (
-            if cfg.monitor-off.enable then
-              [
-                {
-                  timeout = 450;
-                  on-timeout = "hyprctl dispatch dpms off";
-                  on-resume = "hyprctl dispatch dpms on";
-                }
-              ]
-            else
-              [ ]
-          )
-          (
-            if cfg.suspend.enable then
-              [
-                {
-                  timeout = 600;
-                  on-timeout = "systemctl suspend";
-                }
-              ]
-            else
-              [ ]
-          )
+          (if cfg.lock-screen.enable then [{
+            timeout = 300;
+            on-timeout = "pidof hyprlock || ${pkgs.hyprlock}/bin/hyprlock";
+          }] else
+            [ ])
+          (if cfg.monitor-off.enable then [{
+            timeout = 450;
+            on-timeout = "hyprctl dispatch dpms off";
+            on-resume = "hyprctl dispatch dpms on";
+          }] else
+            [ ])
+          (if cfg.suspend.enable then [{
+            timeout = 600;
+            on-timeout = "systemctl suspend";
+          }] else
+            [ ])
         ];
       };
     };

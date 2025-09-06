@@ -1,15 +1,9 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
-let
-  cfg = config.customHome.hyprlock;
-in
-{
+{ pkgs, lib, config, ... }:
+let cfg = config.customHome.hyprlock;
+in {
   options.customHome.hyprlock = {
-    enable = lib.mkEnableOption "Enable hyprlock as the lockscreen for Wayland.";
+    enable =
+      lib.mkEnableOption "Enable hyprlock as the lockscreen for Wayland.";
   };
 
   config = lib.mkIf cfg.enable {

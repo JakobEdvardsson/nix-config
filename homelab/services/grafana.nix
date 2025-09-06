@@ -3,8 +3,7 @@ let
   service = "grafana";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
-in
-{
+in {
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     url = lib.mkOption {
@@ -46,7 +45,9 @@ in
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''
-        reverse_proxy http://${toString config.services.grafana.settings.server.http_addr}:${toString config.services.grafana.settings.server.http_port}
+        reverse_proxy http://${
+          toString config.services.grafana.settings.server.http_addr
+        }:${toString config.services.grafana.settings.server.http_port}
       '';
     };
   };

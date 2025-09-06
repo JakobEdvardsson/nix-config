@@ -1,13 +1,6 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
-let
-  cfg = config.customHome.waybar;
-in
-{
+{ pkgs, lib, config, ... }:
+let cfg = config.customHome.waybar;
+in {
   options.customHome.waybar = {
     enable = lib.mkEnableOption "Enable waybar as the bar for Wayland.";
   };
@@ -30,26 +23,21 @@ in
     programs.waybar = {
       enable = true;
       systemd.enable = true;
-      style =
-        with config.lib.stylix.colors.withHashtag;
+      style = with config.lib.stylix.colors.withHashtag;
         ''
           @define-color base00 ${base00}; @define-color base01 ${base01}; @define-color base02 ${base02}; @define-color base03 ${base03};
           @define-color base04 ${base04}; @define-color base05 ${base05}; @define-color base06 ${base06}; @define-color base07 ${base07};
 
           @define-color base08 ${base08}; @define-color base09 ${base09}; @define-color base0A ${base0A}; @define-color base0B ${base0B};
           @define-color base0C ${base0C}; @define-color base0D ${base0D}; @define-color base0E ${base0E}; @define-color base0F ${base0F};
-        ''
-        + builtins.readFile ./style.css;
+        '' + builtins.readFile ./style.css;
       settings = {
         bar = {
           layer = "top";
           position = "top";
           spacing = 0;
           height = 30;
-          modules-left = [
-            "custom/logo"
-            "hyprland/workspaces"
-          ];
+          modules-left = [ "custom/logo" "hyprland/workspaces" ];
           modules-center = [ "clock" ];
           modules-right = [
             "tray"
@@ -84,9 +72,7 @@ in
             format = "󰍛 {}%";
             max-length = 10;
           };
-          tray = {
-            spacing = 10;
-          };
+          tray = { spacing = 10; };
           clock = {
             tooltip-format = "{calendar}";
             format-alt = "  {:%a, %d %b %Y}";
@@ -94,13 +80,7 @@ in
           };
           network = {
             format-wifi = "{icon}";
-            format-icons = [
-              "󰤯"
-              "󰤟"
-              "󰤢"
-              "󰤥"
-              "󰤨"
-            ];
+            format-icons = [ "󰤯" "󰤟" "󰤢" "󰤥" "󰤨" ];
             format-ethernet = "󰌘";
             format-disconnected = "󰖪";
             tooltip-format-wifi = ''
@@ -129,7 +109,8 @@ in
               {num_connections} connected
               {device_enumerate}'';
             tooltip-format-enumerate-connected = "{device_alias}";
-            tooltip-format-enumerate-connected-battery = "{device_alias}: {device_battery_percentage}%";
+            tooltip-format-enumerate-connected-battery =
+              "{device_alias}: {device_battery_percentage}%";
 
             on-click = "blueman-manager & ";
             on-click-right = "blueman-applet & ";
@@ -146,11 +127,7 @@ in
             format-muted = "󰝟";
             format-icons = {
               headphone = "";
-              default = [
-                "󰖀"
-                "󰕾"
-                ""
-              ];
+              default = [ "󰖀" "󰕾" "" ];
             };
             on-click = "pavucontrol -t 3";
             on-click-right = "pamixer -t";
@@ -160,9 +137,12 @@ in
           "custom/logo" = {
             format = "  ";
             tooltip = false;
-            on-click = "${config.home.sessionVariables.BROWSER} https://search.nixos.org/packages";
-            on-click-middle = "${config.home.sessionVariables.BROWSER} https://github.com/nixOS/nixpkgs";
-            on-click-right = "${config.home.sessionVariables.BROWSER} https://home-manager-options.extranix.com/";
+            on-click =
+              "${config.home.sessionVariables.BROWSER} https://search.nixos.org/packages";
+            on-click-middle =
+              "${config.home.sessionVariables.BROWSER} https://github.com/nixOS/nixpkgs";
+            on-click-right =
+              "${config.home.sessionVariables.BROWSER} https://home-manager-options.extranix.com/";
           };
 
           "custom/swaync" = {
@@ -174,11 +154,14 @@ in
             "format-icons" = {
               "notification" = "<span foreground='red'><sup></sup></span>";
               "none" = "";
-              "dnd-notification" = "<span foreground='red'><sup></sup></span>";
+              "dnd-notification" =
+                "<span foreground='red'><sup></sup></span>";
               "dnd-none" = "";
-              "inhibited-notification" = "<span foreground='red'><sup></sup></span>";
+              "inhibited-notification" =
+                "<span foreground='red'><sup></sup></span>";
               "inhibited-none" = "";
-              "dnd-inhibited-notification" = "<span foreground='red'><sup></sup></span>";
+              "dnd-inhibited-notification" =
+                "<span foreground='red'><sup></sup></span>";
               "dnd-inhibited-none" = "";
             };
             "return-type" = "json";
@@ -192,30 +175,8 @@ in
           battery = {
             format = "{capacity}% {icon}";
             format-icons = {
-              charging = [
-                "󰢜"
-                "󰂆"
-                "󰂇"
-                "󰂈"
-                "󰢝"
-                "󰂉"
-                "󰢞"
-                "󰂊"
-                "󰂋"
-                "󰂅"
-              ];
-              default = [
-                "󰁺"
-                "󰁻"
-                "󰁼"
-                "󰁽"
-                "󰁾"
-                "󰁿"
-                "󰂀"
-                "󰂁"
-                "󰂂"
-                "󰁹"
-              ];
+              charging = [ "󰢜" "󰂆" "󰂇" "󰂈" "󰢝" "󰂉" "󰢞" "󰂊" "󰂋" "󰂅" ];
+              default = [ "󰁺" "󰁻" "󰁼" "󰁽" "󰁾" "󰁿" "󰂀" "󰂁" "󰂂" "󰁹" ];
             };
             format-full = "Charged ";
             interval = 5;

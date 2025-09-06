@@ -1,13 +1,6 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
-let
-  cfg = config.customHome.tools;
-in
-{
+{ pkgs, config, lib, ... }:
+let cfg = config.customHome.tools;
+in {
   options.customHome.tools = {
     enable = lib.mkEnableOption "Nice to have tools";
   };

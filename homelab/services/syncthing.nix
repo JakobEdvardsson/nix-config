@@ -3,8 +3,7 @@ let
   service = "syncthing";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
-in
-{
+in {
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     configDir = lib.mkOption {
@@ -42,14 +41,8 @@ in
     ];
 
     networking.firewall = {
-      allowedTCPPorts = [
-        8384
-        22000
-      ];
-      allowedUDPPorts = [
-        22000
-        21027
-      ];
+      allowedTCPPorts = [ 8384 22000 ];
+      allowedUDPPorts = [ 22000 21027 ];
     };
     services.${service} = {
       enable = true;

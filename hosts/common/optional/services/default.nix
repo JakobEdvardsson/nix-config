@@ -1,9 +1,5 @@
 # TODO make it so that all files in optional are options
-{ lib, ... }:
-{
+{ lib, ... }: {
   #imports = (lib.custom.scanPaths ./.);
-  imports = [
-    ./docker.nix
-    ./comin.nix
-  ];
+  imports = [ ./docker.nix ./comin.nix ];
 }

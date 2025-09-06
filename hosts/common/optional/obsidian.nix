@@ -1,4 +1,1 @@
-{ pkgs, ... }:
-{
-  environment.systemPackages = [ pkgs.obsidian ];
-}
+{ pkgs, ... }: { environment.systemPackages = [ pkgs.obsidian ]; }

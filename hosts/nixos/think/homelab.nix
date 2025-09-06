@@ -1,8 +1,6 @@
 { config, lib, ... }:
-let
-  hl = config.homelab;
-in
-{
+let hl = config.homelab;
+in {
   config = {
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
@@ -12,7 +10,8 @@ in
     homelab = {
       enable = true;
       baseDomain = "edvardsson.dev";
-      cloudflare.dnsCredentialsFile = config.sops.secrets.cloudflareDnsApiCredentials.path;
+      cloudflare.dnsCredentialsFile =
+        config.sops.secrets.cloudflareDnsApiCredentials.path;
       timeZone = "Europe/Stockholm";
       mounts = {
         config = "/appdata";
@@ -27,17 +26,15 @@ in
         # Categories: Arr, Media, Services
         homepage = {
           enable = true;
-          external = [
-            {
-              "Local Syncthing" = {
-                href = "http://127.0.0.1:8384/";
-                siteMonitor = "http://127.0.0.1:8384/";
-                description = "Local Syncthing";
-                icon = "syncthing";
-                category = "Services";
-              };
-            }
-          ];
+          external = [{
+            "Local Syncthing" = {
+              href = "http://127.0.0.1:8384/";
+              siteMonitor = "http://127.0.0.1:8384/";
+              description = "Local Syncthing";
+              icon = "syncthing";
+              category = "Services";
+            };
+          }];
         };
         # # Arr
         # jellyfin.enable = true;

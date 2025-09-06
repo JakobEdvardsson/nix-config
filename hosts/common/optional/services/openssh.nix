@@ -1,14 +1,8 @@
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
+{ pkgs, lib, config, ... }:
 let
   # sshPort = config.hostSpec.networking.ports.tcp.ssh;
   sshPort = 22;
-in
-{
+in {
   services.openssh = {
     enable = true;
     ports = [ sshPort ];
@@ -23,12 +17,10 @@ in
       # GatewayPorts = "clientspecified";
     };
 
-    hostKeys = [
-      {
-        path = "/etc/ssh/ssh_host_ed25519_key";
-        type = "ed25519";
-      }
-    ];
+    hostKeys = [{
+      path = "/etc/ssh/ssh_host_ed25519_key";
+      type = "ed25519";
+    }];
 
     openFirewall = true;
   };

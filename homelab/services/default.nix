@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ config, lib, pkgs, ... }: {
 
   imports = lib.custom.scanPaths ./.;
 
@@ -14,17 +8,13 @@
 
   config = lib.mkIf config.homelab.services.enable {
 
-    assertions = [
-      {
-        assertion = config.homelab.enable;
-        message = "homelab.services.enable requires homelab.enable to be set to true.";
-      }
-    ];
+    assertions = [{
+      assertion = config.homelab.enable;
+      message =
+        "homelab.services.enable requires homelab.enable to be set to true.";
+    }];
 
-    networking.firewall.allowedTCPPorts = [
-      80
-      443
-    ];
+    networking.firewall.allowedTCPPorts = [ 80 443 ];
     security.acme = {
       acceptTerms = true;
       defaults.email = config.hostSpec.email;

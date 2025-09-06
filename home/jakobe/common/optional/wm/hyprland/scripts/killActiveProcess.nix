@@ -7,7 +7,4 @@ let
     # Close active window
     kill $active_pid
   '';
-in
-{
-  home.packages = [ kill-active-process ];
-}
+in { home.packages = [ kill-active-process ]; }

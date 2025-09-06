@@ -3,8 +3,7 @@ let
   service = "prometheus";
   cfg = config.homelab.services.monitoring;
   homelab = config.homelab;
-in
-{
+in {
   options.homelab.services.monitoring = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     url = lib.mkOption {
@@ -35,23 +34,22 @@ in
       scrapeConfigs = [
         {
           job_name = "node";
-          static_configs = [
-            {
-              targets = [
-                "localhost:${toString config.services.${service}.exporters.node.port}"
-                "tower:9100"
-              ];
-            }
-          ];
+          static_configs = [{
+            targets = [
+              "localhost:${
+                toString config.services.${service}.exporters.node.port
+              }"
+              "tower:9100"
+            ];
+          }];
         }
         {
           job_name = "prometheus";
           scrape_interval = "5s";
-          static_configs = [
-            {
-              targets = [ "localhost:${toString config.services.${service}.port}" ];
-            }
-          ];
+          static_configs = [{
+            targets =
+              [ "localhost:${toString config.services.${service}.port}" ];
+          }];
         }
       ];
     };
@@ -64,10 +62,7 @@ in
       enable = true;
       port = 9100;
       # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/nixos/modules/services/monitoring/prometheus/exporters.nix
-      enabledCollectors = [
-        "systemd"
-        "processes"
-      ];
+      enabledCollectors = [ "systemd" "processes" ];
       # /nix/store/zgsw0yx18v10xa58psanfabmg95nl2bb-node_exporter-1.8.1/bin/node_exporter  --help
       extraFlags = [
         "--collector.ethtool"

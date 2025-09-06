@@ -1,6 +1,5 @@
 # Reminder that CUPS cpanel defaults to localhost:631
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   services.printing = {
     enable = true;
     drivers = [ pkgs.samsung-unified-linux-driver ];

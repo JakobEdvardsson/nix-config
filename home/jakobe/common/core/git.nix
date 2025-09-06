@@ -1,11 +1,5 @@
 # TODO: add better rules for forcing ssh as per fb
-{
-  pkgs,
-  lib,
-  config,
-  ...
-}:
-{
+{ pkgs, lib, config, ... }: {
   programs = {
     git = {
       enable = true;
@@ -19,8 +13,5 @@
       settings.git_protocol = "ssh";
     };
   };
-  home.packages = with pkgs; [
-    github-desktop
-    lazygit
-  ];
+  home.packages = with pkgs; [ github-desktop lazygit ];
 }

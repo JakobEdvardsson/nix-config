@@ -1,10 +1,4 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
-{
+{ pkgs, config, lib, ... }: {
   wayland.windowManager.hyprland.settings = {
     #
     # ========== Aanimation ==========

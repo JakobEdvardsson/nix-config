@@ -1,12 +1,4 @@
-{
-  inputs,
-  outputs,
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ inputs, outputs, config, lib, pkgs, ... }: {
   imports = lib.flatten [
     inputs.home-manager.nixosModules.home-manager
     inputs.sops-nix.nixosModules.sops

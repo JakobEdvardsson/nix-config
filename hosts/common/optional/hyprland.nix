@@ -1,10 +1,4 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  ...
-}:
-{
+{ inputs, pkgs, lib, ... }: {
   imports = [
     #./thunar.nix # file manager
     ./nautilus.nix # file manager
@@ -13,9 +7,7 @@
     #TODO: add a display manager
   ];
 
-  programs.hyprland = {
-    enable = true;
-  };
+  programs.hyprland = { enable = true; };
 
   environment.systemPackages = [ ];
 }

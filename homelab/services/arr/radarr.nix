@@ -1,15 +1,9 @@
-{
-  config,
-  lib,
-  inputs,
-  ...
-}:
+{ config, lib, inputs, ... }:
 let
   service = "radarr";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
-in
-{
+in {
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     configDir = lib.mkOption {
@@ -38,9 +32,7 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    sops.secrets = {
-      "${service}ApiKey" = { };
-    };
+    sops.secrets = { "${service}ApiKey" = { }; };
 
     services.${service} = {
       enable = true;

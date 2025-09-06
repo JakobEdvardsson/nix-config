@@ -1,10 +1,4 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
-{
+{ pkgs, config, lib, ... }: {
   wayland.windowManager.hyprland.settings = {
     windowrule = [
       "tag +browser, class:^([Ff]irefox|org.mozilla.firefox|[Ff]irefox-esr|[Ff]irefox-bin)$"
@@ -49,7 +43,7 @@
 
       # game tags
       "tag +games, class:^(gamescope)$"
-      "tag +games, class:^(steam_app_\d+)$"
+      "tag +games, class:^(steam_app_d+)$"
 
       # gamestore tags
       "tag +gamestore, class:^([Ss]team)$"

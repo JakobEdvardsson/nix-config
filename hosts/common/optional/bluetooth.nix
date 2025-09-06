@@ -1,5 +1,4 @@
-{ ... }:
-{
+{ ... }: {
   # Bluetooth
   hardware = {
     bluetooth = {

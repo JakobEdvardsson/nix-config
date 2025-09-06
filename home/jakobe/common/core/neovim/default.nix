@@ -1,10 +1,4 @@
-{
-  pkgs,
-  inputs,
-  lib,
-  config,
-  ...
-}:
+{ pkgs, inputs, lib, config, ... }:
 let
   # nix-prefetch-github owner repo
   maximize-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -26,8 +20,7 @@ let
     };
     doCheck = false; # ⬅ disables the check
   };
-in
-{
+in {
   home.packages = with pkgs; [ vim ];
   programs = {
     neovim = {
@@ -166,7 +159,9 @@ in
         		plugins = { -- I think this was my breakthrough that made it work
         			{
         				name = "@vue/typescript-plugin",
-        				location = "${lib.getBin pkgs.vue-language-server}/lib/node_modules/@vue/language-server",
+        				location = "${
+              lib.getBin pkgs.vue-language-server
+            }/lib/node_modules/@vue/language-server",
         				languages = { "javascript", "typescript", "vue" },
         			},
         		},
@@ -203,16 +198,15 @@ in
   };
   stylix.targets.neovim.plugin = "base16-nvim"; # This is for lualine in nvim
 
-  /*
-    Note:
-    nixd completion doesn't work with config.s<tab>
+  /* Note:
+     nixd completion doesn't work with config.s<tab>
 
-    the following works fine:
-    config = lib.mkIf true{
-      h<tab>
-    }
+     the following works fine:
+     config = lib.mkIf true{
+       h<tab>
+     }
 
-    ref: https://github.com/nix-community/nixd/issues/566
+     ref: https://github.com/nix-community/nixd/issues/566
   */
   nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ]; # This is for nixd
 }

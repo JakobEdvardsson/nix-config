@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   programs.tmux = {
     enable = true;
     shell = "${pkgs.fish}/bin/fish";
@@ -9,7 +8,8 @@
     clock24 = true;
     mouse = true;
     keyMode = "vi";
-    newSession = true; # Automatically spawn a session if trying to attach and none are running.
+    newSession =
+      true; # Automatically spawn a session if trying to attach and none are running.
     baseIndex = 1;
 
     plugins = with pkgs.tmuxPlugins; [
@@ -35,18 +35,17 @@
         plugin = better-mouse-mode;
         extraConfig = "set -g mouse on";
       }
-      /*
-        {
+      /* {
 
-            plugin = vim-tmux-navigator;
-            extraConfig = ''
-              set -g @vim_navigator_mapping_left "C-Left"
-              set -g @vim_navigator_mapping_right "C-Right"
-              set -g @vim_navigator_mapping_up "C-Up"
-              set -g @vim_navigator_mapping_down "C-Down"
-              set -g @vim_navigator_mapping_prev ""
-            '';
-        }
+             plugin = vim-tmux-navigator;
+             extraConfig = ''
+               set -g @vim_navigator_mapping_left "C-Left"
+               set -g @vim_navigator_mapping_right "C-Right"
+               set -g @vim_navigator_mapping_up "C-Up"
+               set -g @vim_navigator_mapping_down "C-Down"
+               set -g @vim_navigator_mapping_prev ""
+             '';
+         }
       */
     ];
     extraConfig = ''

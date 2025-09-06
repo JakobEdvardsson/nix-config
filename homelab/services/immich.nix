@@ -1,15 +1,9 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
+{ pkgs, config, lib, ... }:
 let
   service = "immich";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
-in
-{
+in {
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     url = lib.mkOption {
@@ -36,11 +30,9 @@ in
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       #systemd.tmpfiles.rules = [ "d ${cfg.mediaDir} 0775 immich ${homelab.group} - -" ];
-      systemd.services."immich-server".serviceConfig.PrivateDevices = lib.mkForce false;
-      users.users.immich.extraGroups = [
-        "video"
-        "render"
-      ];
+      systemd.services."immich-server".serviceConfig.PrivateDevices =
+        lib.mkForce false;
+      users.users.immich.extraGroups = [ "video" "render" ];
       services.immich = {
         accelerationDevices = null;
         #group = homelab.group;
@@ -51,7 +43,9 @@ in
       services.caddy.virtualHosts."${cfg.url}" = {
         useACMEHost = homelab.baseDomain;
         extraConfig = ''
-          reverse_proxy http://${config.services.immich.host}:${toString config.services.immich.port}
+          reverse_proxy http://${config.services.immich.host}:${
+            toString config.services.immich.port
+          }
         '';
       };
     })
@@ -59,20 +53,13 @@ in
     (lib.mkIf homelab.services.monitoring.enable {
       services.immich.host = "0.0.0.0";
 
-      services.prometheus.scrapeConfigs = [
-        {
-          job_name = "immich";
-          static_configs = [
-            {
-              targets = [ "${config.hostSpec.hostName}:9183" ];
-            }
-          ];
-        }
-      ];
+      services.prometheus.scrapeConfigs = [{
+        job_name = "immich";
+        static_configs =
+          [{ targets = [ "${config.hostSpec.hostName}:9183" ]; }];
+      }];
 
-      sops.secrets = {
-        prometheusImmichToken = { };
-      };
+      sops.secrets = { prometheusImmichToken = { }; };
 
       virtualisation.podman = {
         enable = true;

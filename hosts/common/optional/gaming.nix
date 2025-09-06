@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   hardware.xone.enable = true; # xbox controller
 
   programs = {
@@ -10,26 +9,14 @@
         package = pkgs.protontricks;
       };
       package = pkgs.steam.override {
-        extraPkgs =
-          pkgs:
+        extraPkgs = pkgs:
           (builtins.attrValues {
-            inherit (pkgs.xorg)
-              libXcursor
-              libXi
-              libXinerama
-              libXScrnSaver
-              ;
+            inherit (pkgs.xorg) libXcursor libXi libXinerama libXScrnSaver;
 
             inherit (pkgs.stdenv.cc.cc) lib;
 
             inherit (pkgs)
-              libpng
-              libpulseaudio
-              libvorbis
-              libkrb5
-              keyutils
-              gperftools
-              ;
+              libpng libpulseaudio libvorbis libkrb5 keyutils gperftools;
           });
       };
       extraCompatPackages = [ pkgs.unstable.proton-ge-bin ];
@@ -51,7 +38,8 @@
         };
         gpu = {
           apply_gpu_optimisations = "accept-responsibility";
-          gpu_device = 1; # The DRM device number on the system (usually 0), ie. the number in /sys/class/drm/card0/
+          gpu_device =
+            1; # The DRM device number on the system (usually 0), ie. the number in /sys/class/drm/card0/
           amd_performance_level = "high";
         };
         custom = {

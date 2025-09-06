@@ -1,13 +1,6 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}:
-let
-  cfg = config.customHome.browser;
-in
-{
+{ pkgs, config, lib, ... }:
+let cfg = config.customHome.browser;
+in {
   options.customHome.browser = {
     enable = lib.mkEnableOption "Browser settings";
   };
@@ -24,9 +17,7 @@ in
     };
 
     programs.firefox.enable = true;
-    stylix.targets.firefox.profileNames = [
-      "default"
-    ];
+    stylix.targets.firefox.profileNames = [ "default" ];
 
     xdg.mimeApps.defaultApplications = {
       "text/html" = [ "brave.desktop" ];

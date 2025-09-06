@@ -1,10 +1,4 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  ...
-}:
-{
+{ inputs, pkgs, lib, ... }: {
   services = {
     desktopManager.plasma6.enable = true;
 

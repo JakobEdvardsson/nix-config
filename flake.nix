@@ -39,13 +39,7 @@
     };
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      ...
-    }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       inherit (self) outputs;
 
@@ -54,17 +48,13 @@
       forAllSystems = nixpkgs.lib.genAttrs systems;
 
       # Extend the library with custom functions
-      extendedLib =
-        ((nixpkgs.lib // home-manager.lib).extend (
-          self: super: {
-            custom = import ./lib { inherit (nixpkgs) lib; };
-          }
-        )).extend
-          (_: _: home-manager.lib);
-    in
-    {
+      extendedLib = ((nixpkgs.lib // home-manager.lib).extend (self: super: {
+        custom = import ./lib { inherit (nixpkgs) lib; };
+      })).extend (_: _: home-manager.lib);
+    in {
       # Enables `nix fmt` at root of repo to format all nix files
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = forAllSystems
+        (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
       nixosConfigurations = {
         legion = nixpkgs.lib.nixosSystem {
           specialArgs = {
@@ -90,10 +80,8 @@
       };
       homeConfigurations."jakobe" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules = [
-          ./home/jakobe/work
-          inputs.stylix.homeManagerModules.stylix
-        ];
+        modules =
+          [ ./home/jakobe/work inputs.stylix.homeManagerModules.stylix ];
         extraSpecialArgs = {
           inherit inputs outputs;
           lib = extendedLib; # Use the extended library

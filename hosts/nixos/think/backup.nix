@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-{
+{ config, lib, pkgs, ... }: {
   sops.secrets = {
     resticThinkTowerRepo = {
       owner = "restic";
@@ -58,16 +52,10 @@
     };
   };
 
-  services.prometheus.scrapeConfigs = [
-    {
-      job_name = "restic-tower";
-      scrape_interval = "5s";
-      static_configs = [
-        {
-          targets = [ "tower:8000" ];
-        }
-      ];
-    }
-  ];
+  services.prometheus.scrapeConfigs = [{
+    job_name = "restic-tower";
+    scrape_interval = "5s";
+    static_configs = [{ targets = [ "tower:8000" ]; }];
+  }];
 
 }

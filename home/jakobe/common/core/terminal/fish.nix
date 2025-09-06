@@ -1,11 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
-}:
-{
+{ pkgs, lib, config, inputs, ... }: {
   imports = [ inputs.nix-index-database.hmModules.nix-index ];
 
   home.packages = with pkgs; [
@@ -25,10 +18,12 @@
       ls = "eza --group-directories-first -g";
       l = "${ls} -lbF --git --icons";
       ll = "${l} -G";
-      la = "${ls} -lbhHigmuSa@ --time-style=long-iso --git --color-scale --icons";
+      la =
+        "${ls} -lbhHigmuSa@ --time-style=long-iso --git --color-scale --icons";
       lt = "${ls} --tree --level=2 --icons";
 
-      mkdir = "mkdir -pv"; # * Create missing directories in path when calling `mkdir`
+      mkdir =
+        "mkdir -pv"; # * Create missing directories in path when calling `mkdir`
       rmm = "rm -rvI"; # * `rmm` command to remove directories, but ask nicely
       cpp = "cp -R"; # * `cpp` command to copy directories, but ask nicely
       cp = "cp -i"; # * `cp` to ask when overwriting files
@@ -50,7 +45,8 @@
       man = "batman";
 
       # git;
-      gl = "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+      gl =
+        "git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
       ga = "git add";
       push = "git push";
       pull = "git pull";

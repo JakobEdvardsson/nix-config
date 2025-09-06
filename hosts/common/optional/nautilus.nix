@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{ pkgs, ... }: {
   services = {
     gnome.sushi.enable = true; # Quick preview with spacebar
     gvfs.enable = true; # for stuff like Trash folders etc
@@ -28,5 +27,6 @@
     gst_all_1.gst-libav
     ffmpegthumbnailer
   ];
-  networking.firewall.extraCommands = "iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns";
+  networking.firewall.extraCommands =
+    "iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns";
 }

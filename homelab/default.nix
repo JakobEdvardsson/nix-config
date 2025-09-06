@@ -1,10 +1,9 @@
 { lib, config, ... }:
-let
-  cfg = config.homelab;
-in
-{
+let cfg = config.homelab;
+in {
   options.homelab = {
-    enable = lib.mkEnableOption "The homelab services and configuration variables";
+    enable =
+      lib.mkEnableOption "The homelab services and configuration variables";
     mounts.slow = lib.mkOption {
       default = "/mnt/slow";
       type = lib.types.path;
@@ -66,9 +65,7 @@ in
   ];
   config = lib.mkIf cfg.enable {
     users = {
-      groups.${cfg.group} = {
-        gid = 993;
-      };
+      groups.${cfg.group} = { gid = 993; };
       users.${cfg.user} = {
         uid = 994;
         isSystemUser = true;
