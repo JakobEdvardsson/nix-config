@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }:
 let
+  restic-backup-id = "38badeb9-7644-4857-9758-67172f61b2af";
   # Get all enabled homelab services with dataDirs
   enabledServices = lib.attrsets.filterAttrs
     (name: svc: svc ? enable && svc.enable && svc ? dataDirs)
@@ -57,6 +58,10 @@ in {
           OnCalendar = "00:00";
           RandomizedDelaySec = "5h";
         };
+        backupPrepareCommand =
+          "${pkgs.curl}/bin/curl -m 10 --retry 5 https://${config.homelab.services.healthchecks.url}/ping/${restic-backup-id}/start";
+        backupCleanupCommand =
+          "${pkgs.curl}/bin/curl -m 10 --retry 5 https://${config.homelab.services.healthchecks.url}/ping/${restic-backup-id}/$EXIT_STATUS";
       };
     };
   };
