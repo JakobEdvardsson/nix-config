@@ -24,7 +24,7 @@ in {
     };
     homepage.category = lib.mkOption {
       type = lib.types.str;
-      default = "Media";
+      default = "Services";
     };
   };
   config = lib.mkIf cfg.enable {
@@ -46,8 +46,8 @@ in {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''
         reverse_proxy http://${
-          toString config.services.grafana.settings.server.http_addr
-        }:${toString config.services.grafana.settings.server.http_port}
+          toString config.services.${service}.settings.server.http_addr
+        }:${toString config.services.${service}.settings.server.http_port}
       '';
     };
   };
