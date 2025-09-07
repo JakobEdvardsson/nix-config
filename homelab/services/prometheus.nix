@@ -12,7 +12,7 @@ in {
     };
     homepage.name = lib.mkOption {
       type = lib.types.str;
-      default = "prometheus";
+      default = "Prometheus";
     };
     homepage.description = lib.mkOption {
       type = lib.types.str;
@@ -24,7 +24,7 @@ in {
     };
     homepage.category = lib.mkOption {
       type = lib.types.str;
-      default = "Media";
+      default = "Services";
     };
   };
   config = lib.mkIf cfg.enable {

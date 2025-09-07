@@ -9,7 +9,6 @@ in {
     inherit lib service config homelab;
     homepage = {
       description = "Self-hosted photo and video management solution";
-      icon = "immich.svg";
       category = "Media";
     };
   };
@@ -19,7 +18,7 @@ in {
       systemd.services."immich-server".serviceConfig.PrivateDevices =
         lib.mkForce false;
       users.users.immich.extraGroups = [ "video" "render" ];
-      services.immich = {
+      services.${service} = {
         accelerationDevices = null;
         enable = true;
         port = 2283;
@@ -28,15 +27,15 @@ in {
       services.caddy.virtualHosts."${cfg.url}" = {
         useACMEHost = homelab.baseDomain;
         extraConfig = ''
-          reverse_proxy http://${config.services.immich.host}:${
-            toString config.services.immich.port
+          reverse_proxy http://${config.services.${service}.host}:${
+            toString config.services.${service}.port
           }
         '';
       };
     })
 
     (lib.mkIf homelab.services.monitoring.enable {
-      services.immich.host = "0.0.0.0";
+      services.${service}.host = "0.0.0.0";
 
       services.prometheus.scrapeConfigs = [{
         job_name = "immich";

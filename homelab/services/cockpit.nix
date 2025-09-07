@@ -24,7 +24,7 @@ in {
     };
     homepage.category = lib.mkOption {
       type = lib.types.str;
-      default = "Media";
+      default = "Services";
     };
   };
   config = lib.mkIf cfg.enable {

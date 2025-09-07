@@ -52,6 +52,8 @@ in {
 
         cockpit.enable = true;
 
+        healthchecks.enable = true;
+
         # adguard.enable = true;
         # syncthing.enable = true;
 
