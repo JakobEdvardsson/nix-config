@@ -56,20 +56,20 @@
       formatter = forAllSystems
         (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
       nixosConfigurations = {
-        legion = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-            lib = extendedLib; # Use the extended library
-          };
-          modules = [ ./hosts/nixos/legion ];
-        };
-        servox = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-            lib = extendedLib; # Use the extended library
-          };
-          modules = [ ./hosts/nixos/servox ];
-        };
+        # legion = nixpkgs.lib.nixosSystem {
+        #   specialArgs = {
+        #     inherit inputs outputs;
+        #     lib = extendedLib; # Use the extended library
+        #   };
+        #   modules = [ ./hosts/nixos/legion ];
+        # };
+        # servox = nixpkgs.lib.nixosSystem {
+        #   specialArgs = {
+        #     inherit inputs outputs;
+        #     lib = extendedLib; # Use the extended library
+        #   };
+        #   modules = [ ./hosts/nixos/servox ];
+        # };
         think = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs outputs;
@@ -78,20 +78,20 @@
           modules = [ ./hosts/nixos/think ];
         };
       };
-      homeConfigurations."jakobe" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        modules =
-          [ ./home/jakobe/work inputs.stylix.homeManagerModules.stylix ];
-        extraSpecialArgs = {
-          inherit inputs outputs;
-          lib = extendedLib; # Use the extended library
-          hostSpec = {
-            username = "jakobe";
-            hostName = "work";
-            handle = "Jakob Edvardsson";
-            email = "jakob@edvardsson.tech";
-          };
-        };
-      };
+      # homeConfigurations."jakobe" = home-manager.lib.homeManagerConfiguration {
+      #   pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      #   modules =
+      #     [ ./home/jakobe/work inputs.stylix.homeManagerModules.stylix ];
+      #   extraSpecialArgs = {
+      #     inherit inputs outputs;
+      #     lib = extendedLib; # Use the extended library
+      #     hostSpec = {
+      #       username = "jakobe";
+      #       hostName = "work";
+      #       handle = "Jakob Edvardsson";
+      #       email = "jakob@edvardsson.tech";
+      #     };
+      #   };
+      # };
     };
 }
