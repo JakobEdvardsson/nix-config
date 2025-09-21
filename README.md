@@ -90,6 +90,26 @@ sops updatekeys secrets.yaml
 
 6. **Commit and push changes**
 
+#### Use Existing SOPS Age Key
+
+1. Create the directory for the key (if it doesn't exist):
+
+```bash
+mkdir -p ~/.config/sops/age
+```
+
+2. Add your existing Age private key:
+
+```bash
+echo "AGE-SECRET-KEY-1A2B3C4D5E6F7G8H9I0J..." > ~/.config/sops/age/keys.txt
+```
+
+3. Set the correct permissions:
+
+```bash
+chmod 600 ~/.config/sops/age/keys.txt
+```
+
 ---
 
 ### Final Boot
@@ -155,7 +175,6 @@ nixos-rebuild switch \
   --use-remote-sudo
 ```
 
-
 ---
 
 ### Tailscale
@@ -165,3 +184,4 @@ Start the Tailscale daemon and authenticate:
 ```bash
 sudo tailscale up --accept-routes
 
+```
