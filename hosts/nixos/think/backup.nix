@@ -24,7 +24,6 @@ in {
       owner = "restic";
       group = "users";
     };
-
   };
 
   users.users.restic = {
