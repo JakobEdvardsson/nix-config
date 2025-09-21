@@ -81,8 +81,7 @@ in {
         package = pkgs.writeShellScriptBin "restic" ''
           exec /run/wrappers/bin/restic "$@"
         '';
-        # paths = allDataDirs ++ [
-        paths = [
+        paths = allDataDirs ++ [
           "${config.services.mysqlBackup.location}"
           "${config.services.postgresqlBackup.location}"
           "${config.services.grafana.dataDir}"
