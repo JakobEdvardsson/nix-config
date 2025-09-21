@@ -20,6 +20,10 @@ in {
       owner = "restic";
       group = "users";
     };
+    resticThinkBorgbaseRepoURL = {
+      owner = "restic";
+      group = "users";
+    };
   };
 
   users.users.restic = {
@@ -49,6 +53,7 @@ in {
       remote-tower-backup = {
         initialize = true;
         passwordFile = "${config.sops.secrets.resticThinkTowerRepo.path}";
+        repository = "rest:http://@tower:8000/think";
         user = "restic";
         package = pkgs.writeShellScriptBin "restic" ''
           exec /run/wrappers/bin/restic "$@"
@@ -58,7 +63,6 @@ in {
           "${config.services.postgresqlBackup.location}"
           "${config.services.grafana.dataDir}"
         ];
-        repository = "rest:http://@tower:8000/think";
         timerConfig = {
           OnCalendar = "00:00";
           RandomizedDelaySec = "5h";
@@ -71,6 +75,8 @@ in {
       remote-borgbase-backup = {
         initialize = true;
         passwordFile = "${config.sops.secrets.resticThinkBorgbaseRepo.path}";
+        repositoryFile =
+          "${config.sops.secrets.resticThinkBorgbaseRepoURL.path}";
         user = "restic";
         package = pkgs.writeShellScriptBin "restic" ''
           exec /run/wrappers/bin/restic "$@"
@@ -81,7 +87,6 @@ in {
           "${config.services.postgresqlBackup.location}"
           "${config.services.grafana.dataDir}"
         ];
-        repository = "rest:https://wm4s3115.repo.borgbase.com";
         timerConfig = {
           OnCalendar = "00:00";
           RandomizedDelaySec = "5h";
