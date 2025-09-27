@@ -43,7 +43,7 @@ in {
         # radarr.enable = true;
         # sonarr.enable = true;
         # jellyseerr.enable = true;
-        # deluge.enable = true;
+        deluge.enable = true;
 
         immich.enable = true;
 
@@ -57,12 +57,12 @@ in {
         # adguard.enable = true;
         # syncthing.enable = true;
 
-        # wireguard-netns = {
-        #   enable = true;
-        #   configFile = config.sops.secrets.wireguardCredentials.path;
-        #   privateIP = "10.2.0.2";
-        #   dnsIP = "10.2.0.1";
-        # };
+        wireguard-netns = {
+          enable = true;
+          configFile = config.sops.secrets.wireguardCredentials.path;
+          privateIP = "10.2.0.2";
+          dnsIP = "10.2.0.1";
+        };
       };
     };
   };
