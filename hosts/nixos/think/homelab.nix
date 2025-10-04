@@ -1,6 +1,5 @@
 { config, lib, ... }:
-let hl = config.homelab;
-in {
+{
   config = {
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
@@ -85,29 +84,8 @@ in {
       ];
       neededForBoot = false;
     };
-
-    systemd.services.deluged = {
-      after = [ "mnt-data.automount" "network-online.target" ];
-      requires = [ "mnt-data.automount" ];
-      bindsTo = [ "mnt-data.mount" ];
-      wantedBy = [ "mnt-data.automount" ];
-      restartIfChanged = true;
-      serviceConfig = {
-        Restart = lib.mkForce "on-failure";
-        RestartSec = 10;
-      };
-    };
-    systemd.services.deluge-web = {
-      after = [ "mnt-data.automount" "network-online.target" ];
-      requires = [ "mnt-data.automount" ];
-      bindsTo = [ "mnt-data.mount" ];
-      wantedBy = [ "mnt-data.automount" ];
-      restartIfChanged = true;
-      serviceConfig = {
-        Restart = lib.mkForce "on-failure";
-        RestartSec = 10;
-      };
-    };
-
   };
-}
+} // lib.mkMerge [
+  (lib.custom.addNfsServiceWithAutomount "/mnt/data" "deluged")
+  (lib.custom.addNfsServiceWithAutomount "/mnt/data" "deluge-web")
+]
