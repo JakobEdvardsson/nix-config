@@ -1,53 +1,32 @@
 { config, lib, pkgs, ... }:
 let
-  hl = config.homelab;
-  cfg = hl.services.deluge;
-  ns = hl.services.wireguard-netns.namespace;
+  service = "deluge";
+  homelab = config.homelab;
+  cfg = config.homelab.services.${service};
+  ns = homelab.services.wireguard-netns.namespace;
+  optionsFn = import ../options.nix;
 in {
-  options.homelab.services.deluge = {
-    enable = lib.mkEnableOption
-      "Deluge torrent client (bound to a Wireguard VPN network)";
-    configDir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/deluge";
-    };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "deluge.${hl.baseDomain}";
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Deluge";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "Torrent client";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "deluge.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Arr";
+  options.homelab.services.${service} = optionsFn {
+    inherit lib service config homelab;
+    homepage = {
+      description = "Torrent client";
+      category = "Arr";
     };
   };
   config = lib.mkIf cfg.enable {
     services.deluge = {
       enable = true;
-      user = hl.user;
-      group = hl.group;
-      web = { enable = true; };
+      web.enable = true;
     };
 
     services.caddy.virtualHosts."${cfg.url}" = {
-      useACMEHost = hl.baseDomain;
+      useACMEHost = homelab.baseDomain;
       extraConfig = ''
         reverse_proxy http://127.0.0.1:8112
       '';
     };
 
-    systemd = lib.mkIf hl.services.wireguard-netns.enable {
+    systemd = lib.mkIf homelab.services.wireguard-netns.enable {
       services.deluged.bindsTo = [ "netns@${ns}.service" ];
       services.deluged.requires = [ "network-online.target" "${ns}.service" ];
       services.deluged.serviceConfig.NetworkNamespacePath =
