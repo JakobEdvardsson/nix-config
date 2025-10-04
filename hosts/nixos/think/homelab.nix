@@ -47,7 +47,7 @@
         immich.enable = true;
 
         grafana.enable = true;
-        monitoring.enable = true; # prometheus
+        prometheus.enable = true; # prometheus
 
         cockpit.enable = true;
 

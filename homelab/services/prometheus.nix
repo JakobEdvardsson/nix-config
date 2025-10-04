@@ -1,10 +1,10 @@
 { config, lib, ... }:
 let
   service = "prometheus";
-  cfg = config.homelab.services.monitoring;
+  cfg = config.homelab.services.prometheus;
   homelab = config.homelab;
 in {
-  options.homelab.services.monitoring = {
+  options.homelab.services.prometheus = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     url = lib.mkOption {
       type = lib.types.str;

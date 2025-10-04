@@ -34,7 +34,7 @@ in {
       };
     })
 
-    (lib.mkIf homelab.services.monitoring.enable {
+    (lib.mkIf homelab.services.prometheus.enable {
       services.${service}.host = "0.0.0.0";
 
       services.prometheus.scrapeConfigs = [{
