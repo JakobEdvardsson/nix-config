@@ -49,7 +49,10 @@
 
       # Extend the library with custom functions
       extendedLib = ((nixpkgs.lib // home-manager.lib).extend (self: super: {
-        custom = import ./lib { inherit (nixpkgs) lib; };
+        custom = import ./lib {
+          inherit (nixpkgs) lib;
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        };
       })).extend (_: _: home-manager.lib);
     in {
       # Enables `nix fmt` at root of repo to format all nix files
