@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-{
+{ config, lib, ... }: {
   sops.secrets = {
     cloudflareDnsApiCredentials = { };
     wireguardCredentials = { };
@@ -83,7 +82,4 @@
     ];
     neededForBoot = false;
   };
-} // lib.mkMerge [
-  (lib.custom.addNfsServiceWithAutomount "/mnt/data" "deluged")
-  (lib.custom.addNfsServiceWithAutomount "/mnt/data" "deluge-web")
-]
+}
