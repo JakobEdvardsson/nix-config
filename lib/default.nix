@@ -14,49 +14,44 @@
   # ------------------------------------------------------------
   # Usage:
   #   (addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" "deluged")
-  #
-  # Sets up:
-  #   - The NFS mount at `path`
-  #   - Automount with idle timeout
-  #   - OnFailure hook and restarter template
-  #   - Watchdog that remounts on failure and restarts dependent service
-  #   - Service bindings (After/Requires/BindsTo/WantedBy)
+  # Arguments:
+  #     where: The mount point directory, e.g., "/mnt/data"
+  #     what: The NFS share, e.g., "tower:/mnt/user/data"
+  #     serviceName: The name of the dependent service, e.g., "deluged"
   # ------------------------------------------------------------
   # inspo: https://github.com/systemd/systemd/issues/16811
-  addNfsMountWithAutomount = path: device: serviceName:
+  addNfsMountWithAutomount = where: what: serviceName:
     let
-      unitName = lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" path);
+      unitName =
+        lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" where);
     in {
+      boot.supportedFilesystems = [ "nfs" ];
+      services.rpcbind.enable = true;
       #### 1. Define the NFS mount
-      fileSystems.${path} = {
-        device = device;
-        fsType = "nfs";
-        options = [
-          "x-systemd.automount"
-          "x-systemd.idle-timeout=60"
-          "_netdev"
-          "noauto"
-          "nofail"
-          "noresvport"
-          "nfsvers=4"
-          "rsize=1048576"
-          "wsize=1048576"
-          "hard"
-          "timeo=600"
-          "retrans=2"
-        ];
-        neededForBoot = false;
-      };
-
-      #### 2. Add OnFailure hook for the mount
-      systemd.mounts = lib.mkAfter [{
-        where = path;
-        what = device;
+      systemd.mounts = [{
         type = "nfs";
+        mountConfig = {
+          Options = [
+            "defaults"
+            "noauto"
+            "x-systemd.idle-timeout=600"
+            "nofail"
+            "_netdev"
+          ];
+        };
+        what = what; # "tower:/mnt/user/data"
+        where = where; # "/mnt/data"
         unitConfig.OnFailure = "automount-restarter@${unitName}.service";
       }];
 
-      #### 3. Automount restarter template
+      #### 2. Define the NFS automounts
+      systemd.automounts = [{
+        wantedBy = [ "multi-user.target" ];
+        automountConfig = { TimeoutIdleSec = "600"; };
+        where = where;
+      }];
+
+      #### 3. Automount restarter
       systemd.services."automount-restarter@" = {
         description = "automount restarter for %i";
         serviceConfig = {
@@ -66,7 +61,7 @@
         };
       };
 
-      #### 4. Dependent service configuration
+      #### 4. Make service depend on the mount
       systemd.services.${serviceName} = {
         after = [ "${unitName}.automount" "network-online.target" ];
         wants = [ "network-online.target" ];
@@ -78,33 +73,6 @@
         serviceConfig = {
           Restart = lib.mkForce "on-failure";
           RestartSec = 60;
-          ExecStartPre = "${pkgs.coreutils}/bin/mountpoint -q ${path}";
-        };
-      };
-
-      #### 5. Watchdog service + timer
-      systemd.services."nfs-watchdog-${unitName}" = lib.mkDefault {
-        description = "NFS watchdog for ${path}";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = pkgs.writeShellScript "nfsWatchdogScript" ''
-            #!/bin/sh
-            set -eu
-
-            if ! ${pkgs.util-linux}/bin/mountpoint -q ${path}; then
-              echo "⚠️  NFS mount ${path} missing — trying to remount..."
-              ${pkgs.systemd}/bin/systemctl restart ${unitName}.mount || true
-            fi
-          '';
-        };
-      };
-
-      systemd.timers."nfs-watchdog-${unitName}" = lib.mkDefault {
-        description = "Watchdog timer for NFS ${path}";
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnBootSec = "1min";
-          OnUnitActiveSec = "1min";
         };
       };
     };
