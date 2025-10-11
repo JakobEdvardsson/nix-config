@@ -44,7 +44,8 @@
       };
 
       systemd.mounts = [{
-        where = what;
+        where = where;
+        what = what;
         unitConfig.OnFailure = "automount-restarter@${unitName}.service";
       }];
 
