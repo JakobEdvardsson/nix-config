@@ -13,45 +13,41 @@
   # addNfsMountWithAutomount
   # ------------------------------------------------------------
   # Usage:
-  #   (addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" "deluged")
+  #   (addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data")
   # Arguments:
   #     where: The mount point directory, e.g., "/mnt/data"
   #     what: The NFS share, e.g., "tower:/mnt/user/data"
-  #     serviceName: The name of the dependent service, e.g., "deluged"
   # ------------------------------------------------------------
   # inspo: https://github.com/systemd/systemd/issues/16811
-  addNfsMountWithAutomount = where: what: serviceName:
+  addNfsMountWithAutomount = where: what:
     let
       unitName =
         lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" where);
     in {
       boot.supportedFilesystems = [ "nfs" ];
       services.rpcbind.enable = true;
-      #### 1. Define the NFS mount
+
+      fileSystems.${where} = {
+        device = what;
+        options = [
+          "defaults"
+          "x-systemd.automount"
+          "noauto"
+          "x-systemd.idle-timeout=60"
+          "x-systemd.device-timeout=5s"
+          "x-systemd.mount-timeout=5s"
+          "nofail"
+          "_netdev"
+        ];
+        fsType = "nfs";
+        neededForBoot = false;
+      };
+
       systemd.mounts = [{
-        type = "nfs";
-        mountConfig = {
-          Options = [
-            "defaults"
-            "noauto"
-            "x-systemd.idle-timeout=600"
-            "nofail"
-            "_netdev"
-          ];
-        };
-        what = what; # "tower:/mnt/user/data"
-        where = where; # "/mnt/data"
+        where = what;
         unitConfig.OnFailure = "automount-restarter@${unitName}.service";
       }];
 
-      #### 2. Define the NFS automounts
-      systemd.automounts = [{
-        wantedBy = [ "multi-user.target" ];
-        automountConfig = { TimeoutIdleSec = "600"; };
-        where = where;
-      }];
-
-      #### 3. Automount restarter
       systemd.services."automount-restarter@" = {
         description = "automount restarter for %i";
         serviceConfig = {
@@ -61,19 +57,19 @@
         };
       };
 
-      #### 4. Make service depend on the mount
-      systemd.services.${serviceName} = {
-        after = [ "${unitName}.automount" "network-online.target" ];
-        wants = [ "network-online.target" ];
-        requires = [ "${unitName}.automount" ];
-        bindsTo = [ "${unitName}.mount" ];
-        wantedBy = [ "multi-user.target" ];
-        restartIfChanged = true;
-
-        serviceConfig = {
-          Restart = lib.mkForce "on-failure";
-          RestartSec = 60;
-        };
-      };
+      #  #### Make service depend on the mount
+      #  systemd.services.${serviceName} = {
+      #    after = [ "${unitName}.automount" "network-online.target" ];
+      #    wants = [ "network-online.target" ];
+      #    requires = [ "${unitName}.automount" ];
+      #    bindsTo = [ "${unitName}.mount" ];
+      #    wantedBy = [ "multi-user.target" ];
+      #    restartIfChanged = true;
+      #
+      #    serviceConfig = {
+      #      Restart = lib.mkForce "on-failure";
+      #      RestartSec = 60;
+      #    };
+      #  };
     };
 }

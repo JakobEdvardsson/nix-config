@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 lib.mkMerge [
   {
     sops.secrets = {
@@ -65,8 +65,5 @@ lib.mkMerge [
       };
     };
   }
-  (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data"
-    "deluged")
-  (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data"
-    "delugeweb")
+  (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data")
 ]
