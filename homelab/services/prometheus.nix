@@ -30,7 +30,7 @@ in {
   config = lib.mkIf cfg.enable {
     services.prometheus = {
       enable = true;
-      globalConfig.scrape_interval = "1m"; # "1m"
+      globalConfig.scrape_interval = "1m";
       scrapeConfigs = [
         {
           job_name = "node";
@@ -44,6 +44,16 @@ in {
           }];
         }
         {
+          job_name = "systemd";
+          static_configs = [{
+            targets = [
+              "localhost:${
+                toString config.services.${service}.exporters.systemd.port
+              }"
+            ];
+          }];
+        }
+        {
           job_name = "prometheus";
           scrape_interval = "5s";
           static_configs = [{
@@ -53,23 +63,25 @@ in {
         }
       ];
     };
-    #
-    # services.prometheus.alertmanager = {
-    #   enable = true;
-    # };
 
     services.prometheus.exporters.node = {
       enable = true;
       port = 9100;
-      # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/nixos/modules/services/monitoring/prometheus/exporters.nix
-      enabledCollectors = [ "systemd" "processes" ];
-      # /nix/store/zgsw0yx18v10xa58psanfabmg95nl2bb-node_exporter-1.8.1/bin/node_exporter  --help
+      enabledCollectors = [ "processes" ];
       extraFlags = [
         "--collector.ethtool"
         "--collector.softirqs"
         "--collector.tcpstat"
         "--collector.wifi"
       ];
+    };
+
+    # https://discourse.nixos.org/t/systemd-exporter-couldnt-get-dbus-connection-read-unix-run-dbus-system-bus-socket-recvmsg-connection-reset-by-peer/64367/2
+    services.dbus.implementation = "broker";
+
+    services.prometheus.exporters.systemd = {
+      enable = true;
+      port = 9558;
     };
 
     services.caddy.virtualHosts."${cfg.url}" = {
