@@ -18,9 +18,11 @@ in {
       systemd.services."immich-server".serviceConfig.PrivateDevices =
         lib.mkForce false;
       users.users.immich.extraGroups = [ "video" "render" ];
-      services.${service} = {
-        accelerationDevices = null;
+
+      services.immich = {
         enable = true;
+        mediaLocation = cfg.dataDir;
+        accelerationDevices = null;
         port = 2283;
         openFirewall = true;
       };

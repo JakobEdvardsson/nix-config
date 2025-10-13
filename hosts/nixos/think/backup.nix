@@ -4,12 +4,11 @@ let
   healthcheck-restic-borgbase = "2c971425-4415-4bec-be2a-e029c4757186";
   # Get all enabled homelab services with dataDirs
   enabledServices = lib.attrsets.filterAttrs
-    (name: svc: svc ? enable && svc.enable && svc ? dataDirs)
+    (name: svc: svc ? enable && svc.enable && svc ? dataDir && svc ? backupDataDir && svc.backupDataDir)
     config.homelab.services;
 
-  # Flatten all dataDirs into a single list
-  allDataDirs = lib.flatten
-    (lib.attrsets.mapAttrsToList (name: svc: svc.dataDirs) enabledServices);
+  allDataDirs =
+    lib.attrsets.mapAttrsToList (name: svc: svc.dataDir) enabledServices;
 in {
   sops.secrets = {
     resticThinkTowerRepo = {

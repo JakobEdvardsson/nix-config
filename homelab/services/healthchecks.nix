@@ -22,6 +22,7 @@ in {
 
     services.${service} = {
       enable = true;
+      dataDir = cfg.dataDir;
       settings = {
         SITE_ROOT = "https://${cfg.url}";
         SECRET_KEY_FILE = config.sops.secrets.healthchecksSecretKey.path;

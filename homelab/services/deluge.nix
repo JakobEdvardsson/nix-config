@@ -19,6 +19,7 @@ in {
       services.deluge = {
         enable = true;
         web.enable = true;
+        dataDir = cfg.dataDir;
       };
 
       services.caddy.virtualHosts."${cfg.url}" = {

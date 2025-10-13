@@ -1,18 +1,17 @@
-{ lib, service, config, homelab, homepage ? { } }:
-let
-  # Normalize a nullable value (str or [str ...]) into a list of strings.
-  asList = v: if v == null then [ ] else if builtins.isList v then v else [ v ];
-in {
+{ lib, service, config, homelab, homepage ? { } }: {
   enable = lib.mkEnableOption { description = "Enable ${service}"; };
   url = lib.mkOption {
     type = lib.types.str;
     default = "${service}.${homelab.baseDomain}";
   };
-  dataDirs = lib.mkOption {
-    type = lib.types.listOf lib.types.str;
-    default = asList (config.services.${service}.mediaLocation or null)
-      ++ asList (config.services.${service}.dataDir or null)
-      ++ asList (config.services.${service}.location or null);
+  dataDir = lib.mkOption {
+    type = lib.types.str;
+    default = "/var/lib/${service}";
+  };
+  backupDataDir = lib.mkOption {
+    type = lib.types.bool;
+    description = "Whether the dataDir should be included in backups.";
+    default = true;
   };
   homepage.name = lib.mkOption {
     type = lib.types.str;
