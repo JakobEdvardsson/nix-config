@@ -39,7 +39,7 @@ lib.mkMerge [
         # # Arr
         jellyfin.enable = true;
         # bazarr.enable = true;
-        # prowlarr.enable = true;
+        prowlarr.enable = true;
         radarr.enable = true;
         sonarr.enable = true;
         # jellyseerr.enable = true;
