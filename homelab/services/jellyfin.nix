@@ -1,67 +1,31 @@
-{ config, pkgs, lib, ... }:
+# default = "The Free Software Media System";
+{ config, lib, pkgs, ... }:
 let
   service = "jellyfin";
-  cfg = config.homelab.services.${service};
   homelab = config.homelab;
+  cfg = config.homelab.services.${service};
+  optionsFn = import ../options.nix;
 in {
-  options.homelab.services.${service} = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    configDir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/${service}";
-    };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "jellyfinv2.${homelab.baseDomain}";
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Jellyfin";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "The Free Software Media System";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "jellyfin.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Media";
+  options.homelab.services.${service} = optionsFn {
+    inherit lib service config homelab;
+    homepage = {
+      description = "The Free Software Media System";
+      category = "Arr";
     };
   };
-  config = lib.mkIf cfg.enable {
-    environment.systemPackages = [ pkgs.jellyfin pkgs.jellyfin-ffmpeg ];
-    nixpkgs.overlays = with pkgs;
-      [
-        (final: prev: {
-          jellyfin-web = prev.jellyfin-web.overrideAttrs
-            (finalAttrs: previousAttrs: {
-              installPhase = ''
-                runHook preInstall
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      environment.systemPackages =
+        [ pkgs.jellyfin pkgs.jellyfin-web pkgs.jellyfin-ffmpeg ];
 
-                # this is the important line
-                sed -i "s#</head>#<script src=\"configurationpage?name=skip-intro-button.js\"></script></head>#" dist/index.html
+      services.${service} = { enable = true; };
 
-                mkdir -p $out/share
-                cp -a dist $out/share/jellyfin-web
-
-                runHook postInstall
-              '';
-            });
-        })
-      ];
-    services.${service} = {
-      enable = true;
-      user = homelab.user;
-      group = homelab.group;
-    };
-    services.caddy.virtualHosts."${cfg.url}" = {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://127.0.0.1:8096
-      '';
-    };
-  };
+      services.caddy.virtualHosts."${cfg.url}" = {
+        useACMEHost = homelab.baseDomain;
+        extraConfig = ''
+          reverse_proxy http://127.0.0.1:8096
+        '';
+      };
+    })
+  ];
 }
