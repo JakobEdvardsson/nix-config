@@ -1,4 +1,3 @@
-# default = "The Free Software Media System";
 { config, lib, pkgs, ... }:
 let
   service = "jellyfin";

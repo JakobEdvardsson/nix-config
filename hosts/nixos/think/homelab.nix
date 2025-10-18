@@ -39,8 +39,8 @@ lib.mkMerge [
         jellyfin.enable = true;
         # bazarr.enable = true;
         # prowlarr.enable = true;
-        # radarr.enable = true;
-        # sonarr.enable = true;
+        radarr.enable = true;
+        sonarr.enable = true;
         # jellyseerr.enable = true;
         deluge.enable = true;
 
