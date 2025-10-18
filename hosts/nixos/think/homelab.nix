@@ -44,6 +44,7 @@ lib.mkMerge [
         sonarr.enable = true;
         # jellyseerr.enable = true;
         deluge.enable = true;
+        flaresolverr.enable = true;
 
         immich.enable = true;
 
