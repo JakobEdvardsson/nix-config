@@ -15,11 +15,18 @@ in {
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
       sops.secrets = { "${service}ApiKey" = { }; };
+      sops.templates."${service}ApiKey".content = ''
+        ${lib.toUpper service}__AUTH__APIKEY="${
+          config.sops.placeholder."${service}ApiKey"
+        }"
+      '';
 
       services.${service} = {
         enable = true;
-        environmentFiles = [ config.sops.secrets."${service}ApiKey".path ];
+        environmentFiles =
+          [ "${config.sops.templates."${service}ApiKey".path}" ];
       };
+
       services.caddy.virtualHosts."${cfg.url}" = {
         useACMEHost = homelab.baseDomain;
         extraConfig = ''
