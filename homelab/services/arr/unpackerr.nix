@@ -108,6 +108,7 @@ in {
         CapabilityBoundingSet = "";
         AmbientCapabilities = "";
         Environment = lib.mapAttrsToList (n: v: "${n}=${toString v}") envAttrs;
+        ReadWritePaths = [ "/mnt/data/torrents" ];
         EnvironmentFile = envFiles;
       };
     };
