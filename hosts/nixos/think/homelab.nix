@@ -4,6 +4,8 @@ lib.mkMerge [
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
       wireguardCredentials = { };
+      sonarrApiKey = { };
+      radarrApiKey = { };
     };
 
     homelab = {
@@ -48,13 +50,11 @@ lib.mkMerge [
 
         unpackerr = {
           enable = true;
-          url = "unpackerr.example.com";
 
           # Configure Sonarr integration
           sonarr = {
             enable = true;
             url = "http://localhost:8989";
-            apiKey = "SONARR_API_KEY";
             dataDir = "/mnt/data/torrents/tv";
           };
 
@@ -62,7 +62,6 @@ lib.mkMerge [
           radarr = {
             enable = true;
             url = "http://localhost:7878";
-            apiKey = "RADARR_API_KEY";
             dataDir = "/mnt/data/torrents/movies";
           };
         };
