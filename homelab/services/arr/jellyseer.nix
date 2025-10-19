@@ -1,43 +1,28 @@
 { config, lib, pkgs, ... }:
 let
   service = "jellyseerr";
-  cfg = config.homelab.services.${service};
   homelab = config.homelab;
+  cfg = config.homelab.services.${service};
+  optionsFn = import ../../options.nix;
 in {
-  options.homelab.services.${service} = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    configDir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/${service}";
-    };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "${service}.${homelab.baseDomain}";
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Jellyseerr";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "Media request and discovery manager for Jellyfin";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "jellyseerr.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Media";
+  options.homelab.services.${service} = optionsFn {
+    inherit lib service config homelab;
+    homepage = {
+      description = "Media request and discovery manager for Jellyfin";
+      category = "Arr";
     };
   };
-  config = lib.mkIf cfg.enable {
-    services.${service} = { enable = true; };
-    services.caddy.virtualHosts."${cfg.url}" = {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://127.0.0.1:5055
-      '';
-    };
-  };
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+
+      services.${service} = { enable = true; };
+
+      services.caddy.virtualHosts."${cfg.url}" = {
+        useACMEHost = homelab.baseDomain;
+        extraConfig = ''
+          reverse_proxy http://127.0.0.1:5055
+        '';
+      };
+    })
+  ];
 }
