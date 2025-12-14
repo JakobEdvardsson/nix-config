@@ -2,7 +2,7 @@
 #-
 #- Usefull quick scripts
 #-
-#- - `powermenu` - Open power dropdown menu. (${pkgs.rofi-wayland}/bin/rofi)
+#- - `powermenu` - Open power dropdown menu. (${pkgs.rofi}/bin/rofi)
 #- - `lock` - Lock the screen. (hyprlock)
 { pkgs, ... }:
 let
@@ -23,7 +23,7 @@ let
           "󰿅 Shutdown"
         )
 
-        selected=$(printf '%s\n' "''${options[@]}" | ${pkgs.rofi-wayland}/bin/rofi -dmenu -p " Powermenu")
+        selected=$(printf '%s\n' "''${options[@]}" | ${pkgs.rofi}/bin/rofi -dmenu -p " Powermenu")
         # selected=$(printf '%s\n' "''${options[@]}" | tofi --prompt-text "> ")
         selected=''${selected:2}
 
@@ -65,7 +65,7 @@ let
           "󰈊 Hyprpicker"
         )
 
-        selected=$(printf '%s\n' "''${options[@]}" | ${pkgs.rofi-wayland}/bin/rofi -dmenu -p " Quickmenu" )
+        selected=$(printf '%s\n' "''${options[@]}" | ${pkgs.rofi}/bin/rofi -dmenu -p " Quickmenu" )
         # selected=$(printf '%s\n' "''${options[@]}" | tofi --prompt-text "> ")
         selected=''${selected:2}
 

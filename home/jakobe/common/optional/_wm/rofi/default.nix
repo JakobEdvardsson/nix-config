@@ -1,7 +1,7 @@
 { pkgs, lib, config, ... }:
-let cfg = config.customHome.rofi-wayland;
+let cfg = config.customHome.rofi;
 in {
-  options.customHome.rofi-wayland = {
+  options.customHome.rofi = {
     enable = lib.mkEnableOption "Enable waybar as the bar for Wayland.";
   };
 
@@ -10,7 +10,7 @@ in {
     programs = {
       rofi = {
         enable = true;
-        package = pkgs.rofi-wayland;
+        package = pkgs.rofi;
         extraConfig = {
           modi = "drun,filebrowser,run";
           show-icons = true;

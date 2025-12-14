@@ -29,7 +29,7 @@ in {
     # Dependencies for hyprland
     customHome = {
       waybar.enable = lib.mkDefault true;
-      rofi-wayland.enable = lib.mkDefault true;
+      rofi.enable = lib.mkDefault true;
       hyprlock.enable = lib.mkDefault true;
       hypridle.enable = lib.mkDefault true;
       swaync.enable = lib.mkDefault true;

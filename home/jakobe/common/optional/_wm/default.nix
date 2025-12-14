@@ -2,7 +2,7 @@
   imports = [
     ./hyprland
     ./waybar
-    ./rofi-wayland
+    ./rofi
     ./hyprlock
     ./hypridle
     ./swaync

@@ -5,8 +5,8 @@
     "$shiftMod" = "SUPER_SHIFT";
     # config.home.sessionVariable are defined in /home/jakobe/common/core/default.nix
     bind = [
-      "$mod, D, exec, pkill rofi || ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
-      "$mod, V, exec, pkill rofi || nvidia-offload ${pkgs.rofi-wayland}/bin/rofi -show drun -modi drun,filebrowser,run,window"
+      "$mod, D, exec, pkill rofi || ${pkgs.rofi}/bin/rofi -show drun -modi drun,filebrowser,run,window"
+      "$mod, V, exec, pkill rofi || nvidia-offload ${pkgs.rofi}/bin/rofi -show drun -modi drun,filebrowser,run,window"
 
       "$mod, Return, exec, ${config.home.sessionVariables.TERMINAL}" # Launch terminal
       "$mod, T, exec, ${config.home.sessionVariables.FILES}" # Launch file manager"

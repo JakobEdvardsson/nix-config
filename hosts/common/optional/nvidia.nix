@@ -49,7 +49,7 @@ in {
         enable = true;
         enable32Bit = true;
         extraPackages = with pkgs; [
-          vaapiVdpau
+          libva-vdpau-driver
           libvdpau
           libvdpau-va-gl
           nvidia-vaapi-driver
