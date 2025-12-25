@@ -7,23 +7,16 @@
 lib.mkMerge [
   {
     sops.secrets = {
-      cloudflareDnsApiCredentials = { };
       wireguardCredentials = { };
     };
 
     homelab = {
       enable = true;
       baseDomain = "edvardsson.dev";
-      cloudflare.dnsCredentialsFile = config.sops.secrets.cloudflareDnsApiCredentials.path;
       timeZone = "Europe/Stockholm";
-      mounts = {
-        config = "/appdata";
-        slow = "/mnt/slow";
-        fast = "/mnt/fast";
-      };
+      caddy.enable = true;
 
       services = {
-        enable = true;
         # homepage icons can be found at https://github.com/homarr-labs/dashboard-icons
 
         # Categories: Arr, Media, Services
