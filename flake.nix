@@ -67,7 +67,7 @@
     in
     {
       # Enables `nix fmt` at root of repo to format all nix files
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
       devShells = forAllSystems (
         system:
         let
@@ -77,6 +77,7 @@
           default = pkgs.mkShell {
             packages = [
               pkgs.nixfmt-rfc-style
+              pkgs.nixfmt-tree
               pkgs.statix
             ];
           };
