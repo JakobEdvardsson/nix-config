@@ -48,7 +48,6 @@
     intel-quicksync.enable = true;
     deploy.enable = true;
     openssh.enable = true;
-    plymouth.enable = true;
     tailscale.enable = true;
   };
 
@@ -64,7 +63,7 @@
   boot.loader = {
     systemd-boot = {
       enable = true;
-      # When using plymouth, initrd can expand by a lot each time, so limit how many we keep around
+      # Limit how many boot entries we keep around
       configurationLimit = lib.mkDefault 10;
     };
     efi.canTouchEfiVariables = true;
