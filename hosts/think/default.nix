@@ -12,7 +12,7 @@
   ...
 }:
 {
-  imports = lib.flatten [
+  imports = [
     #
     # ========== Hardware ==========
     #
@@ -37,19 +37,15 @@
     #
     # ========== Misc Inputs ==========
     #
-    (map lib.custom.relativeToRoot [
-      #
-      # ========== Required Configs ==========
-      #
-      "modules/core"
-      #
-      # ========== Optional Configs ==========
-      #
-      #TODO: implement/remove
-
-      "modules/optional/services/openssh.nix" # allow remote SSH access
-      "modules/optional/plymouth.nix" # fancy boot screen
-    ])
+    #
+    # ========== Required Configs ==========
+    #
+    (lib.custom.relativeToRoot "modules")
+    #
+    # ========== Optional Configs ==========
+    #
+    (lib.custom.relativeToRoot "modules/optional/services/openssh.nix") # allow remote SSH access
+    (lib.custom.relativeToRoot "modules/optional/plymouth.nix") # fancy boot screen
   ];
 
   #

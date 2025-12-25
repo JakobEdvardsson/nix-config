@@ -1,5 +1,6 @@
 # hosts level sops. see home/[user]/common/optional/sops.nix for home/user level
 {
+  inputs,
   pkgs,
   config,
   lib,
@@ -9,7 +10,7 @@ let
   secretsFile = lib.custom.relativeToRoot "secrets.yaml";
 in
 {
-  #the import for inputs.sops-nix.nixosModules.sops is handled in modules/core/default.nix so that it can be dynamically input according to the platform
+  imports = [ inputs.sops-nix.nixosModules.sops ];
 
   environment.systemPackages = with pkgs; [
     ssh-to-age
