@@ -1,7 +1,7 @@
 { disk, ... }:
 # USAGE in your configuration.nix.
 # inputs.disko.nixosModules.disko
-# (lib.custom.relativeToRoot "hosts/common/disks/btrfs.nix")
+# (lib.custom.relativeToRoot "modules/disks/btrfs.nix")
 # {
 #   _module.args = {
 #     disk = "/dev/nvme0n1";
@@ -16,11 +16,12 @@
         content = {
           type = "gpt";
           partitions = {
+            boot = {
+              size = "1M";
+              type = "EF02"; # for grub MBR
+            };
             ESP = {
-              priority = 1;
-              name = "ESP";
-              start = "1M";
-              end = "2G";
+              size = "2G";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -32,13 +33,9 @@
             root = {
               size = "100%";
               content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ]; # Override existing partition
+                type = "filesystem";
+                format = "ext4";
                 mountpoint = "/";
-                mountOptions = [
-                  "compress=zstd"
-                  "noatime"
-                ];
               };
             };
           };

@@ -11,11 +11,6 @@
   # host-wide styling
   stylix = {
     enable = true;
-    image = pkgs.fetchurl {
-      url = "https://wallpaperbat.com/img/850807-legion-gaming-community.jpg";
-      sha256 = "pLYV4/ypmA0IRzFofxRBllAkgMEwsQWBsIBSagUmNx0=";
-    };
-    imageScalingMode = "fit";
     #base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark.yaml";
     base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
     cursor = {

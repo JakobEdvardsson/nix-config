@@ -8,16 +8,15 @@
 }:
 {
   imports = lib.flatten [
-    inputs.home-manager.nixosModules.home-manager
     inputs.sops-nix.nixosModules.sops
 
     (map lib.custom.relativeToRoot [
-      "modules/nixos"
+      "modules/host-spec.nix"
       "homelab"
-      "hosts/common/core/services"
-      "hosts/common/users/primary"
-      "hosts/common/users/deploy.nix"
-      "hosts/common/optional"
+      "modules/core/services"
+      "modules/users/primary"
+      "modules/users/deploy.nix"
+      "modules/optional"
     ])
     (lib.custom.scanPaths ./.)
   ];

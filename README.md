@@ -5,7 +5,7 @@
 1. Create a new host config:
 
 ```bash
-mkdir -p hosts/nixos/<hostname>
+mkdir -p hosts/<hostname>
 ```
 
 2. Create a matching home-manager config:
@@ -18,7 +18,7 @@ mkdir -p home/jakobe/<hostname>
 
 ```nix
 inputs.disko.nixosModules.disko
-(lib.custom.relativeToRoot "hosts/common/disks/btrfs.nix")
+(lib.custom.relativeToRoot "modules/disks/btrfs.nix")
 {
   _module.args = {
     disk = "/dev/nvme0n1";
@@ -40,7 +40,7 @@ git clone https://github.com/jakobedvardsson/nix-config
 cd nix-config
 ```
 
-3. Temporarily enable password login by editing `hosts/common/users/primary/default.nix`:
+3. Temporarily enable password login by editing `modules/users/primary/default.nix`:
 
 ```nix
 #hashedPasswordFile = sopsHashedPasswordFile;  # Comment out
@@ -50,7 +50,7 @@ password = lib.mkForce "nixos";               # Add this temporarily
 4. Generate `hardware.nix`:
 
 ```bash
-nixos-generate-config --show-hardware-config --no-filesystems > hosts/nixos/<hostname>/hardware.nix
+nixos-generate-config --show-hardware-config --no-filesystems > hosts/<hostname>/hardware.nix
 ```
 
 5. Partition and install:
@@ -124,7 +124,7 @@ reboot
 ```
 
 2. **Revert the temporary password override**:
-   Edit `hosts/common/users/primary/default.nix` and undo the temporary password setting:
+   Edit `modules/users/primary/default.nix` and undo the temporary password setting:
 
 ```nix
 # Remove or comment this:
@@ -148,7 +148,7 @@ Once a machine is up and running, you can manage it remotely using the restricte
 
 #### 1. Enable `deploy` User
 
-In host configuration (`hosts/nixos/<hostname>/default.nix` or similar):
+In host configuration (`hosts/<hostname>/default.nix` or similar):
 
 ```nix
 customOption.deploy.enable = true;
@@ -156,7 +156,7 @@ customOption.deploy.enable = true;
 
 #### 2. Add Public Key
 
-Add SSH public key to `hosts/common/users/primary/keys` so they are included in deploy's authorizedKeys.
+Add SSH public key to `modules/users/primary/keys` so they are included in deploy's authorizedKeys.
 
 #### 3. Rebuild to apply changes
 

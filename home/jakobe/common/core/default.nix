@@ -8,8 +8,7 @@
 {
   imports = lib.flatten [
     (map lib.custom.relativeToRoot [
-      "modules/nixos/host-spec.nix"
-      "modules/home-manager"
+      "modules/host-spec.nix"
     ])
 
     (lib.custom.scanPaths ./.)

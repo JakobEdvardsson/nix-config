@@ -23,10 +23,6 @@
       type = lib.types.str;
       description = "The domain of the host";
     };
-    userFullName = lib.mkOption {
-      type = lib.types.str;
-      description = "The full name of the user";
-    };
     handle = lib.mkOption {
       type = lib.types.str;
       description = "The handle of the user (eg: github user)";

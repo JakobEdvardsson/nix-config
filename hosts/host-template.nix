@@ -12,6 +12,7 @@ in
     #inputs.hardware.nixosModules.common-gpu-nvidia
     #inputs.hardware.nixosModules.common-gpu-intel
     #inputs.hardware.nixosModules.common-pc-ssd
+    inputs.home-manager.nixosModules.home-manager
 
     #
     # ========== Disk Layout ==========
@@ -26,7 +27,7 @@ in
       #
       # ========== Required Configs ==========
       #
-      "hosts/common/core"
+      "modules/core"
 
       #
       # ========== Non-Primary Users to Create ==========

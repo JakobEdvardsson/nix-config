@@ -22,11 +22,12 @@
     inputs.hardware.nixosModules.common-cpu-intel
     inputs.hardware.nixosModules.common-pc-ssd
     inputs.hardware.nixosModules.common-pc
+    inputs.home-manager.nixosModules.home-manager
     #
     # ========== Disk Layout ==========
     #
     inputs.disko.nixosModules.disko
-    (lib.custom.relativeToRoot "hosts/common/disks/ext4.nix")
+    (lib.custom.relativeToRoot "modules/disks/ext4.nix")
     {
       _module.args = {
         disk = "/dev/nvme0n1";
@@ -40,14 +41,14 @@
       #
       # ========== Required Configs ==========
       #
-      "hosts/common/core"
+      "modules/core"
       #
       # ========== Optional Configs ==========
       #
       #TODO: implement/remove
 
-      "hosts/common/optional/services/openssh.nix" # allow remote SSH access
-      "hosts/common/optional/plymouth.nix" # fancy boot screen
+      "modules/optional/services/openssh.nix" # allow remote SSH access
+      "modules/optional/plymouth.nix" # fancy boot screen
     ])
   ];
 
