@@ -9,7 +9,7 @@ let
   homelab = config.homelab;
   cfg = config.homelab.services.${service};
   ns = homelab.services.wireguard-netns.namespace;
-  optionsFn = import ../options.nix;
+  optionsFn = import ../../options.nix;
 in
 {
   options.homelab.services.${service} = optionsFn {

@@ -3,7 +3,7 @@ let
   service = "healthchecks";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
-  optionsFn = import ../options.nix;
+  optionsFn = import ../../options.nix;
 in
 {
   options.homelab.services.${service} = optionsFn {
