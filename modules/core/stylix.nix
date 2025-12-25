@@ -5,60 +5,69 @@
   inputs,
   ...
 }:
+let
+  cfg = config.customOption.stylix;
+in
 {
   imports = [ inputs.stylix.nixosModules.stylix ];
 
-  # host-wide styling
-  stylix = {
-    enable = true;
-    #base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark.yaml";
-    base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
-    cursor = {
-      package = pkgs.bibata-cursors;
-      name = "Bibata-Modern-Ice";
-      size = 24;
-    };
-    fonts = {
-      serif = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Serif";
-      };
+  options.customOption.stylix = {
+    enable = lib.mkEnableOption "Enable stylix";
+  };
 
-      sansSerif = {
-        package = pkgs.dejavu_fonts;
-        name = "DejaVu Sans";
+  config = lib.mkIf cfg.enable {
+    # host-wide styling
+    stylix = {
+      enable = true;
+      #base16Scheme = "${pkgs.base16-schemes}/share/themes/onedark.yaml";
+      base16Scheme = "${pkgs.base16-schemes}/share/themes/ayu-dark.yaml";
+      cursor = {
+        package = pkgs.bibata-cursors;
+        name = "Bibata-Modern-Ice";
+        size = 24;
       };
-
-      monospace = {
-        # package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
-        package = pkgs.nerd-fonts.jetbrains-mono;
-        name = "JetBrainsMono Nerd Font Mono";
-      };
-
-      /*
-        monospace = {
+      fonts = {
+        serif = {
           package = pkgs.dejavu_fonts;
-          name = "DejaVu Sans Mono";
+          name = "DejaVu Serif";
         };
-      */
 
-      emoji = {
-        package = pkgs.noto-fonts-color-emoji;
-        name = "Noto Color Emoji";
+        sansSerif = {
+          package = pkgs.dejavu_fonts;
+          name = "DejaVu Sans";
+        };
+
+        monospace = {
+          # package = pkgs.nerdfonts.override { fonts = [ "JetBrainsMono" ]; };
+          package = pkgs.nerd-fonts.jetbrains-mono;
+          name = "JetBrainsMono Nerd Font Mono";
+        };
+
+        /*
+          monospace = {
+            package = pkgs.dejavu_fonts;
+            name = "DejaVu Sans Mono";
+          };
+        */
+
+        emoji = {
+          package = pkgs.noto-fonts-color-emoji;
+          name = "Noto Color Emoji";
+        };
+        sizes = {
+          applications = 12;
+          terminal = 12;
+          desktop = 12;
+          popups = 10;
+        };
       };
-      sizes = {
-        applications = 12;
-        terminal = 12;
-        desktop = 12;
-        popups = 10;
+      opacity = {
+        applications = 1.0;
+        terminal = 1.0;
+        desktop = 1.0;
+        popups = 0.9;
       };
+      polarity = "dark";
     };
-    opacity = {
-      applications = 1.0;
-      terminal = 1.0;
-      desktop = 1.0;
-      popups = 0.9;
-    };
-    polarity = "dark";
   };
 }

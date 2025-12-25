@@ -2,7 +2,6 @@
   inputs,
   config,
   lib,
-  pkgs,
   ...
 }:
 {
@@ -153,10 +152,4 @@
 
   # Set the console key map
   console.keyMap = "sv-latin1";
-
-  # Configure X server settings if enabled
-  services.xserver.xkb = {
-    layout = "se";
-    variant = "";
-  };
 }
