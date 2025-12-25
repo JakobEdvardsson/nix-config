@@ -1,6 +1,13 @@
-{ pkgs, lib, config, ... }:
-let cfg = config.customOption.droidcam;
-in {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.customOption.droidcam;
+in
+{
   options.customOption.droidcam = {
     enable = lib.mkEnableOption "Enable droidcam";
   };

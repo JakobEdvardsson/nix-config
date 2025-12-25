@@ -1,7 +1,16 @@
-{ pkgs, lib, config, ... }:
-let cfg = config.customOption.ai;
-in {
-  options.customOption.ai = { enable = lib.mkEnableOption "Enable ai"; };
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.customOption.ai;
+in
+{
+  options.customOption.ai = {
+    enable = lib.mkEnableOption "Enable ai";
+  };
 
   config = lib.mkIf cfg.enable {
     nixpkgs = {

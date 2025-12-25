@@ -1,13 +1,21 @@
-{ lib, pkgs, ... }: {
+{ lib, pkgs, ... }:
+{
   # use path relative to the root of the project
   relativeToRoot = lib.path.append ../.;
-  scanPaths = path:
-    builtins.map (f: (path + "/${f}")) (builtins.attrNames
-      (lib.attrsets.filterAttrs (path: _type:
-        (_type == "directory") # include directories
-        || ((path != "default.nix") # ignore default.nix
-          && (lib.strings.hasSuffix ".nix" path) # include .nix files
-        )) (builtins.readDir path)));
+  scanPaths =
+    path:
+    builtins.map (f: (path + "/${f}")) (
+      builtins.attrNames (
+        lib.attrsets.filterAttrs (
+          path: _type:
+          (_type == "directory") # include directories
+          || (
+            (path != "default.nix") # ignore default.nix
+            && (lib.strings.hasSuffix ".nix" path) # include .nix files
+          )
+        ) (builtins.readDir path)
+      )
+    );
 
   # ------------------------------------------------------------
   # addNfsMountWithAutomount
@@ -19,11 +27,12 @@
   #     what: The NFS share, e.g., "tower:/mnt/user/data"
   # ------------------------------------------------------------
   # inspo: https://github.com/systemd/systemd/issues/16811
-  addNfsMountWithAutomount = where: what:
+  addNfsMountWithAutomount =
+    where: what:
     let
-      unitName =
-        lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" where);
-    in {
+      unitName = lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" where);
+    in
+    {
       boot.supportedFilesystems = [ "nfs" ];
       services.rpcbind.enable = true;
 
@@ -43,11 +52,13 @@
         neededForBoot = false;
       };
 
-      systemd.mounts = [{
-        where = where;
-        what = what;
-        unitConfig.OnFailure = "automount-restarter@${unitName}.service";
-      }];
+      systemd.mounts = [
+        {
+          where = where;
+          what = what;
+          unitConfig.OnFailure = "automount-restarter@${unitName}.service";
+        }
+      ];
 
       systemd.services."automount-restarter@" = {
         description = "automount restarter for %i";

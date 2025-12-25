@@ -1,12 +1,20 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.customOption.tailscale;
 
   # Build an ExecStart list of commands for each subnet
-  ipRules = lib.concatStringsSep " && " (builtins.map (subnet:
-    "${pkgs.iproute2}/bin/ip rule add to ${subnet} priority 2500 lookup main || true")
-    cfg.routeSubnets);
-in {
+  ipRules = lib.concatStringsSep " && " (
+    builtins.map (
+      subnet: "${pkgs.iproute2}/bin/ip rule add to ${subnet} priority 2500 lookup main || true"
+    ) cfg.routeSubnets
+  );
+in
+{
   options.customOption.tailscale = {
     enable = lib.mkEnableOption "Enable tailscale";
 

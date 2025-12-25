@@ -1,4 +1,11 @@
-{ config, lib, pkgs, hostSpec, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  hostSpec,
+  ...
+}:
+{
   imports = lib.flatten [
     (map lib.custom.relativeToRoot [
       "modules/nixos/host-spec.nix"
@@ -18,7 +25,10 @@
     username = lib.mkDefault config.hostSpec.username;
     homeDirectory = lib.mkDefault config.hostSpec.home;
     stateVersion = lib.mkDefault "23.05";
-    sessionPath = [ "$HOME/.local/bin" "$HOME/scripts/talon_scripts" ];
+    sessionPath = [
+      "$HOME/.local/bin"
+      "$HOME/scripts/talon_scripts"
+    ];
     sessionVariables = {
       FLAKE = "$HOME/nix-config";
       SHELL = "fish";
@@ -30,8 +40,7 @@
       EDITOR = "nvim";
       MANPAGER = "batman"; # see ./cli/bat.nix
     };
-    preferXdgDirectories =
-      true; # whether to make programs use XDG directories whenever supported
+    preferXdgDirectories = true; # whether to make programs use XDG directories whenever supported
   };
   #TODO:(xdg) maybe move this to its own xdg.nix?
   # xdg packages are pulled in below
@@ -40,21 +49,23 @@
     userDirs = {
       enable = true;
       createDirectories = true;
-      /* desktop = "${config.home.homeDirectory}/.desktop";
-         documents = "${config.home.homeDirectory}/doc";
-         download = "${config.home.homeDirectory}/downloads";
-         music = "${config.home.homeDirectory}/media/audio";
-         pictures = "${config.home.homeDirectory}/media/images";
-         videos = "${config.home.homeDirectory}/media/video";
+      /*
+        desktop = "${config.home.homeDirectory}/.desktop";
+        documents = "${config.home.homeDirectory}/doc";
+        download = "${config.home.homeDirectory}/downloads";
+        music = "${config.home.homeDirectory}/media/audio";
+        pictures = "${config.home.homeDirectory}/media/images";
+        videos = "${config.home.homeDirectory}/media/video";
       */
       # publicshare = "/var/empty"; #using this option with null or "/var/empty" barfs so it is set properly in extraConfig below
       # templates = "/var/empty"; #using this option with null or "/var/empty" barfs so it is set properly in extraConfig below
 
-      /* extraConfig = {
-           # publicshare and templates defined as null here instead of as options because
-           XDG_PUBLICSHARE_DIR = "/var/empty";
-           XDG_TEMPLATES_DIR = "/var/empty";
-         };
+      /*
+        extraConfig = {
+          # publicshare and templates defined as null here instead of as options because
+          XDG_PUBLICSHARE_DIR = "/var/empty";
+          XDG_TEMPLATES_DIR = "/var/empty";
+        };
       */
     };
   };
@@ -96,7 +107,10 @@
   nix = {
     package = lib.mkDefault pkgs.nix;
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       warn-dirty = false;
     };
   };

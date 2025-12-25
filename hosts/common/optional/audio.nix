@@ -1,4 +1,5 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   # sound.enable = true; #deprecated in 24.11 TODO remove this line when 24.11 release
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -19,6 +20,6 @@
     inherit (pkgs)
       playerctl # cli utility and lib for controlling media players
       # pamixer # cli pulseaudio sound mixer
-    ;
+      ;
   };
 }

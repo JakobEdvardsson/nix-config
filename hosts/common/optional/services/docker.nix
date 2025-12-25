@@ -1,6 +1,13 @@
-{ pkgs, lib, config, ... }:
-let cfg = config.customOption.docker;
-in {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.customOption.docker;
+in
+{
   options.customOption.docker = {
     enable = lib.mkEnableOption "Enable docker";
   };

@@ -4,9 +4,15 @@ let
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
   optionsFn = import ../options.nix;
-in {
+in
+{
   options.homelab.services.${service} = optionsFn {
-    inherit lib service config homelab;
+    inherit
+      lib
+      service
+      config
+      homelab
+      ;
     homepage = {
       description = "Cron Job Monitoring";
       category = "Media";
@@ -31,9 +37,9 @@ in {
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''
-        reverse_proxy http://${
-          toString config.services.${service}.listenAddress
-        }:${toString config.services.${service}.port}
+        reverse_proxy http://${toString config.services.${service}.listenAddress}:${
+          toString config.services.${service}.port
+        }
       '';
     };
   };

@@ -1,12 +1,22 @@
-{ pkgs, lib, config, ... }:
-let cfg = config.customOption.nvidia;
-in {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.customOption.nvidia;
+in
+{
   options.customOption.nvidia = {
     enable = lib.mkEnableOption "Enable nvidia";
   };
   config = lib.mkIf cfg.enable {
     # Load nvidia driver for Xorg and Wayland
-    services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
+    services.xserver.videoDrivers = [
+      "nvidia"
+      "modesetting"
+    ];
 
     boot = {
       blacklistedKernelModules = [ "nouveau" ];

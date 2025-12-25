@@ -16,4 +16,7 @@ let
      ${pkgs.libnotify}/bin/notify-send "'$chosen' copied to clipboard." &
     fi
   '';
-in { home.packages = [ emoji-picker ]; }
+in
+{
+  home.packages = [ emoji-picker ];
+}

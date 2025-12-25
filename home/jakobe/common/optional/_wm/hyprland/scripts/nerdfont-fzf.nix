@@ -16,13 +16,13 @@ let
     echo "Copied to clipboard: $fzf_result"
     ${pkgs.wl-clipboard}/bin/wl-copy "$fzf_result"
   '';
-in {
+in
+{
   home.packages = [ nerdfont-fzf ];
 
   xdg.configFile."nerdfont_glyphnames.json" = {
     source = pkgs.fetchurl {
-      url =
-        "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/384b1825ea0037b0314f7f9c660a80c1ecdb219a/glyphnames.json";
+      url = "https://raw.githubusercontent.com/ryanoasis/nerd-fonts/384b1825ea0037b0314f7f9c660a80c1ecdb219a/glyphnames.json";
       hash = "sha256-Ps0dyFcMs51RMTthBOVSOf/lafPV/53JxuNSKlmZ7cc=";
     };
   };

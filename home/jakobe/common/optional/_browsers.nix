@@ -1,6 +1,13 @@
-{ pkgs, config, lib, ... }:
-let cfg = config.customHome.browser;
-in {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.customHome.browser;
+in
+{
   options.customHome.browser = {
     enable = lib.mkEnableOption "Browser settings";
   };

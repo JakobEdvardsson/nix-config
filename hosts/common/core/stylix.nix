@@ -1,4 +1,11 @@
-{ pkgs, lib, config, inputs, ... }: {
+{
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}:
+{
   imports = [ inputs.stylix.nixosModules.stylix ];
 
   # host-wide styling
@@ -33,10 +40,11 @@
         name = "JetBrainsMono Nerd Font Mono";
       };
 
-      /* monospace = {
-           package = pkgs.dejavu_fonts;
-           name = "DejaVu Sans Mono";
-         };
+      /*
+        monospace = {
+          package = pkgs.dejavu_fonts;
+          name = "DejaVu Sans Mono";
+        };
       */
 
       emoji = {

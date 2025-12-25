@@ -1,5 +1,11 @@
 # Specifications For Differentiating Hosts
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   options.hostSpec = {
     username = lib.mkOption {
       type = lib.types.str;
@@ -28,8 +34,11 @@
     home = lib.mkOption {
       type = lib.types.str;
       description = "The home directory of the user";
-      default = let user = config.hostSpec.username;
-      in if pkgs.stdenv.isLinux then "/home/${user}" else "/Users/${user}";
+      default =
+        let
+          user = config.hostSpec.username;
+        in
+        if pkgs.stdenv.isLinux then "/home/${user}" else "/Users/${user}";
     };
   };
 }

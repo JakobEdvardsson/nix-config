@@ -1,6 +1,13 @@
-{ pkgs, lib, config, ... }:
-let cfg = config.customHome.development;
-in {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.customHome.development;
+in
+{
   options.customHome.development = {
     enable = lib.mkEnableOption "Enable development tooling";
   };

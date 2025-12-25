@@ -1,9 +1,15 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   service = "jellyseerr";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
-in {
+in
+{
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     configDir = lib.mkOption {
@@ -32,7 +38,9 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    services.${service} = { enable = true; };
+    services.${service} = {
+      enable = true;
+    };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''

@@ -4,7 +4,14 @@
 #  Intel Core i5-12400T
 #
 ###############################################################
-{ inputs, lib, config, pkgs, ... }: {
+{
+  inputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+{
   imports = lib.flatten [
     #
     # ========== Hardware ==========
@@ -21,7 +28,9 @@
     inputs.disko.nixosModules.disko
     (lib.custom.relativeToRoot "hosts/common/disks/ext4.nix")
     {
-      _module.args = { disk = "/dev/nvme0n1"; };
+      _module.args = {
+        disk = "/dev/nvme0n1";
+      };
     }
 
     #
@@ -53,7 +62,9 @@
     tailscale.enable = true;
   };
 
-  hostSpec = { hostName = "think"; };
+  hostSpec = {
+    hostName = "think";
+  };
 
   networking = {
     networkmanager.enable = true;
@@ -70,7 +81,9 @@
     timeout = 10;
   };
 
-  boot.initrd = { systemd.enable = true; };
+  boot.initrd = {
+    systemd.enable = true;
+  };
 
   boot.kernelPackages = pkgs.linuxPackages;
 

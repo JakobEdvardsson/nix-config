@@ -1,6 +1,7 @@
 { inputs, lib, ... }:
 let
-in {
+in
+{
   imports = [
     #
     # ========== Hardware ==========
@@ -53,12 +54,16 @@ in {
   };
 
   boot.loader = {
-    systemd-boot = { enable = true; };
+    systemd-boot = {
+      enable = true;
+    };
     efi.canTouchEfiVariables = true;
     timeout = 3;
   };
 
-  boot.initrd = { systemd.enable = true; };
+  boot.initrd = {
+    systemd.enable = true;
+  };
 
   # https://wiki.nixos.org/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = "24.11";

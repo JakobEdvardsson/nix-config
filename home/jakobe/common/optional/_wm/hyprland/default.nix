@@ -1,11 +1,16 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.customHome.hyprland;
   selectedBar = cfg.bar; # Extract the bar value into a variable
-in {
+in
+{
   options.customHome.hyprland = {
-    enable =
-      lib.mkEnableOption "Enable Hyprland as the window manager for Wayland.";
+    enable = lib.mkEnableOption "Enable Hyprland as the window manager for Wayland.";
 
     monitor = lib.mkOption {
       default = "";
@@ -23,7 +28,10 @@ in {
 
   };
 
-  imports = [ ./config ./scripts ];
+  imports = [
+    ./config
+    ./scripts
+  ];
 
   config = lib.mkIf cfg.enable {
     # Dependencies for hyprland
@@ -37,7 +45,10 @@ in {
     };
 
     # required packages for Hyprland
-    home.packages = with pkgs; [ kitty wl-clipboard ];
+    home.packages = with pkgs; [
+      kitty
+      wl-clipboard
+    ];
 
     wayland.windowManager.hyprland = {
       enable = true;
@@ -104,42 +115,43 @@ in {
             # https://www.electronjs.org/docs/latest/api/environment-variables
             "ELECTRON_OZONE_PLATFORM_HINT,auto" # auto selects Wayland if possible, X11 otherwise
           ]
-          (if cfg.nvidia then
-            [
+          (
+            if cfg.nvidia then
+              [
 
-              "AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1" # https://github.com/hyprwm/aquamarine/issues/171
-              # "LIBVA_DRIVER_NAME,nvidia"
-              # "__GLX_VENDOR_LIBRARY_NAME,nvidia"
-              # "NVD_BACKEND,direct"
-              # ""
-              #
-              # # additional ENV's for nvidia. Caution, activate with care
-              # "GBM_BACKEND,nvidia-drm"
-              #
-              # "__GL_GSYNC_ALLOWED,1" # adaptive Vsync
-              # "__NV_PRIME_RENDER_OFFLOAD,1"
-              # "__VK_LAYER_NV_optimus,NVIDIA_only"
-              # "WLR_DRM_NO_ATOMIC,1"
-              #
-              # # FOR VM and POSSIBLY NVIDIA
-              # # LIBGL_ALWAYS_SOFTWARE software mesa rendering
-              # #"LIBGL_ALWAYS_SOFTWARE,1" # Warning. May cause hyprland to crash
-              # "WLR_RENDERER_ALLOW_SOFTWARE,1"
-              #
-              # # nvidia firefox (for hardware acceleration on FF)?
-              # # check this post https://github.com/elFarto/nvidia-vaapi-driver#configuration
-              # "MOZ_DISABLE_RDD_SANDBOX,1"
-              # "EGL_PLATFORM,wayland"
-            ]
-          else
-            [ ])
+                "AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1" # https://github.com/hyprwm/aquamarine/issues/171
+                # "LIBVA_DRIVER_NAME,nvidia"
+                # "__GLX_VENDOR_LIBRARY_NAME,nvidia"
+                # "NVD_BACKEND,direct"
+                # ""
+                #
+                # # additional ENV's for nvidia. Caution, activate with care
+                # "GBM_BACKEND,nvidia-drm"
+                #
+                # "__GL_GSYNC_ALLOWED,1" # adaptive Vsync
+                # "__NV_PRIME_RENDER_OFFLOAD,1"
+                # "__VK_LAYER_NV_optimus,NVIDIA_only"
+                # "WLR_DRM_NO_ATOMIC,1"
+                #
+                # # FOR VM and POSSIBLY NVIDIA
+                # # LIBGL_ALWAYS_SOFTWARE software mesa rendering
+                # #"LIBGL_ALWAYS_SOFTWARE,1" # Warning. May cause hyprland to crash
+                # "WLR_RENDERER_ALLOW_SOFTWARE,1"
+                #
+                # # nvidia firefox (for hardware acceleration on FF)?
+                # # check this post https://github.com/elFarto/nvidia-vaapi-driver#configuration
+                # "MOZ_DISABLE_RDD_SANDBOX,1"
+                # "EGL_PLATFORM,wayland"
+              ]
+            else
+              [ ]
+          )
         ];
       };
     };
     xdg = {
       configFile = {
-        "hypr/monitor.conf".source =
-          config.lib.file.mkOutOfStoreSymlink "${cfg.monitor}";
+        "hypr/monitor.conf".source = config.lib.file.mkOutOfStoreSymlink "${cfg.monitor}";
       };
     };
   };

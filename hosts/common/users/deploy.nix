@@ -1,8 +1,14 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 let
   cfg = config.customOption.deploy;
   pubKeys = lib.filesystem.listFilesRecursive ./primary/keys;
-in {
+in
+{
   options.customOption.deploy = {
     enable = lib.mkEnableOption "Enable deploy user";
   };
@@ -15,8 +21,7 @@ in {
       group = "deploy";
       home = "/home/deploy";
       password = null;
-      openssh.authorizedKeys.keys =
-        lib.lists.forEach pubKeys (key: builtins.readFile key);
+      openssh.authorizedKeys.keys = lib.lists.forEach pubKeys (key: builtins.readFile key);
     };
 
     services.openssh.enable = true;
@@ -32,35 +37,36 @@ in {
     security.sudo.enable = true;
     security.sudo.wheelNeedsPassword = true;
 
-    security.sudo.extraRules = [{
-      groups = [ "deploy" ];
-      commands = [
-        {
-          command = "/run/current-system/sw/bin/systemd-run";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/nix/store/*/bin/switch-to-configuration";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/nix-store";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/nix-env";
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = ''
-            /bin/sh -c "readlink -e /nix/var/nix/profiles/system || readlink -e /run/current-system"'';
-          options = [ "NOPASSWD" ];
-        }
-        {
-          command = "/run/current-system/sw/bin/nix-collect-garbage";
-          options = [ "NOPASSWD" ];
-        }
-      ];
-    }];
+    security.sudo.extraRules = [
+      {
+        groups = [ "deploy" ];
+        commands = [
+          {
+            command = "/run/current-system/sw/bin/systemd-run";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "/nix/store/*/bin/switch-to-configuration";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "/run/current-system/sw/bin/nix-store";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "/run/current-system/sw/bin/nix-env";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = ''/bin/sh -c "readlink -e /nix/var/nix/profiles/system || readlink -e /run/current-system"'';
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "/run/current-system/sw/bin/nix-collect-garbage";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+    ];
   };
 }

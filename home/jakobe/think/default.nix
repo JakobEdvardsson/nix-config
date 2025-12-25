@@ -1,4 +1,5 @@
-{ config, ... }: {
+{ config, ... }:
+{
   imports = [
     #
     # ========== Required Configs ==========
@@ -10,5 +11,7 @@
     #
     ../common/optional
   ];
-  config.customHome = { development.enable = true; };
+  config.customHome = {
+    development.enable = true;
+  };
 }

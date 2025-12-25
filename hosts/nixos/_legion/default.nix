@@ -5,7 +5,14 @@
 #  Ryzen 5 5800H, Nvidia RTX 3080 mobile, 16GB RAM
 #
 ###############################################################
-{ inputs, lib, config, pkgs, ... }: {
+{
+  inputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+{
   imports = lib.flatten [
     #
     # ========== Hardware ==========
@@ -71,10 +78,12 @@
   };
 
   # Hibernate
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 32 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 32 * 1024;
+    }
+  ];
 
   boot.kernelParams = [ "resume_offset=28895232" ];
   boot.resumeDevice = "/dev/disk/by-uuid/0661ad46-7c3d-48e2-b964-e874f3b6c37a";
@@ -89,7 +98,9 @@
     };
   };
 
-  hostSpec = { hostName = "legion"; };
+  hostSpec = {
+    hostName = "legion";
+  };
 
   networking = {
     networkmanager.enable = true;
@@ -106,7 +117,9 @@
     timeout = 10;
   };
 
-  boot.initrd = { systemd.enable = true; };
+  boot.initrd = {
+    systemd.enable = true;
+  };
 
   boot.kernelPackages = pkgs.linuxPackages;
 

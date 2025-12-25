@@ -1,6 +1,13 @@
-{ pkgs, lib, config, ... }:
-let cfg = config.customOption.nvidia-prime;
-in {
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.customOption.nvidia-prime;
+in
+{
   options.customOption.nvidia-prime = {
     enable = lib.mkEnableOption "Enable nvidia-prime";
 
@@ -19,7 +26,11 @@ in {
 
   config = lib.mkIf cfg.enable {
     # Load nvidia driver for Xorg and Wayland
-    services.xserver.videoDrivers = [ "nvidia" "modesetting" "amdgpu" ];
+    services.xserver.videoDrivers = [
+      "nvidia"
+      "modesetting"
+      "amdgpu"
+    ];
 
     boot = {
       blacklistedKernelModules = [ "nouveau" ];

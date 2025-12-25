@@ -1,4 +1,11 @@
-{ config, lib, pkgs, hostSpec, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  hostSpec,
+  ...
+}:
+{
   imports = lib.flatten [
     (map lib.custom.relativeToRoot [
       "modules/nixos/host-spec.nix"
@@ -48,7 +55,10 @@
   nix = {
     package = lib.mkDefault pkgs.nix;
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       warn-dirty = false;
     };
   };

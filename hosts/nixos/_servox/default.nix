@@ -4,7 +4,14 @@
 #  Ryzen 5 5700X, Amd Radeon 6950xt
 #
 ###############################################################
-{ inputs, lib, config, pkgs, ... }: {
+{
+  inputs,
+  lib,
+  config,
+  pkgs,
+  ...
+}:
+{
   imports = lib.flatten [
     #
     # ========== Hardware ==========
@@ -21,7 +28,9 @@
     inputs.disko.nixosModules.disko
     (lib.custom.relativeToRoot "hosts/common/disks/ext4.nix")
     {
-      _module.args = { disk = "/dev/nvme0n1"; };
+      _module.args = {
+        disk = "/dev/nvme0n1";
+      };
     }
 
     #
@@ -69,10 +78,12 @@
     nix-ld.enable = true;
   };
 
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 16 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024;
+    }
+  ];
 
   services.ollama = {
     enable = true;
@@ -85,7 +96,9 @@
     rocmOverrideGfx = "10.3.1";
   };
 
-  hostSpec = { hostName = "servox"; };
+  hostSpec = {
+    hostName = "servox";
+  };
 
   networking = {
     networkmanager.enable = true;
@@ -109,8 +122,7 @@
 
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  systemd.services.systemd-suspend.environment.SYSTEMD_SLEEP_FREEZE_USER_SESSIONS =
-    "false";
+  systemd.services.systemd-suspend.environment.SYSTEMD_SLEEP_FREEZE_USER_SESSIONS = "false";
   # https://github.com/NixOS/nixpkgs/issues/369376
   # https://github.com/kachick/dotfiles/issues/959
   # https://github.com/NixOS/nixpkgs/issues/223690

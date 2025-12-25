@@ -1,9 +1,15 @@
-{ config, lib, inputs, ... }:
+{
+  config,
+  lib,
+  inputs,
+  ...
+}:
 let
   service = "sonarr";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
-in {
+in
+{
   options.homelab.services.${service} = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     configDir = lib.mkOption {
@@ -32,7 +38,9 @@ in {
     };
   };
   config = lib.mkIf cfg.enable {
-    sops.secrets = { "${service}ApiKey" = { }; };
+    sops.secrets = {
+      "${service}ApiKey" = { };
+    };
     # # FIX: Remove once fixed https://discourse.nixos.org/t/solved-sonarr-is-broken-in-24-11-unstable-aka-how-the-hell-do-i-use-nixpkgs-config-permittedinsecurepackages/56828/13
     # nixpkgs.config.permittedInsecurePackages = [
     #   "dotnet-sdk-6.0.428"

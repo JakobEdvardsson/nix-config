@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 lib.mkMerge [
   {
     sops.secrets = {
@@ -9,8 +14,7 @@ lib.mkMerge [
     homelab = {
       enable = true;
       baseDomain = "edvardsson.dev";
-      cloudflare.dnsCredentialsFile =
-        config.sops.secrets.cloudflareDnsApiCredentials.path;
+      cloudflare.dnsCredentialsFile = config.sops.secrets.cloudflareDnsApiCredentials.path;
       timeZone = "Europe/Stockholm";
       mounts = {
         config = "/appdata";
@@ -25,15 +29,17 @@ lib.mkMerge [
         # Categories: Arr, Media, Services
         homepage = {
           enable = true;
-          external = [{
-            "Local Syncthing" = {
-              href = "http://127.0.0.1:8384/";
-              siteMonitor = "http://127.0.0.1:8384/";
-              description = "Local Syncthing";
-              icon = "syncthing";
-              category = "Services";
-            };
-          }];
+          external = [
+            {
+              "Local Syncthing" = {
+                href = "http://127.0.0.1:8384/";
+                siteMonitor = "http://127.0.0.1:8384/";
+                description = "Local Syncthing";
+                icon = "syncthing";
+                category = "Services";
+              };
+            }
+          ];
         };
         # # Arr
         # jellyfin.enable = true;

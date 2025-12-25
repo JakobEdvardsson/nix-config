@@ -1,6 +1,13 @@
-{ pkgs, config, lib, ... }:
-let cfg = config.customHome.comms;
-in {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+let
+  cfg = config.customHome.comms;
+in
+{
   options.customHome.comms = {
     enable = lib.mkEnableOption "Nice to have comms things";
   };

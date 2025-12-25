@@ -1,5 +1,11 @@
 # NOTE: Actions prepended with `hy3;` are specific to the hy3 hyprland plugin
-{ config, lib, pkgs, ... }: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+{
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
     "$shiftMod" = "SUPER_SHIFT";
@@ -63,13 +69,20 @@
       # Custom
       "$shiftMod,E, exec, emoji-picker" # Emoji picker with wofi
       "$shiftMod,N, exec, night-shift" # Toggle night shift
-    ] ++ (builtins.concatLists (builtins.genList (i:
-      let ws = i + 1;
-      in [
-        "$mod,code:1${toString i}, workspace, ${toString ws}"
-        "$mod SHIFT,code:1${toString i}, movetoworkspace, ${toString ws}"
-        "$mod CTRL, code:1${toString i}, movetoworkspacesilent, ${toString ws}"
-      ]) 10));
+    ]
+    ++ (builtins.concatLists (
+      builtins.genList (
+        i:
+        let
+          ws = i + 1;
+        in
+        [
+          "$mod,code:1${toString i}, workspace, ${toString ws}"
+          "$mod SHIFT,code:1${toString i}, movetoworkspace, ${toString ws}"
+          "$mod CTRL, code:1${toString i}, movetoworkspacesilent, ${toString ws}"
+        ]
+      ) 10
+    ));
 
     bindm = [
       "$mod,mouse:272, movewindow" # Move Window (mouse)

@@ -1,4 +1,10 @@
-{ pkgs, config, lib, ... }: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
+{
   wayland.windowManager.hyprland.settings = {
     input = {
       follow_mouse = 2;
@@ -39,8 +45,7 @@
       animate_manual_resizes = true;
       animate_mouse_windowdragging = true;
       #disable_autoreload = true;
-      new_window_takes_over_fullscreen =
-        2; # 0 - behind, 1 - takes over, 2 - unfullscreen/unmaxize
+      new_window_takes_over_fullscreen = 2; # 0 - behind, 1 - takes over, 2 - unfullscreen/unmaxize
       middle_click_paste = false;
     };
 

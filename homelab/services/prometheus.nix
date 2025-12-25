@@ -3,7 +3,8 @@ let
   service = "prometheus";
   cfg = config.homelab.services.prometheus;
   homelab = config.homelab;
-in {
+in
+{
   options.homelab.services.prometheus = {
     enable = lib.mkEnableOption { description = "Enable ${service}"; };
     url = lib.mkOption {
@@ -34,32 +35,33 @@ in {
       scrapeConfigs = [
         {
           job_name = "node";
-          static_configs = [{
-            targets = [
-              "localhost:${
-                toString config.services.${service}.exporters.node.port
-              }"
-              "tower:9100"
-            ];
-          }];
+          static_configs = [
+            {
+              targets = [
+                "localhost:${toString config.services.${service}.exporters.node.port}"
+                "tower:9100"
+              ];
+            }
+          ];
         }
         {
           job_name = "systemd";
-          static_configs = [{
-            targets = [
-              "localhost:${
-                toString config.services.${service}.exporters.systemd.port
-              }"
-            ];
-          }];
+          static_configs = [
+            {
+              targets = [
+                "localhost:${toString config.services.${service}.exporters.systemd.port}"
+              ];
+            }
+          ];
         }
         {
           job_name = "prometheus";
           scrape_interval = "5s";
-          static_configs = [{
-            targets =
-              [ "localhost:${toString config.services.${service}.port}" ];
-          }];
+          static_configs = [
+            {
+              targets = [ "localhost:${toString config.services.${service}.port}" ];
+            }
+          ];
         }
       ];
     };

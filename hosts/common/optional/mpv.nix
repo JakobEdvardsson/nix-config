@@ -1,4 +1,5 @@
 # media player
-{ pkgs, ... }: {
+{ pkgs, ... }:
+{
   environment.systemPackages = [ pkgs.mpv ];
 }
