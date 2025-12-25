@@ -39,11 +39,6 @@
       du = "du -ch";
       free = "free -m";
 
-      #trash
-      tp = "trash-put";
-      tl = "trash-list";
-      tempty = "trash-empty";
-
       #-------------Bat related------------
       cat = "bat --paging=never";
       # rg = "batgrep";
@@ -83,8 +78,6 @@
       "...." = "cd ../../..";
       "....." = "cd ../../../..";
       tree = "eza -T $argv";
-
-      rm = "echo 'Stop using rm, use tp (or trash-put) instead'";
 
       copy = ''
         if [ "$argv" = "" ]
