@@ -201,8 +201,6 @@ in
       '';
     };
   };
-  stylix.targets.neovim.plugin = "base16-nvim"; # This is for lualine in nvim
-
   /*
     Note:
     nixd completion doesn't work with config.s<tab>

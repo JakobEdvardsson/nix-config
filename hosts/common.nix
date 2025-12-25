@@ -10,10 +10,7 @@
   # ============================================================================
 
   imports = [
-    ../modules/host-spec.nix
-    ../modules/core
-    ../modules/users
-    ../modules/optional
+    ../modules
     ../homelab
   ];
 
@@ -28,6 +25,16 @@
   };
 
   networking.hostName = config.hostSpec.hostName;
+
+  # ============================================================================
+  # SERVICES
+  # ============================================================================
+
+  customOption = {
+    sops.enable = lib.mkDefault true;
+    tailscale.enable = lib.mkDefault true;
+    stylix.enable = lib.mkDefault true;
+  };
 
   # ============================================================================
   # NIX CONFIGURATION
@@ -100,12 +107,6 @@
     firewall.enable = true;
     timeServers = [ "pool.ntp.org" ];
   };
-
-  # ============================================================================
-  # SERVICES
-  # ============================================================================
-
-  customOption.openssh.enable = lib.mkDefault true;
 
   # ============================================================================
   # SYSTEM
