@@ -13,7 +13,7 @@ in
     };
     dataDir = lib.mkOption {
       type = lib.types.str;
-      default = "${homelab.mounts.fast}/${service}";
+      default = "/var/lib/${service}";
     };
     url = lib.mkOption {
       type = lib.types.str;
@@ -37,10 +37,6 @@ in
     };
   };
   config = lib.mkIf cfg.enable {
-    systemd.tmpfiles.rules = [
-      "d ${cfg.configDir}/syncthing 0775 ${homelab.user} ${homelab.group} - -"
-    ];
-
     networking.firewall = {
       allowedTCPPorts = [
         8384
@@ -53,13 +49,11 @@ in
     };
     services.${service} = {
       enable = true;
-      user = homelab.user;
-      group = homelab.group;
       guiAddress = "0.0.0.0:8384";
       overrideFolders = false;
       overrideDevices = false;
-      dataDir = "${homelab.mounts.fast}/Syncthing";
-      configDir = "${cfg.configDir}/syncthing";
+      dataDir = cfg.dataDir;
+      configDir = cfg.configDir;
     };
 
     services.caddy.virtualHosts."${cfg.url}" = {

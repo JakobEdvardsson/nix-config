@@ -35,8 +35,6 @@ in
   config = lib.mkIf cfg.enable {
     services.${service} = {
       enable = true;
-      user = homelab.user;
-      group = homelab.group;
     };
     services.caddy.virtualHosts."${cfg.url}" = {
       useACMEHost = homelab.baseDomain;

@@ -44,8 +44,6 @@ in
 
     services.${service} = {
       enable = true;
-      user = homelab.user;
-      group = homelab.group;
       environmentFiles = [ config.sops.secrets."${service}ApiKey".path ];
     };
     services.caddy.virtualHosts."${cfg.url}" = {
