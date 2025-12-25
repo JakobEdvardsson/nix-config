@@ -84,4 +84,68 @@
       #    };
       #  };
     };
+
+  # ------------------------------------------------------------
+  # addHomelabExternalService
+  # ------------------------------------------------------------
+  # Usage:
+  #   (addHomelabExternalService {
+  #     name = "Unraid";
+  #     url = "unraid.${config.homelab.baseDomain}";
+  #     proxyTo = "http://10.0.0.42";
+  #     icon = "unraid";
+  #     description = "Unraid NAS";
+  #     category = "External";
+  #     href = "https://unraid.${config.homelab.baseDomain}";
+  #     siteMonitor = "https://unraid.${config.homelab.baseDomain}/health";
+  #     useACMEHost = config.homelab.baseDomain;
+  #     extraConfig = "reverse_proxy http://10.0.0.42";
+  #   })
+  # ------------------------------------------------------------
+  addHomelabExternalService =
+    {
+      name,
+      url,
+      proxyTo,
+      icon ? "server",
+      description ? name,
+      category ? "External",
+      href ? null,
+      siteMonitor ? null,
+      useACMEHost ? null,
+      extraConfig ? null,
+    }:
+    let
+      homepageHref = if href != null then href else "https://${url}";
+      homepageMonitor =
+        if siteMonitor != null then
+          siteMonitor
+        else
+          homepageHref;
+      caddyHost =
+        {
+          extraConfig =
+            if extraConfig != null then
+              extraConfig
+            else
+              "reverse_proxy ${proxyTo}";
+        }
+        // (lib.optionalAttrs (useACMEHost != null) { useACMEHost = useACMEHost; });
+    in
+    {
+      homelab = {
+        caddy.virtualHosts.${url} = caddyHost;
+        services.homepage.external = [
+          {
+            "${name}" = {
+              description = description;
+              href = homepageHref;
+              siteMonitor = homepageMonitor;
+              icon = icon;
+              category = category;
+            };
+          }
+        ];
+      };
+    };
 }

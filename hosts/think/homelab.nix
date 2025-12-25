@@ -64,5 +64,12 @@ lib.mkMerge [
       };
     };
   }
+  (lib.custom.addHomelabExternalService {
+    name = "Unraid";
+    url = "unraid.${config.homelab.baseDomain}";
+    proxyTo = "http://10.0.0.42";
+    icon = "unraid";
+    useACMEHost = config.homelab.baseDomain;
+  })
   (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data")
 ]
