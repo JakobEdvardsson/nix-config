@@ -1,5 +1,19 @@
 # media player
-{ pkgs, ... }:
 {
-  environment.systemPackages = [ pkgs.mpv ];
+  pkgs,
+  lib,
+  config,
+  ...
+}:
+let
+  cfg = config.customOption.mpv;
+in
+{
+  options.customOption.mpv = {
+    enable = lib.mkEnableOption "Enable mpv";
+  };
+
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.mpv ];
+  };
 }

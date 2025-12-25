@@ -7,7 +7,6 @@
 {
   inputs,
   lib,
-  config,
   pkgs,
   ...
 }:
@@ -35,17 +34,9 @@
     }
 
     #
-    # ========== Misc Inputs ==========
-    #
-    #
     # ========== Required Configs ==========
     #
     (lib.custom.relativeToRoot "modules")
-    #
-    # ========== Optional Configs ==========
-    #
-    (lib.custom.relativeToRoot "modules/optional/services/openssh.nix") # allow remote SSH access
-    (lib.custom.relativeToRoot "modules/optional/plymouth.nix") # fancy boot screen
   ];
 
   #
@@ -56,6 +47,8 @@
     comin.enable = true;
     intel-quicksync.enable = true;
     deploy.enable = true;
+    openssh.enable = true;
+    plymouth.enable = true;
     tailscale.enable = true;
   };
 

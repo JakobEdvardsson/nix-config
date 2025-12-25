@@ -1,9 +1,11 @@
 {
-  inputs,
-  pkgs,
   lib,
+  config,
   ...
 }:
+let
+  cfg = config.customOption.hyprland;
+in
 {
   imports = [
     #./thunar.nix # file manager
@@ -13,9 +15,17 @@
     #TODO: add a display manager
   ];
 
-  programs.hyprland = {
-    enable = true;
+  options.customOption.hyprland = {
+    enable = lib.mkEnableOption "Enable hyprland";
   };
 
-  environment.systemPackages = [ ];
+  config = lib.mkIf cfg.enable {
+    customOption.audio.enable = true;
+    customOption.bluetooth.enable = true;
+    customOption.nautilus.enable = true;
+
+    programs.hyprland = {
+      enable = true;
+    };
+  };
 }

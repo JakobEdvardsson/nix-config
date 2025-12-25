@@ -10,21 +10,22 @@
   ...
 }:
 let
-  cfg = config.autoLogin;
+  cfg = config.customOption.greetd;
 in
 {
-  # Declare custom options for conditionally enabling auto login
-  options.autoLogin = {
-    enable = lib.mkEnableOption "Enable automatic login";
-
-    username = lib.mkOption {
-      type = lib.types.str;
-      default = "guest";
-      description = "User to automatically login";
+  options.customOption.greetd = {
+    enable = lib.mkEnableOption "Enable greetd";
+    autoLogin = {
+      enable = lib.mkEnableOption "Enable automatic login";
+      username = lib.mkOption {
+        type = lib.types.str;
+        default = "guest";
+        description = "User to automatically login";
+      };
     };
   };
 
-  config = {
+  config = lib.mkIf cfg.enable {
     #    environment.systemPackages = [ pkgs.greetd.tuigreet ];
     services.greetd = {
       enable = true;
@@ -36,9 +37,9 @@ in
           user = "ta";
         };
 
-        initial_session = lib.mkIf cfg.enable {
+        initial_session = lib.mkIf cfg.autoLogin.enable {
           command = "${pkgs.hyprland}/bin/Hyprland";
-          user = "${cfg.username}";
+          user = "${cfg.autoLogin.username}";
         };
       };
     };
