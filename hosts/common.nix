@@ -1,15 +1,27 @@
 {
   inputs,
-  outputs,
   config,
   lib,
   pkgs,
   ...
 }:
 {
-  #
-  # ========== Core Host Specifications ==========
-  #
+  # ============================================================================
+  # IMPORTS
+  # ============================================================================
+
+  imports = [
+    ../modules/host-spec.nix
+    ../modules/core
+    ../modules/users
+    ../modules/optional
+    ../homelab
+  ];
+
+  # ============================================================================
+  # HOST SPEC
+  # ============================================================================
+
   hostSpec = {
     username = "jakobe";
     handle = "Jakob Edvardsson";
@@ -18,28 +30,15 @@
 
   networking.hostName = config.hostSpec.hostName;
 
+  # ============================================================================
+  # NIX CONFIGURATION
+  # ============================================================================
+
   # If there is a conflict file that is backed up, use this extension
   home-manager.backupFileExtension = "backup";
-  # home-manager.useUserPackages = true;
 
-  #
-  # ========== Overlays & NixPkgs ==========
-  #
+  nixpkgs.config.allowUnfree = true;
 
-  nixpkgs = {
-    /*
-      overlays = [
-        outputs.overlays.default
-      ];
-    */
-    config = {
-      allowUnfree = true;
-    };
-  };
-
-  #
-  # ========== Nix Nix Nix ==========
-  #
   nix = {
     # This will add each flake input as a registry
     # To make nix3 commands consistent with your flake
@@ -82,10 +81,9 @@
     };
   };
 
-  # Database for aiding terminal-based programs
-  environment.enableAllTerminfo = true;
-  # Enable firmware with a license allowing redistribution
-  hardware.enableRedistributableFirmware = true;
+  # ============================================================================
+  # SECURITY
+  # ============================================================================
 
   # This should be handled by config.security.pam.sshAgentAuth.enable
   security.sudo.extraConfig = ''
@@ -94,10 +92,32 @@
     Defaults timestamp_timeout=60 # only ask for password every hour
   '';
 
-  #
-  # ========== Nix Helper ==========
-  #
-  # Provide better build output and will also handle garbage collection in place of standard nix gc (garbace collection)
+  # ============================================================================
+  # NETWORKING
+  # ============================================================================
+
+  networking = {
+    networkmanager.enable = true;
+    firewall.enable = true;
+    timeServers = [ "pool.ntp.org" ];
+  };
+
+  # ============================================================================
+  # SERVICES
+  # ============================================================================
+
+  customOption.openssh.enable = lib.mkDefault true;
+
+  # ============================================================================
+  # SYSTEM
+  # ============================================================================
+
+  # Database for aiding terminal-based programs
+  environment.enableAllTerminfo = true;
+  # Enable firmware with a license allowing redistribution
+  hardware.enableRedistributableFirmware = true;
+
+  # Provide better build output and will also handle garbage collection in place of standard nix gc
   programs.nh = {
     enable = true;
     clean.enable = true;
@@ -105,18 +125,10 @@
     flake = "${config.hostSpec.home}/nix-config";
   };
 
-  #
-  # ========== Networking ==========
-  #
+  # ============================================================================
+  # LOCALIZATION & TIMEZONE
+  # ============================================================================
 
-  networking = {
-    networkmanager.enable = true;
-    firewall.enable = true;
-    timeServers = [ "pool.ntp.org" ];
-  };
-  #
-  # ========== Localization ==========
-  #
   time.timeZone = "Europe/Stockholm";
 
   # Set the default locale
@@ -135,10 +147,16 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
+  # ============================================================================
+  # INPUT & KEYBOARD
+  # ============================================================================
+
   # Set the console key map
   console.keyMap = "sv-latin1";
 
   # Configure X server settings if enabled
-  services.xserver.xkb.layout = "se";
-  services.xserver.xkb.variant = "";
+  services.xserver.xkb = {
+    layout = "se";
+    variant = "";
+  };
 }

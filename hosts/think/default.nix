@@ -33,10 +33,7 @@
       };
     }
 
-    #
-    # ========== Required Configs ==========
-    #
-    (lib.custom.relativeToRoot "modules")
+    ../common.nix
   ];
 
   #
@@ -47,7 +44,6 @@
     comin.enable = true;
     intel-quicksync.enable = true;
     deploy.enable = true;
-    openssh.enable = true;
     tailscale.enable = true;
   };
 
@@ -56,7 +52,6 @@
   };
 
   networking = {
-    networkmanager.enable = true;
     enableIPv6 = false;
   };
 
