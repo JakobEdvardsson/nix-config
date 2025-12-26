@@ -15,7 +15,6 @@ in
   config = lib.mkIf cfg.caddy.enable {
     sops.secrets = {
       cloudflareDnsApiCredentials = { };
-      wireguardCredentials = { };
     };
 
     networking.firewall.allowedTCPPorts = [

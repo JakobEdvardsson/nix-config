@@ -4,6 +4,7 @@
   config,
   homelab,
   homepage ? { },
+  dataDirs ? null,
 }:
 let
   # Normalize a nullable value (str or [str ...]) into a list of strings.
@@ -25,13 +26,17 @@ in
   dataDirs = lib.mkOption {
     type = lib.types.listOf lib.types.str;
     default =
-      asList (config.services.${service}.mediaLocation or null)
-      ++ asList (config.services.${service}.dataDir or null)
-      ++ asList (config.services.${service}.location or null);
+      if dataDirs != null then
+        asList dataDirs
+      else
+        asList (config.services.${service}.mediaLocation or null)
+        ++ asList (config.services.${service}.dataDir or null)
+        ++ asList (config.services.${service}.configDir or null)
+        ++ asList (config.services.${service}.location or null);
   };
   homepage.name = lib.mkOption {
     type = lib.types.str;
-    default = lib.strings.toSentenceCase service;
+    default = homepage.name or lib.strings.toSentenceCase service;
   };
   homepage.description = lib.mkOption {
     type = lib.types.str;

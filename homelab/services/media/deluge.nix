@@ -32,12 +32,12 @@ in
         web.enable = true;
       };
 
-      services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
-        useACMEHost = homelab.baseDomain;
-        extraConfig = ''
-          reverse_proxy http://127.0.0.1:8112
-        '';
-      };
+      services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
+        lib.custom.mkCaddyReverseProxy {
+          proxyTo = "http://127.0.0.1:8112";
+          useACMEHost = homelab.baseDomain;
+        }
+      );
 
       systemd = lib.mkIf homelab.services.wireguard-netns.enable {
         services.deluged.bindsTo = [ "netns@${ns}.service" ];

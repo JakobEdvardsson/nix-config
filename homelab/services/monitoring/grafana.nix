@@ -43,13 +43,13 @@ in
         };
       };
     };
-    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://${toString config.services.${service}.settings.server.http_addr}:${
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
+      lib.custom.mkCaddyReverseProxy {
+        proxyTo = "http://${toString config.services.${service}.settings.server.http_addr}:${
           toString config.services.${service}.settings.server.http_port
-        }
-      '';
-    };
+        }";
+        useACMEHost = homelab.baseDomain;
+      }
+    );
   };
 }

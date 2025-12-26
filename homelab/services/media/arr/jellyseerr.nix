@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  service = "bazarr";
+  service = "jellyseerr";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
   optionsFn = import ../../../options.nix;
@@ -14,10 +14,10 @@ in
       homelab
       ;
     homepage = {
-      name = "Bazarr";
-      description = "Subtitle manager";
-      icon = "bazarr.svg";
-      category = "Arr";
+      name = "Jellyseerr";
+      description = "Media request and discovery manager for Jellyfin";
+      icon = "jellyseerr.svg";
+      category = "Media";
     };
   };
   config = lib.mkIf cfg.enable {
@@ -26,7 +26,7 @@ in
     };
     services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
       lib.custom.mkCaddyReverseProxy {
-        proxyTo = "http://127.0.0.1:${toString config.services.${service}.listenPort}";
+        proxyTo = "http://127.0.0.1:5055";
         useACMEHost = homelab.baseDomain;
       }
     );

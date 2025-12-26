@@ -11,6 +11,14 @@ in
       type = lib.types.str;
       default = "homepage.${homelab.baseDomain}";
     };
+    allowedHosts = lib.mkOption {
+      type = lib.types.str;
+      default = "localhost:8082,127.0.0.1:8082,0.0.0.0:8082,${cfg.url}";
+    };
+    glancesNetworkInterface = lib.mkOption {
+      type = lib.types.str;
+      default = "enp2s0";
+    };
 
     external = lib.mkOption {
       default = [ ];
@@ -33,7 +41,7 @@ in
     services.glances.enable = true;
     services.${service} = {
       enable = true;
-      allowedHosts = "localhost:8082,127.0.0.1:8082,0.0.0.0:8082,${cfg.url}";
+      allowedHosts = cfg.allowedHosts;
       customCSS = ''
         body, html {
           font-family: SF Pro Display, Helvetica, Arial, sans-serif !important;
@@ -169,7 +177,7 @@ in
                     widget = {
                       type = "glances";
                       url = "http://localhost:${port}";
-                      metric = "network:enp2s0";
+                      metric = "network:${cfg.glancesNetworkInterface}";
                       chart = false;
                       version = 4;
                     };
@@ -179,12 +187,11 @@ in
           }
         ];
     };
-    #services.caddy.virtualHosts."${homelab.baseDomain}" = {
-    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://127.0.0.1:${toString config.services.${service}.listenPort}
-      '';
-    };
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
+      lib.custom.mkCaddyReverseProxy {
+        proxyTo = "http://127.0.0.1:${toString config.services.${service}.listenPort}";
+        useACMEHost = homelab.baseDomain;
+      }
+    );
   };
 }

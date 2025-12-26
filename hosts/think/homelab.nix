@@ -22,6 +22,7 @@ lib.mkMerge [
         # Categories: Arr, Media, Services
         homepage = {
           enable = true;
+          glancesNetworkInterface = "enp2s0";
           external = [
             {
               "Local Syncthing" = {
@@ -46,13 +47,26 @@ lib.mkMerge [
         immich.enable = true;
 
         grafana.enable = true;
-        prometheus.enable = true; # prometheus
+        prometheus = {
+          enable = true;
+          extraNodeTargets = [ "tower:9100" ];
+        };
 
         cockpit.enable = true;
 
         healthchecks.enable = true;
 
         # adguard.enable = true;
+        adguard.rewrites = [
+          {
+            domain = "*.${config.homelab.baseDomain}";
+            answer = "192.168.50.20";
+          }
+          {
+            domain = "www.${config.homelab.baseDomain}";
+            answer = "A";
+          }
+        ];
         # syncthing.enable = true;
 
         wireguard-netns = {

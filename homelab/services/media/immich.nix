@@ -32,12 +32,12 @@ in
         port = 2283;
         openFirewall = true;
       };
-      services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
-        useACMEHost = homelab.baseDomain;
-        extraConfig = ''
-          reverse_proxy http://${config.services.${service}.host}:${toString config.services.${service}.port}
-        '';
-      };
+      services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
+        lib.custom.mkCaddyReverseProxy {
+          proxyTo = "http://${config.services.${service}.host}:${toString config.services.${service}.port}";
+          useACMEHost = homelab.baseDomain;
+        }
+      );
     })
 
     (lib.mkIf homelab.services.prometheus.enable {

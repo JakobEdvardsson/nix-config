@@ -3,44 +3,32 @@ let
   service = "prowlarr";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
+  optionsFn = import ../../../options.nix;
 in
 {
-  options.homelab.services.${service} = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    configDir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/${service}";
-    };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "${service}.${homelab.baseDomain}";
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Prowlarr";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "PVR indexer";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "prowlarr.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Arr";
+  options.homelab.services.${service} = optionsFn {
+    inherit
+      lib
+      service
+      config
+      homelab
+      ;
+    homepage = {
+      name = "Prowlarr";
+      description = "PVR indexer";
+      icon = "prowlarr.svg";
+      category = "Arr";
     };
   };
   config = lib.mkIf cfg.enable {
     services.${service} = {
       enable = true;
     };
-    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://127.0.0.1:9696
-      '';
-    };
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
+      lib.custom.mkCaddyReverseProxy {
+        proxyTo = "http://127.0.0.1:9696";
+        useACMEHost = homelab.baseDomain;
+      }
+    );
   };
 }

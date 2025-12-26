@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ config, lib, ... }:
 let
   service = "adguard";
   cfg = config.homelab.services.${service};
@@ -32,6 +27,17 @@ in
       type = lib.types.str;
       default = "Services";
     };
+    rewrites = lib.mkOption {
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            domain = lib.mkOption { type = lib.types.str; };
+            answer = lib.mkOption { type = lib.types.str; };
+          };
+        }
+      );
+      default = [ ];
+    };
   };
   config = lib.mkIf cfg.enable {
     services.adguardhome = {
@@ -47,16 +53,7 @@ in
         };
 
         filtering = {
-          rewrites = [
-            {
-              domain = "*.${homelab.baseDomain}";
-              answer = "192.168.50.20";
-            }
-            {
-              domain = "www.${homelab.baseDomain}";
-              answer = "A";
-            }
-          ];
+          rewrites = cfg.rewrites;
           protection_enabled = true;
           filtering_enabled = true;
 
@@ -95,11 +92,11 @@ in
         allowedUDPPorts = [ 53 ];
       };
     };
-    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://127.0.0.1:3000
-      '';
-    };
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
+      lib.custom.mkCaddyReverseProxy {
+        proxyTo = "http://127.0.0.1:3000";
+        useACMEHost = homelab.baseDomain;
+      }
+    );
   };
 }

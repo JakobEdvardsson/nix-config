@@ -11,6 +11,10 @@ in
       type = lib.types.str;
       default = "prometheus.${homelab.baseDomain}";
     };
+    extraNodeTargets = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [ ];
+    };
     homepage.name = lib.mkOption {
       type = lib.types.str;
       default = "Prometheus";
@@ -39,8 +43,7 @@ in
             {
               targets = [
                 "localhost:${toString config.services.${service}.exporters.node.port}"
-                "tower:9100"
-              ];
+              ] ++ cfg.extraNodeTargets;
             }
           ];
         }
@@ -86,13 +89,13 @@ in
       port = 9558;
     };
 
-    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://${config.services.${service}.listenAddress}:${
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
+      lib.custom.mkCaddyReverseProxy {
+        proxyTo = "http://${config.services.${service}.listenAddress}:${
           toString config.services.${service}.port
-        }
-      '';
-    };
+        }";
+        useACMEHost = homelab.baseDomain;
+      }
+    );
   };
 }

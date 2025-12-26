@@ -34,13 +34,13 @@ in
         # Add user using healthchecks-manage createsuperuser
       };
     };
-    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
-      useACMEHost = homelab.baseDomain;
-      extraConfig = ''
-        reverse_proxy http://${toString config.services.${service}.listenAddress}:${
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
+      lib.custom.mkCaddyReverseProxy {
+        proxyTo = "http://${toString config.services.${service}.listenAddress}:${
           toString config.services.${service}.port
-        }
-      '';
-    };
+        }";
+        useACMEHost = homelab.baseDomain;
+      }
+    );
   };
 }

@@ -1,5 +1,5 @@
 { lib, pkgs, ... }:
-{
+rec {
   # use path relative to the root of the project
   relativeToRoot = lib.path.append ../.;
   scanPaths =
@@ -16,6 +16,35 @@
         ) (builtins.readDir path)
       )
     );
+
+  # ------------------------------------------------------------
+  # mkCaddyReverseProxy
+  # ------------------------------------------------------------
+  # Usage:
+  #   services.caddy.virtualHosts."${url}" = lib.mkIf homelab.caddy.enable (
+  #     lib.custom.mkCaddyReverseProxy {
+  #       proxyTo = "http://127.0.0.1:8080";
+  #       useACMEHost = homelab.baseDomain;
+  #     }
+  #   );
+  # ------------------------------------------------------------
+  mkCaddyReverseProxy =
+    {
+      proxyTo ? null,
+      useACMEHost ? null,
+      extraConfig ? null,
+    }:
+    let
+      config =
+        if extraConfig != null then
+          extraConfig
+        else
+          "reverse_proxy ${proxyTo}";
+    in
+    {
+      extraConfig = config;
+    }
+    // (lib.optionalAttrs (useACMEHost != null) { inherit useACMEHost; });
 
   # ------------------------------------------------------------
   # addNfsMountWithAutomount
@@ -122,15 +151,9 @@
           siteMonitor
         else
           homepageHref;
-      caddyHost =
-        {
-          extraConfig =
-            if extraConfig != null then
-              extraConfig
-            else
-              "reverse_proxy ${proxyTo}";
-        }
-        // (lib.optionalAttrs (useACMEHost != null) { useACMEHost = useACMEHost; });
+      caddyHost = mkCaddyReverseProxy {
+        inherit proxyTo useACMEHost extraConfig;
+      };
     in
     {
       homelab = {
