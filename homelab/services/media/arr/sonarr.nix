@@ -50,7 +50,7 @@ in
       enable = true;
       environmentFiles = [ config.sops.secrets."${service}ApiKey".path ];
     };
-    services.caddy.virtualHosts."${cfg.url}" = {
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''
         reverse_proxy http://127.0.0.1:8989

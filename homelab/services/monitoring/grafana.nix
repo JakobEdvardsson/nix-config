@@ -43,7 +43,7 @@ in
         };
       };
     };
-    services.caddy.virtualHosts."${cfg.url}" = {
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''
         reverse_proxy http://${toString config.services.${service}.settings.server.http_addr}:${

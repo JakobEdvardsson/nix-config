@@ -180,7 +180,7 @@ in
         ];
     };
     #services.caddy.virtualHosts."${homelab.baseDomain}" = {
-    services.caddy.virtualHosts."${cfg.url}" = {
+    services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable {
       useACMEHost = homelab.baseDomain;
       extraConfig = ''
         reverse_proxy http://127.0.0.1:${toString config.services.${service}.listenPort}
