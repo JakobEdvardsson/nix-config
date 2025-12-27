@@ -24,12 +24,12 @@ lib.mkMerge [
           glancesNetworkInterface = "enp2s0";
         };
         # --- Media / Arr ---
-        # jellyfin.enable = true;
-        # bazarr.enable = true;
-        # prowlarr.enable = true;
-        # radarr.enable = true;
-        # sonarr.enable = true;
-        # jellyseerr.enable = true;
+        jellyfin.enable = true;
+        bazarr.enable = true;
+        prowlarr.enable = true;
+        radarr.enable = true;
+        sonarr.enable = true;
+        jellyseerr.enable = true;
         deluge.enable = true;
 
         immich.enable = true;
