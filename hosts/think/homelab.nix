@@ -1,9 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
+{ config, lib, ... }:
+let
+  nfsMountHealthcheckId = null;
+in
 lib.mkMerge [
   {
     sops.secrets = {
@@ -85,5 +83,11 @@ lib.mkMerge [
     icon = "unraid";
     useACMEHost = config.homelab.baseDomain;
   })
-  (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data")
+  (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" {
+    healthcheckUrl =
+      if nfsMountHealthcheckId != null then
+        "https://${config.homelab.services.healthchecks.url}/ping/${nfsMountHealthcheckId}/fail"
+      else
+        null;
+  })
 ]

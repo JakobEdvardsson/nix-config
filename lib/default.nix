@@ -50,16 +50,19 @@ rec {
   # addNfsMountWithAutomount
   # ------------------------------------------------------------
   # Usage:
-  #   (addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data")
+  #   (addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" {
+  #     healthcheckUrl = "https://healthchecks.example/ping/<uuid>/fail";
+  #   })
   # Arguments:
   #     where: The mount point directory, e.g., "/mnt/data"
   #     what: The NFS share, e.g., "tower:/mnt/user/data"
   # ------------------------------------------------------------
   # inspo: https://github.com/systemd/systemd/issues/16811
   addNfsMountWithAutomount =
-    where: what:
+    where: what: { healthcheckUrl ? null }:
     let
       unitName = lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" where);
+      healthcheckService = "nfs-healthcheck-${unitName}";
     in
     {
       boot.supportedFilesystems = [ "nfs" ];
@@ -85,7 +88,11 @@ rec {
         {
           where = where;
           what = what;
-          unitConfig.OnFailure = "automount-restarter@${unitName}.service";
+          unitConfig.OnFailure =
+            [
+              "automount-restarter@${unitName}.service"
+            ]
+            ++ lib.optional (healthcheckUrl != null) "${healthcheckService}.service";
         }
       ];
 
@@ -95,6 +102,14 @@ rec {
           Type = "oneshot";
           ExecStartPre = "${pkgs.coreutils}/bin/sleep 10";
           ExecStart = "${pkgs.systemd}/bin/systemctl restart %i.automount";
+        };
+      };
+
+      systemd.services.${healthcheckService} = lib.mkIf (healthcheckUrl != null) {
+        description = "healthchecks.io ping for failed NFS mount ${where}";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.curl}/bin/curl -m 10 --retry 5 ${healthcheckUrl}";
         };
       };
 
