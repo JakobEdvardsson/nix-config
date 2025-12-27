@@ -4,20 +4,21 @@ let
 in
 lib.mkMerge [
   {
+    # --- Secrets ---
     sops.secrets = {
       wireguardCredentials = { };
     };
 
     homelab = {
+      # --- Core ---
       enable = true;
       baseDomain = "edvardsson.dev";
       timeZone = "Europe/Stockholm";
       caddy.enable = true;
 
       services = {
-        # homepage icons can be found at https://github.com/homarr-labs/dashboard-icons
-
-        # Categories: Arr, Media, Services
+        # --- Homepage ---
+        # Icons: https://github.com/homarr-labs/dashboard-icons
         homepage = {
           enable = true;
           glancesNetworkInterface = "enp2s0";
@@ -33,7 +34,7 @@ lib.mkMerge [
             }
           ];
         };
-        # # Arr
+        # --- Media / Arr ---
         # jellyfin.enable = true;
         # bazarr.enable = true;
         # prowlarr.enable = true;
@@ -44,29 +45,35 @@ lib.mkMerge [
 
         immich.enable = true;
 
+        # --- Monitoring ---
         grafana.enable = true;
         prometheus = {
           enable = true;
           extraNodeTargets = [ "tower:9100" ];
         };
 
+        # --- Admin / UX ---
         cockpit.enable = true;
 
         healthchecks.enable = true;
 
-        # adguard.enable = true;
-        adguard.rewrites = [
-          {
-            domain = "*.${config.homelab.baseDomain}";
-            answer = "192.168.50.20";
-          }
-          {
-            domain = "www.${config.homelab.baseDomain}";
-            answer = "A";
-          }
-        ];
+        # --- Networking ---
+        # adguard = {
+        #   enable = true;
+        #   rewrites = [
+        #     {
+        #       domain = "*.${config.homelab.baseDomain}";
+        #       answer = "192.168.50.20";
+        #     }
+        #     {
+        #       domain = "www.${config.homelab.baseDomain}";
+        #       answer = "A";
+        #     }
+        #   ];
+        # };
         # syncthing.enable = true;
 
+        # --- VPN ---
         wireguard-netns = {
           enable = true;
           configFile = config.sops.secrets.wireguardCredentials.path;
@@ -76,6 +83,7 @@ lib.mkMerge [
       };
     };
   }
+  # --- External services ---
   (lib.custom.addHomelabExternalService {
     name = "Unraid";
     url = "unraid.${config.homelab.baseDomain}";
@@ -83,6 +91,7 @@ lib.mkMerge [
     icon = "unraid";
     useACMEHost = config.homelab.baseDomain;
   })
+  # --- Storage ---
   (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" {
     healthcheck =
       if nfsMountHealthcheckId != null then
