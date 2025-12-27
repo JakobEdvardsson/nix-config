@@ -7,36 +7,49 @@
 let
   hl = config.homelab;
   cfg = hl.services.wireguard-netns;
+  optionsFn = import ../../options.nix;
 in
 {
-  options.homelab.services.wireguard-netns = {
-    enable = lib.mkEnableOption {
-      description = "Enable Wireguard client network namespace";
-    };
-    namespace = lib.mkOption {
-      type = lib.types.str;
-      description = "Network namespace to be created";
-      default = "wg_client";
-    };
-    configFile = lib.mkOption {
-      type = lib.types.path;
-      description = "Path to a file with Wireguard config (not a wg-quick one!)";
-      example = lib.literalExpression ''
-        pkgs.writeText "wg0.conf" '''
-          [Interface]
-          Address = 192.168.2.2
-          PrivateKey = <client's privatekey>
-          ListenPort = 21841
+  options.homelab.services.wireguard-netns =
+    (optionsFn {
+      inherit
+        lib
+        config
+        ;
+      homelab = hl;
+      service = "wireguard-netns";
+      homepage = {
+        name = "Wireguard NetNS";
+        description = "Wireguard client network namespace";
+        icon = "wireguard.svg";
+        category = "Networking";
+      };
+    })
+    // {
+      namespace = lib.mkOption {
+        type = lib.types.str;
+        description = "Network namespace to be created";
+        default = "wg_client";
+      };
+      configFile = lib.mkOption {
+        type = lib.types.path;
+        description = "Path to a file with Wireguard config (not a wg-quick one!)";
+        example = lib.literalExpression ''
+          pkgs.writeText "wg0.conf" '''
+            [Interface]
+            Address = 192.168.2.2
+            PrivateKey = <client's privatekey>
+            ListenPort = 21841
 
-          [Peer]
-          PublicKey = <server's publickey>
-          Endpoint = <server's ip>:51820
-        '''
-      '';
+            [Peer]
+            PublicKey = <server's publickey>
+            Endpoint = <server's ip>:51820
+          '''
+        '';
+      };
+      privateIP = lib.mkOption { type = lib.types.str; };
+      dnsIP = lib.mkOption { type = lib.types.str; };
     };
-    privateIP = lib.mkOption { type = lib.types.str; };
-    dnsIP = lib.mkOption { type = lib.types.str; };
-  };
   config = lib.mkIf cfg.enable {
     systemd.services."netns@" = {
       description = "%I network namespace";

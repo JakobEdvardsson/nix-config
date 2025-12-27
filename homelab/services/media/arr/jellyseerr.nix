@@ -14,9 +14,7 @@ in
       homelab
       ;
     homepage = {
-      name = "Jellyseerr";
       description = "Media request and discovery manager for Jellyfin";
-      icon = "jellyseerr.svg";
       category = "Media";
     };
   };

@@ -3,42 +3,35 @@ let
   service = "adguard";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
+  optionsFn = import ../../options.nix;
 in
 {
-  options.homelab.services.${service} = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "adguard.${homelab.baseDomain}";
+  options.homelab.services.${service} =
+    (optionsFn {
+      inherit
+        lib
+        service
+        config
+        homelab
+        ;
+      homepage = {
+        description = "Local DNS server";
+        icon = "adguard-home.svg";
+      };
+    })
+    // {
+      rewrites = lib.mkOption {
+        type = lib.types.listOf (
+          lib.types.submodule {
+            options = {
+              domain = lib.mkOption { type = lib.types.str; };
+              answer = lib.mkOption { type = lib.types.str; };
+            };
+          }
+        );
+        default = [ ];
+      };
     };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Adguard";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "Local DNS server";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "adguard-home.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Services";
-    };
-    rewrites = lib.mkOption {
-      type = lib.types.listOf (
-        lib.types.submodule {
-          options = {
-            domain = lib.mkOption { type = lib.types.str; };
-            answer = lib.mkOption { type = lib.types.str; };
-          };
-        }
-      );
-      default = [ ];
-    };
-  };
   config = lib.mkIf cfg.enable {
     services.adguardhome = {
       enable = true;

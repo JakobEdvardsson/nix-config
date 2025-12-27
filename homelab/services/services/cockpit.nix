@@ -3,29 +3,18 @@ let
   service = "cockpit";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
+  optionsFn = import ../../options.nix;
 in
 {
-  options.homelab.services.${service} = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "cockpit.${homelab.baseDomain}";
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Cockpit";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "Web-based graphical interface for servers";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "cockpit.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Services";
+  options.homelab.services.${service} = optionsFn {
+    inherit
+      lib
+      service
+      config
+      homelab
+      ;
+    homepage = {
+      description = "Web-based graphical interface for servers";
     };
   };
   config = lib.mkIf cfg.enable {

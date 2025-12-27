@@ -4,10 +4,12 @@
   config,
   homelab,
   homepage ? { },
+  defaultUrl ? null,
   dataDirs ? null,
 }:
 let
   # Normalize a nullable value (str or [str ...]) into a list of strings.
+  serviceConfig = config.services.${service} or { };
   asList =
     v:
     if v == null then
@@ -21,7 +23,11 @@ in
   enable = lib.mkEnableOption { description = "Enable ${service}"; };
   url = lib.mkOption {
     type = lib.types.str;
-    default = "${service}.${homelab.baseDomain}";
+    default =
+      if defaultUrl != null then
+        defaultUrl
+      else
+        "${service}.${homelab.baseDomain}";
   };
   dataDirs = lib.mkOption {
     type = lib.types.listOf lib.types.str;
@@ -29,18 +35,18 @@ in
       if dataDirs != null then
         asList dataDirs
       else
-        asList (config.services.${service}.mediaLocation or null)
-        ++ asList (config.services.${service}.dataDir or null)
-        ++ asList (config.services.${service}.configDir or null)
-        ++ asList (config.services.${service}.location or null);
+        asList (serviceConfig.mediaLocation or null)
+        ++ asList (serviceConfig.dataDir or null)
+        ++ asList (serviceConfig.configDir or null)
+        ++ asList (serviceConfig.location or null);
   };
   homepage.name = lib.mkOption {
     type = lib.types.str;
-    default = homepage.name or lib.strings.toSentenceCase service;
+    default = homepage.name or (lib.strings.toSentenceCase service);
   };
   homepage.description = lib.mkOption {
     type = lib.types.str;
-    default = homepage.description;
+    default = homepage.description or "";
   };
   homepage.icon = lib.mkOption {
     type = lib.types.str;
@@ -48,6 +54,6 @@ in
   };
   homepage.category = lib.mkOption {
     type = lib.types.str;
-    default = homepage.category;
+    default = homepage.category or "Services";
   };
 }

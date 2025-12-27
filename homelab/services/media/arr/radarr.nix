@@ -14,9 +14,7 @@ in
       homelab
       ;
     homepage = {
-      name = "Radarr";
       description = "Movie collection manager";
-      icon = "radarr.svg";
       category = "Arr";
     };
   };

@@ -14,9 +14,7 @@ in
       homelab
       ;
     homepage = {
-      name = "Bazarr";
       description = "Subtitle manager";
-      icon = "bazarr.svg";
       category = "Arr";
     };
   };

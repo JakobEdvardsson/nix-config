@@ -3,29 +3,18 @@ let
   service = "grafana";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
+  optionsFn = import ../../options.nix;
 in
 {
-  options.homelab.services.${service} = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "grafana.${homelab.baseDomain}";
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Grafana";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "Dashboarding tool";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "grafana.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Services";
+  options.homelab.services.${service} = optionsFn {
+    inherit
+      lib
+      service
+      config
+      homelab
+      ;
+    homepage = {
+      description = "Dashboarding tool";
     };
   };
   config = lib.mkIf cfg.enable {

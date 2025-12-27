@@ -3,40 +3,51 @@ let
   service = "homepage-dashboard";
   cfg = config.homelab.services.homepage;
   homelab = config.homelab;
+  optionsFn = import ../../options.nix;
 in
 {
-  options.homelab.services.homepage = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "homepage.${homelab.baseDomain}";
-    };
-    allowedHosts = lib.mkOption {
-      type = lib.types.str;
-      default = "localhost:8082,127.0.0.1:8082,0.0.0.0:8082,${cfg.url}";
-    };
-    glancesNetworkInterface = lib.mkOption {
-      type = lib.types.str;
-      default = "enp2s0";
-    };
+  options.homelab.services.homepage =
+    (optionsFn {
+      inherit
+        lib
+        service
+        config
+        homelab
+        ;
+      defaultUrl = "homepage.${homelab.baseDomain}";
+      homepage = {
+        name = "Homepage";
+        description = "Homelab dashboard";
+        icon = "homepage.svg";
+      };
+    })
+    // {
+      allowedHosts = lib.mkOption {
+        type = lib.types.str;
+        default = "localhost:8082,127.0.0.1:8082,0.0.0.0:8082,${cfg.url}";
+      };
+      glancesNetworkInterface = lib.mkOption {
+        type = lib.types.str;
+        default = "enp2s0";
+      };
 
-    external = lib.mkOption {
-      default = [ ];
-      type = lib.types.listOf (
-        lib.types.attrsOf (
-          lib.types.submodule {
-            options = {
-              description = lib.mkOption { type = lib.types.str; };
-              href = lib.mkOption { type = lib.types.str; };
-              siteMonitor = lib.mkOption { type = lib.types.str; };
-              icon = lib.mkOption { type = lib.types.str; };
-              category = lib.mkOption { type = lib.types.str; };
-            };
-          }
-        )
-      );
+      external = lib.mkOption {
+        default = [ ];
+        type = lib.types.listOf (
+          lib.types.attrsOf (
+            lib.types.submodule {
+              options = {
+                description = lib.mkOption { type = lib.types.str; };
+                href = lib.mkOption { type = lib.types.str; };
+                siteMonitor = lib.mkOption { type = lib.types.str; };
+                icon = lib.mkOption { type = lib.types.str; };
+                category = lib.mkOption { type = lib.types.str; };
+              };
+            }
+          )
+        );
+      };
     };
-  };
   config = lib.mkIf cfg.enable {
     services.glances.enable = true;
     services.${service} = {

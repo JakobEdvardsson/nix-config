@@ -3,39 +3,31 @@ let
   service = "syncthing";
   cfg = config.homelab.services.${service};
   homelab = config.homelab;
+  optionsFn = import ../../options.nix;
 in
 {
-  options.homelab.services.${service} = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    configDir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/${service}";
+  options.homelab.services.${service} =
+    (optionsFn {
+      inherit
+        lib
+        service
+        config
+        homelab
+        ;
+      homepage = {
+        description = "Continuous file synchronization";
+      };
+    })
+    // {
+      configDir = lib.mkOption {
+        type = lib.types.str;
+        default = "/var/lib/${service}";
+      };
+      dataDir = lib.mkOption {
+        type = lib.types.str;
+        default = "/var/lib/${service}";
+      };
     };
-    dataDir = lib.mkOption {
-      type = lib.types.str;
-      default = "/var/lib/${service}";
-    };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "${service}.${homelab.baseDomain}";
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Syncthing";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "Continuous file synchronization";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "syncthing.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Services";
-    };
-  };
   config = lib.mkIf cfg.enable {
     networking.firewall = {
       allowedTCPPorts = [

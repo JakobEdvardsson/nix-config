@@ -14,9 +14,7 @@ in
       homelab
       ;
     homepage = {
-      name = "Sonarr";
       description = "TV show collection manager";
-      icon = "sonarr.svg";
       category = "Arr";
     };
   };

@@ -14,9 +14,7 @@ in
       homelab
       ;
     homepage = {
-      name = "Prowlarr";
       description = "PVR indexer";
-      icon = "prowlarr.svg";
       category = "Arr";
     };
   };

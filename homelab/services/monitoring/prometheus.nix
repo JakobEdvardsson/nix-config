@@ -3,35 +3,27 @@ let
   service = "prometheus";
   cfg = config.homelab.services.prometheus;
   homelab = config.homelab;
+  optionsFn = import ../../options.nix;
 in
 {
-  options.homelab.services.prometheus = {
-    enable = lib.mkEnableOption { description = "Enable ${service}"; };
-    url = lib.mkOption {
-      type = lib.types.str;
-      default = "prometheus.${homelab.baseDomain}";
+  options.homelab.services.${service} =
+    (optionsFn {
+      inherit
+        lib
+        service
+        config
+        homelab
+        ;
+      homepage = {
+        description = "Event monitoring and alerting";
+      };
+    })
+    // {
+      extraNodeTargets = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+      };
     };
-    extraNodeTargets = lib.mkOption {
-      type = lib.types.listOf lib.types.str;
-      default = [ ];
-    };
-    homepage.name = lib.mkOption {
-      type = lib.types.str;
-      default = "Prometheus";
-    };
-    homepage.description = lib.mkOption {
-      type = lib.types.str;
-      default = "Event monitoring and alerting";
-    };
-    homepage.icon = lib.mkOption {
-      type = lib.types.str;
-      default = "prometheus.svg";
-    };
-    homepage.category = lib.mkOption {
-      type = lib.types.str;
-      default = "Services";
-    };
-  };
   config = lib.mkIf cfg.enable {
     services.prometheus = {
       enable = true;
