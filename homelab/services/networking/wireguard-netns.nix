@@ -19,9 +19,7 @@ in
       homelab = hl;
       service = "wireguard-netns";
       homepage = {
-        name = "Wireguard NetNS";
-        description = "Wireguard client network namespace";
-        category = "Networking";
+        show = false;
       };
     })
     // {

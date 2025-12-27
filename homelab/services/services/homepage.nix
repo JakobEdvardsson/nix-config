@@ -53,7 +53,8 @@ in
     services.${nixosService} =
       let
         homepageEnabledServices = lib.attrsets.filterAttrs (
-          name: value: value ? enable && value.enable && value ? homepage
+          name: value:
+          value ? enable && value.enable && value ? homepage && value.homepage.show
         ) homelab.services;
         homelabCategories = lib.lists.unique (
           lib.attrsets.mapAttrsToList (_: value: value.homepage.category) homepageEnabledServices

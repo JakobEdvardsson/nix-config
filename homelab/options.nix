@@ -44,6 +44,11 @@ in
       type = lib.types.str;
       default = homepage.description or "";
     };
+    show = lib.mkOption {
+      type = lib.types.bool;
+      default = homepage.show or true;
+      description = "Show this service on the homepage dashboard.";
+    };
     icon = lib.mkOption {
       type = lib.types.str;
       default = homepage.icon or "${service}.svg";
