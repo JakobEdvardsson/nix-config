@@ -1,0 +1,156 @@
+{
+  inputs,
+  config,
+  lib,
+  ...
+}:
+{
+  # ============================================================================
+  # IMPORTS
+  # ============================================================================
+
+  imports = [
+    ../modules
+    ../homelab
+  ];
+
+  # ============================================================================
+  # HOST SPEC
+  # ============================================================================
+
+  hostSpec = {
+    username = "jakobe";
+    handle = "Jakob Edvardsson";
+    email = "jakob@edvardsson.tech";
+  };
+
+  networking.hostName = config.hostSpec.hostName;
+
+  # ============================================================================
+  # SERVICES
+  # ============================================================================
+
+  customOption = {
+    sops.enable = lib.mkDefault true;
+    tailscale.enable = lib.mkDefault true;
+    stylix.enable = lib.mkDefault true;
+  };
+
+  # ============================================================================
+  # NIX CONFIGURATION
+  # ============================================================================
+
+  # If there is a conflict file that is backed up, use this extension
+  home-manager.backupFileExtension = "backup";
+
+  nixpkgs.config.allowUnfree = true;
+
+  nix = {
+    # This will add each flake input as a registry
+    # To make nix3 commands consistent with your flake
+    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+
+    # This will add your inputs to the system's legacy channels
+    # Making legacy nix commands consistent as well, awesome!
+    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+
+    settings = {
+      # See https://jackson.dev/post/nix-reasonable-defaults/
+      connect-timeout = 5;
+      log-lines = 25;
+      min-free = 128000000; # 128MB
+      max-free = 1000000000; # 1GB
+
+      trusted-users = [
+        "@wheel"
+        "jakobe"
+        "deploy"
+      ];
+      # Deduplicate and optimize nix store
+      auto-optimise-store = true;
+      warn-dirty = false;
+
+      allow-import-from-derivation = true;
+
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+
+      # cache
+      substituters = [
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+    };
+  };
+
+  # ============================================================================
+  # SECURITY
+  # ============================================================================
+
+  # This should be handled by config.security.pam.sshAgentAuth.enable
+  security.sudo.extraConfig = ''
+    Defaults lecture = never # rollback results in sudo lectures after each reboot, it's somewhat useless anyway
+    Defaults pwfeedback # password input feedback - makes typed password visible as asterisks
+    Defaults timestamp_timeout=60 # only ask for password every hour
+  '';
+
+  # ============================================================================
+  # NETWORKING
+  # ============================================================================
+
+  networking = {
+    networkmanager.enable = true;
+    firewall.enable = true;
+    timeServers = [ "pool.ntp.org" ];
+  };
+
+  # ============================================================================
+  # SYSTEM
+  # ============================================================================
+
+  # Database for aiding terminal-based programs
+  environment.enableAllTerminfo = true;
+  # Enable firmware with a license allowing redistribution
+  hardware.enableRedistributableFirmware = true;
+
+  # Provide better build output and will also handle garbage collection in place of standard nix gc
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 20d --keep 20";
+    flake = "${config.hostSpec.home}/nix-config";
+  };
+
+  # ============================================================================
+  # LOCALIZATION & TIMEZONE
+  # ============================================================================
+
+  time.timeZone = "Europe/Stockholm";
+
+  # Set the default locale
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  # Set extra locale settings
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "sv_SE.UTF-8";
+    LC_IDENTIFICATION = "sv_SE.UTF-8";
+    LC_MEASUREMENT = "sv_SE.UTF-8";
+    LC_MONETARY = "sv_SE.UTF-8";
+    LC_NAME = "sv_SE.UTF-8";
+    LC_NUMERIC = "sv_SE.UTF-8";
+    LC_PAPER = "sv_SE.UTF-8";
+    LC_TELEPHONE = "sv_SE.UTF-8";
+    LC_TIME = "sv_SE.UTF-8";
+  };
+
+  # ============================================================================
+  # INPUT & KEYBOARD
+  # ============================================================================
+
+  # Set the console key map
+  console.keyMap = "sv-latin1";
+}

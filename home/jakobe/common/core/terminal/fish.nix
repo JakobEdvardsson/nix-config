@@ -6,7 +6,7 @@
   ...
 }:
 {
-  imports = [ inputs.nix-index-database.hmModules.nix-index ];
+  imports = [ inputs.nix-index-database.homeModules.nix-index ];
 
   home.packages = with pkgs; [
     eza
@@ -38,11 +38,6 @@
       df = "df -h";
       du = "du -ch";
       free = "free -m";
-
-      #trash
-      tp = "trash-put";
-      tl = "trash-list";
-      tempty = "trash-empty";
 
       #-------------Bat related------------
       cat = "bat --paging=never";
@@ -83,8 +78,6 @@
       "...." = "cd ../../..";
       "....." = "cd ../../../..";
       tree = "eza -T $argv";
-
-      rm = "echo 'Stop using rm, use tp (or trash-put) instead'";
 
       copy = ''
         if [ "$argv" = "" ]

@@ -103,7 +103,7 @@
             inherit inputs outputs;
             lib = extendedLib; # Use the extended library
           };
-          modules = [ ./hosts/nixos/think ];
+          modules = [ ./hosts/think ];
         };
       };
       # homeConfigurations."jakobe" = home-manager.lib.homeManagerConfiguration {

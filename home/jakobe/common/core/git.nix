@@ -9,9 +9,15 @@
   programs = {
     git = {
       enable = true;
-      userName = config.hostSpec.handle;
-      userEmail = config.hostSpec.email;
-      extraConfig.init.defaultBranch = "main";
+
+      settings = {
+        user = {
+          name = config.hostSpec.handle;
+          email = config.hostSpec.email;
+        };
+
+        init.defaultBranch = "main";
+      };
     };
     gh = {
       enable = true;
@@ -19,8 +25,5 @@
       settings.git_protocol = "ssh";
     };
   };
-  home.packages = with pkgs; [
-    github-desktop
-    lazygit
-  ];
+  home.packages = with pkgs; [ lazygit ];
 }

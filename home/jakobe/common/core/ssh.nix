@@ -7,11 +7,7 @@
 {
   programs.ssh = {
     enable = true;
-    extraConfig = ''
-      Host *
-        ServerAliveInterval 30
-        ServerAliveCountMax 3
-    '';
+    enableDefaultConfig = true;
   };
   home.packages = with pkgs; [ sshfs ];
 }
