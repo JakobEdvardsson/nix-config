@@ -35,20 +35,22 @@ in
         ++ asList (serviceConfig.configDir or null)
         ++ asList (serviceConfig.location or null);
   };
-  homepage.name = lib.mkOption {
-    type = lib.types.str;
-    default = homepage.name or (lib.strings.toSentenceCase service);
-  };
-  homepage.description = lib.mkOption {
-    type = lib.types.str;
-    default = homepage.description or "";
-  };
-  homepage.icon = lib.mkOption {
-    type = lib.types.str;
-    default = homepage.icon or "${service}.svg";
-  };
-  homepage.category = lib.mkOption {
-    type = lib.types.str;
-    default = homepage.category or "Services";
+  homepage = {
+    name = lib.mkOption {
+      type = lib.types.str;
+      default = homepage.name or (lib.strings.toSentenceCase service);
+    };
+    description = lib.mkOption {
+      type = lib.types.str;
+      default = homepage.description or "";
+    };
+    icon = lib.mkOption {
+      type = lib.types.str;
+      default = homepage.icon or "${service}.svg";
+    };
+    category = lib.mkOption {
+      type = lib.types.str;
+      default = homepage.category or "Services";
+    };
   };
 }

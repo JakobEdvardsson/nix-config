@@ -16,8 +16,10 @@ in
         ;
       homepage = {
         name = "Homepage";
+        icon = "homepage.svg";
         description = "Homelab dashboard";
       };
+      url = "homepage.${homelab.baseDomain}";
     })
     // {
       allowedHosts = lib.mkOption {
