@@ -84,6 +84,14 @@ lib.mkMerge [
     name = "Unifi";
     url = "unifi.${config.homelab.baseDomain}";
     proxyTo = "http://10.0.0.1";
+    extraConfig = ''
+      # UCG Fiber uses a self-signed cert
+      reverse_proxy https://10.0.0.1 {
+        transport http {
+          tls_insecure_skip_verify
+        }
+      }
+    '';
     siteMonitor = "https://10.0.0.1";
     icon = "unifi";
     useACMEHost = config.homelab.baseDomain;
