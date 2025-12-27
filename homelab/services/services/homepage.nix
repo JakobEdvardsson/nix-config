@@ -16,9 +16,7 @@ in
         homelab
         ;
       homepage = {
-        name = "Homepage";
-        icon = "homepage.png";
-        description = "Homelab dashboard";
+        show = false;
       };
     })
     // {

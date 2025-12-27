@@ -15,7 +15,7 @@ in
       ;
     homepage = {
       description = "Cron Job Monitoring";
-      category = "Media";
+      category = "Services";
     };
   };
   config = lib.mkIf cfg.enable {
