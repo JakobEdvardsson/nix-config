@@ -80,6 +80,13 @@ lib.mkMerge [
     icon = "unraid";
     useACMEHost = config.homelab.baseDomain;
   })
+  (lib.custom.addHomelabExternalService {
+    name = "Unifi";
+    url = "unifi.${config.homelab.baseDomain}";
+    proxyTo = "http://10.0.0.1";
+    icon = "unifi";
+    useACMEHost = config.homelab.baseDomain;
+  })
   # --- Storage ---
   (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" {
     healthcheck = {
