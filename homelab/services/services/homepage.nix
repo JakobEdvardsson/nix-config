@@ -19,7 +19,6 @@ in
         icon = "homepage.svg";
         description = "Homelab dashboard";
       };
-      url = "homepage.${homelab.baseDomain}";
     })
     // {
       allowedHosts = lib.mkOption {
@@ -50,154 +49,152 @@ in
     };
   config = lib.mkIf cfg.enable {
     services.glances.enable = true;
-    services.${service} = {
-      enable = true;
-      allowedHosts = cfg.allowedHosts;
-      customCSS = ''
-        body, html {
-          font-family: SF Pro Display, Helvetica, Arial, sans-serif !important;
-        }
-        .font-medium {
-          font-weight: 700 !important;
-        }
-        .font-light {
-          font-weight: 500 !important;
-        }
-        .font-thin {
-          font-weight: 400 !important;
-        }
-        #information-widgets {
-          padding-left: 1.5rem;
-          padding-right: 1.5rem;
-        }
-        div#footer {
-          display: none;
-        }
-        .services-group.basis-full.flex-1.px-1.-my-1 {
-          padding-bottom: 3rem;
+    services.${service} =
+      let
+        homepageEnabledServices = lib.attrsets.filterAttrs (
+          name: value: value ? enable && value.enable && value ? homepage
+        ) homelab.services;
+        homelabCategories = lib.lists.unique (
+          lib.attrsets.mapAttrsToList (_: value: value.homepage.category) homepageEnabledServices
+        );
+        externalCategories = lib.lists.unique (
+          lib.lists.concatMap (
+            entry: lib.attrsets.mapAttrsToList (_: value: value.category) entry
+          ) cfg.external
+        );
+        homepageCategories = lib.lists.unique (homelabCategories ++ externalCategories);
+        homepageServices =
+          cat: lib.attrsets.filterAttrs (_: value: value.homepage.category == cat) homepageEnabledServices;
+        externalServices =
+          cat:
+          lib.lists.filter (x: x != null) (
+            lib.lists.concatMap (
+              entry:
+              lib.attrsets.mapAttrsToList (
+                name: value:
+                if value.category == cat then
+                  { "${name}" = lib.attrsets.removeAttrs value [ "category" ]; }
+                else
+                  null
+              ) entry
+            ) cfg.external
+          );
+      in
+      {
+        enable = true;
+        allowedHosts = cfg.allowedHosts;
+        customCSS = ''
+          body, html {
+            font-family: SF Pro Display, Helvetica, Arial, sans-serif !important;
+          }
+          .font-medium {
+            font-weight: 700 !important;
+          }
+          .font-light {
+            font-weight: 500 !important;
+          }
+          .font-thin {
+            font-weight: 400 !important;
+          }
+          #information-widgets {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+          }
+          div#footer {
+            display: none;
+          }
+          .services-group.basis-full.flex-1.px-1.-my-1 {
+            padding-bottom: 3rem;
+          };
+        '';
+        settings = {
+          layout = [
+            {
+              Glances = {
+                header = false;
+                style = "row";
+                columns = 4;
+              };
+            }
+          ]
+          ++ lib.lists.forEach homepageCategories (cat: {
+            "${cat}" = {
+              header = true;
+              style = "column";
+            };
+          });
+          headerStyle = "clean";
+          statusStyle = "dot";
+          hideVersion = "true";
         };
-      '';
-      settings = {
-        layout = [
-          {
-            Glances = {
-              header = false;
-              style = "row";
-              columns = 4;
-            };
-          }
-          {
-            Arr = {
-              header = true;
-              style = "column";
-            };
-          }
-          {
-            Media = {
-              header = true;
-              style = "column";
-            };
-          }
-          {
-            Services = {
-              header = true;
-              style = "column";
-            };
-          }
-          {
-            External = {
-              header = true;
-              style = "column";
-            };
-          }
-        ];
-        headerStyle = "clean";
-        statusStyle = "dot";
-        hideVersion = "true";
-      };
-      services =
-        let
-          homepageCategories = [
-            "Arr"
-            "Media"
-            "Services"
-          ];
-          # TODO: Render external
-          hl = config.homelab.services;
-          homepageServices =
-            x:
-            (lib.attrsets.filterAttrs (
-              name: value: value ? enable && value.enable && value ? homepage && value.homepage.category == x
-            ) homelab.services);
-        in
-        lib.lists.forEach homepageCategories (cat: {
-          "${cat}" =
-            lib.lists.forEach (lib.attrsets.mapAttrsToList (name: value: name) (homepageServices "${cat}"))
-              (x: {
-                "${hl.${x}.homepage.name}" = {
-                  icon = hl.${x}.homepage.icon;
-                  description = hl.${x}.homepage.description;
-                  href = "https://${hl.${x}.url}";
-                  siteMonitor = "https://${hl.${x}.url}";
+        services =
+          lib.lists.forEach homepageCategories (cat: {
+            "${cat}" =
+              lib.attrsets.mapAttrsToList (name: value: {
+                "${value.homepage.name}" = {
+                  icon = value.homepage.icon;
+                  description = value.homepage.description;
+                  href = "https://${value.url}";
+                  siteMonitor = "https://${value.url}";
                 };
-              });
-        })
-        ++ [ { External = cfg.external; } ]
-        ++ [
-          {
-            Glances =
-              let
-                port = toString config.services.glances.port;
-              in
-              [
-                {
-                  Info = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "info";
-                      chart = false;
-                      version = 4;
+              }) (homepageServices "${cat}")
+              ++ externalServices "${cat}";
+          })
+          ++ [
+            {
+              Glances =
+                let
+                  port = toString config.services.glances.port;
+                in
+                [
+                  {
+                    Info = {
+                      widget = {
+                        type = "glances";
+                        url = "http://localhost:${port}";
+                        metric = "info";
+                        chart = false;
+                        version = 4;
+                      };
                     };
-                  };
-                }
-                {
-                  "CPU Temp" = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "sensor:Package id 0";
-                      chart = false;
-                      version = 4;
+                  }
+                  {
+                    "CPU Temp" = {
+                      widget = {
+                        type = "glances";
+                        url = "http://localhost:${port}";
+                        metric = "sensor:Package id 0";
+                        chart = false;
+                        version = 4;
+                      };
                     };
-                  };
-                }
-                {
-                  Processes = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "process";
-                      chart = false;
-                      version = 4;
+                  }
+                  {
+                    Processes = {
+                      widget = {
+                        type = "glances";
+                        url = "http://localhost:${port}";
+                        metric = "process";
+                        chart = false;
+                        version = 4;
+                      };
                     };
-                  };
-                }
-                {
-                  Network = {
-                    widget = {
-                      type = "glances";
-                      url = "http://localhost:${port}";
-                      metric = "network:${cfg.glancesNetworkInterface}";
-                      chart = false;
-                      version = 4;
+                  }
+                  {
+                    Network = {
+                      widget = {
+                        type = "glances";
+                        url = "http://localhost:${port}";
+                        metric = "network:${cfg.glancesNetworkInterface}";
+                        chart = false;
+                        version = 4;
+                      };
                     };
-                  };
-                }
-              ];
-          }
-        ];
-    };
+                  }
+                ];
+            }
+          ];
+      };
     services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
       lib.custom.mkCaddyReverseProxy {
         proxyTo = "http://127.0.0.1:${toString config.services.${service}.listenPort}";
