@@ -15,6 +15,9 @@
 - `statix check` runs Nix linting (available in the dev shell).
 - `nix build .#nixosConfigurations.think.config.system.build.toplevel` evaluates the Think host build.
 
+## Inspection & Debugging
+- Use `nix repl` with `:lf .` to inspect options and module outputs.
+
 ## Coding Style & Naming Conventions
 - Use 2-space indentation in Nix files and keep attribute sets tidy.
 - Prefer `nixfmt-rfc-style` formatting (via `nix fmt`).
