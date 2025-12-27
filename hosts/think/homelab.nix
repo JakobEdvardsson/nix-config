@@ -1,6 +1,6 @@
 { config, lib, ... }:
 let
-  nfsMountHealthcheckId = null;
+  nfsMountHealthcheckId = "2bfee5c6-67bd-49b6-9c95-c671a9777c1c";
 in
 lib.mkMerge [
   {
@@ -93,13 +93,9 @@ lib.mkMerge [
   })
   # --- Storage ---
   (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" {
-    healthcheck =
-      if nfsMountHealthcheckId != null then
-        {
-          successUrl = "https://${config.homelab.services.healthchecks.url}/ping/${nfsMountHealthcheckId}";
-          failureUrl = "https://${config.homelab.services.healthchecks.url}/ping/${nfsMountHealthcheckId}/fail";
-        }
-      else
-        null;
+    healthcheck = {
+      successUrl = "https://${config.homelab.services.healthchecks.url}/ping/${nfsMountHealthcheckId}";
+      failureUrl = "https://${config.homelab.services.healthchecks.url}/ping/${nfsMountHealthcheckId}/fail";
+    };
   })
 ]
