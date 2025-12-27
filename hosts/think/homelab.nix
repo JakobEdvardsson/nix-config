@@ -84,9 +84,12 @@ lib.mkMerge [
     useACMEHost = config.homelab.baseDomain;
   })
   (lib.custom.addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" {
-    healthcheckUrl =
+    healthcheck =
       if nfsMountHealthcheckId != null then
-        "https://${config.homelab.services.healthchecks.url}/ping/${nfsMountHealthcheckId}/fail"
+        {
+          successUrl = "https://${config.homelab.services.healthchecks.url}/ping/${nfsMountHealthcheckId}";
+          failureUrl = "https://${config.homelab.services.healthchecks.url}/ping/${nfsMountHealthcheckId}/fail";
+        }
       else
         null;
   })

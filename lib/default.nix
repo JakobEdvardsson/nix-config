@@ -35,11 +35,7 @@ rec {
       extraConfig ? null,
     }:
     let
-      config =
-        if extraConfig != null then
-          extraConfig
-        else
-          "reverse_proxy ${proxyTo}";
+      config = if extraConfig != null then extraConfig else "reverse_proxy ${proxyTo}";
     in
     {
       extraConfig = config;
@@ -47,11 +43,37 @@ rec {
     // (lib.optionalAttrs (useACMEHost != null) { inherit useACMEHost; });
 
   # ------------------------------------------------------------
+  # mkHealthcheckPingService
+  # ------------------------------------------------------------
+  # Usage:
+  #   systemd.services."example-healthcheck" = lib.custom.mkHealthcheckPingService {
+  #     name = "example-healthcheck";
+  #     url = "https://healthchecks.example/ping/<uuid>";
+  #   };
+  # ------------------------------------------------------------
+  mkHealthcheckPingService =
+    {
+      name,
+      url,
+      description ? null,
+    }:
+    {
+      description = if description != null then description else "healthchecks.io ping ${name}";
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.curl}/bin/curl -m 10 --retry 5 ${url}";
+      };
+    };
+
+  # ------------------------------------------------------------
   # addNfsMountWithAutomount
   # ------------------------------------------------------------
   # Usage:
   #   (addNfsMountWithAutomount "/mnt/data" "tower:/mnt/user/data" {
-  #     healthcheckUrl = "https://healthchecks.example/ping/<uuid>/fail";
+  #     healthcheck = {
+  #       successUrl = "https://healthchecks.example/ping/<uuid>";
+  #       failureUrl = "https://healthchecks.example/ping/<uuid>/fail";
+  #     };
   #   })
   # Arguments:
   #     where: The mount point directory, e.g., "/mnt/data"
@@ -59,10 +81,16 @@ rec {
   # ------------------------------------------------------------
   # inspo: https://github.com/systemd/systemd/issues/16811
   addNfsMountWithAutomount =
-    where: what: { healthcheckUrl ? null }:
+    where: what:
+    {
+      healthcheck ? null,
+    }:
     let
       unitName = lib.replaceStrings [ "/" ] [ "-" ] (lib.removePrefix "/" where);
-      healthcheckService = "nfs-healthcheck-${unitName}";
+      healthcheckFailureUrl = if healthcheck != null then healthcheck.failureUrl or null else null;
+      healthcheckSuccessUrl = if healthcheck != null then healthcheck.successUrl or null else null;
+      healthcheckFailureService = "healthcheck-${unitName}-failure";
+      healthcheckSuccessService = "healthcheck-${unitName}-success";
     in
     {
       boot.supportedFilesystems = [ "nfs" ];
@@ -88,11 +116,10 @@ rec {
         {
           where = where;
           what = what;
-          unitConfig.OnFailure =
-            [
-              "automount-restarter@${unitName}.service"
-            ]
-            ++ lib.optional (healthcheckUrl != null) "${healthcheckService}.service";
+          unitConfig.OnFailure = [
+            "automount-restarter@${unitName}.service"
+          ]
+          ++ lib.optional (healthcheckFailureUrl != null) "${healthcheckFailureService}.service";
         }
       ];
 
@@ -105,13 +132,26 @@ rec {
         };
       };
 
-      systemd.services.${healthcheckService} = lib.mkIf (healthcheckUrl != null) {
-        description = "healthchecks.io ping for failed NFS mount ${where}";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.curl}/bin/curl -m 10 --retry 5 ${healthcheckUrl}";
-        };
-      };
+      systemd.services.${healthcheckFailureService} =
+        lib.mkIf (healthcheckFailureUrl != null)
+          (mkHealthcheckPingService {
+            name = healthcheckFailureService;
+            url = healthcheckFailureUrl;
+            description = "healthchecks.io ping for failed NFS mount ${where}";
+          });
+
+      systemd.services.${healthcheckSuccessService} = lib.mkIf (healthcheckSuccessUrl != null) (
+        (mkHealthcheckPingService {
+          name = healthcheckSuccessService;
+          url = healthcheckSuccessUrl;
+          description = "healthchecks.io ping for successful NFS mount ${where}";
+        })
+        // {
+          wantedBy = [ "${unitName}.mount" ];
+          after = [ "${unitName}.mount" ];
+          unitConfig.ConditionPathIsMountPoint = where;
+        }
+      );
 
       #  #### Make service depend on the mount
       #  systemd.services.${serviceName} = {
@@ -161,11 +201,7 @@ rec {
     }:
     let
       homepageHref = if href != null then href else "https://${url}";
-      homepageMonitor =
-        if siteMonitor != null then
-          siteMonitor
-        else
-          homepageHref;
+      homepageMonitor = if siteMonitor != null then siteMonitor else homepageHref;
       caddyHost = mkCaddyReverseProxy {
         inherit proxyTo useACMEHost extraConfig;
       };
