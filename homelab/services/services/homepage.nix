@@ -1,12 +1,13 @@
 { config, lib, ... }:
 let
-  service = "homepage-dashboard";
-  cfg = config.homelab.services.homepage;
+  service = "homepage";
+  nixosService = "homepage-dashboard";
+  cfg = config.homelab.services.${service};
   homelab = config.homelab;
   optionsFn = import ../../options.nix;
 in
 {
-  options.homelab.services.homepage =
+  options.homelab.services.${service} =
     (optionsFn {
       inherit
         lib
@@ -16,7 +17,7 @@ in
         ;
       homepage = {
         name = "Homepage";
-        icon = "homepage.svg";
+        icon = "homepage.png";
         description = "Homelab dashboard";
       };
     })
@@ -49,7 +50,7 @@ in
     };
   config = lib.mkIf cfg.enable {
     services.glances.enable = true;
-    services.${service} =
+    services.${nixosService} =
       let
         homepageEnabledServices = lib.attrsets.filterAttrs (
           name: value: value ? enable && value.enable && value ? homepage
@@ -197,7 +198,7 @@ in
       };
     services.caddy.virtualHosts."${cfg.url}" = lib.mkIf homelab.caddy.enable (
       lib.custom.mkCaddyReverseProxy {
-        proxyTo = "http://127.0.0.1:${toString config.services.${service}.listenPort}";
+        proxyTo = "http://127.0.0.1:${toString config.services.${nixosService}.listenPort}";
         useACMEHost = homelab.baseDomain;
       }
     );
