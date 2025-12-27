@@ -187,14 +187,14 @@ rec {
       extraConfig ? null,
     }:
     let
-      homepageHref =
-        if href != null then
-          href
+      homepageHref = if href != null then href else "https://${url}";
+      homepageMonitor =
+        if siteMonitor != null then
+          siteMonitor
         else if proxyTo != null then
           proxyTo
         else
-          "https://${url}";
-      homepageMonitor = if siteMonitor != null then siteMonitor else homepageHref;
+          homepageHref;
       caddyHost = mkCaddyReverseProxy {
         inherit proxyTo useACMEHost extraConfig;
       };

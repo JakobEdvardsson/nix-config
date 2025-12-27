@@ -84,6 +84,7 @@ lib.mkMerge [
     name = "Unifi";
     url = "unifi.${config.homelab.baseDomain}";
     proxyTo = "http://10.0.0.1";
+    siteMonitor = "https://10.0.0.1";
     icon = "unifi";
     useACMEHost = config.homelab.baseDomain;
   })
