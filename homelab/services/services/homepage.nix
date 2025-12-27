@@ -14,11 +14,9 @@ in
         config
         homelab
         ;
-      defaultUrl = "homepage.${homelab.baseDomain}";
       homepage = {
         name = "Homepage";
         description = "Homelab dashboard";
-        icon = "homepage.svg";
       };
     })
     // {

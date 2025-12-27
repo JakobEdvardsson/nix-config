@@ -4,7 +4,6 @@
   config,
   homelab,
   homepage ? { },
-  defaultUrl ? null,
   dataDirs ? null,
 }:
 let
@@ -23,11 +22,7 @@ in
   enable = lib.mkEnableOption { description = "Enable ${service}"; };
   url = lib.mkOption {
     type = lib.types.str;
-    default =
-      if defaultUrl != null then
-        defaultUrl
-      else
-        "${service}.${homelab.baseDomain}";
+    default = "${service}.${homelab.baseDomain}";
   };
   dataDirs = lib.mkOption {
     type = lib.types.listOf lib.types.str;

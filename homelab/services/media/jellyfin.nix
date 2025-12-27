@@ -19,7 +19,6 @@ in
         config
         homelab
         ;
-      defaultUrl = "jellyfin.${homelab.baseDomain}";
       homepage = {
         description = "The Free Software Media System";
         category = "Media";

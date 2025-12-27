@@ -21,7 +21,6 @@ in
       homepage = {
         name = "Wireguard NetNS";
         description = "Wireguard client network namespace";
-        icon = "wireguard.svg";
         category = "Networking";
       };
     })

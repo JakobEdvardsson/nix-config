@@ -22,17 +22,6 @@ lib.mkMerge [
         homepage = {
           enable = true;
           glancesNetworkInterface = "enp2s0";
-          external = [
-            {
-              "Local Syncthing" = {
-                href = "http://127.0.0.1:8384/";
-                siteMonitor = "http://127.0.0.1:8384/";
-                description = "Local Syncthing";
-                icon = "syncthing";
-                category = "Services";
-              };
-            }
-          ];
         };
         # --- Media / Arr ---
         # jellyfin.enable = true;

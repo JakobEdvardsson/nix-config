@@ -16,7 +16,7 @@ in
         ;
       homepage = {
         description = "Local DNS server";
-        icon = "adguard-home.svg";
+        category = "Networking";
       };
     })
     // {
