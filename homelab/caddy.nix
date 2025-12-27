@@ -10,6 +10,11 @@ in
       default = { };
       description = "Extra Caddy virtualHosts entries to merge into services.caddy.virtualHosts.";
     };
+    redirectUnknownToHomepage = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "Redirect unknown subdomains to the homepage service.";
+    };
   };
 
   config = lib.mkIf cfg.caddy.enable {
@@ -41,7 +46,16 @@ in
       globalConfig = ''
         auto_https off
       '';
-      virtualHosts = cfg.caddy.virtualHosts;
+      virtualHosts =
+        cfg.caddy.virtualHosts
+        // lib.optionalAttrs (cfg.caddy.redirectUnknownToHomepage && cfg.services.homepage.enable) {
+          "*.${config.homelab.baseDomain}" = {
+            useACMEHost = config.homelab.baseDomain;
+            extraConfig = ''
+              redir https://homepage.${config.homelab.baseDomain}{uri} permanent
+            '';
+          };
+        };
     };
   };
 }
