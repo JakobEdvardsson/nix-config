@@ -102,7 +102,7 @@ rec {
           "defaults"
           "x-systemd.automount"
           "noauto"
-          "x-systemd.idle-timeout=60"
+          "x-systemd.idle-timeout=5min"
           "x-systemd.device-timeout=5s"
           "x-systemd.mount-timeout=5s"
           "nofail"
@@ -112,61 +112,48 @@ rec {
         neededForBoot = false;
       };
 
-      systemd.mounts = [
-        {
-          where = where;
-          what = what;
-          unitConfig.OnFailure = [
-            "automount-restarter@${unitName}.service"
-          ]
-          ++ lib.optional (healthcheckFailureUrl != null) "${healthcheckFailureService}.service";
-        }
-      ];
+      systemd = {
+        mounts = [
+          {
+            inherit where;
+            inherit what;
+            unitConfig.OnFailure = [
+              "automount-restarter@${unitName}.service"
+            ]
+            ++ lib.optional (healthcheckFailureUrl != null) "${healthcheckFailureService}.service";
+          }
+        ];
 
-      systemd.services."automount-restarter@" = {
-        description = "automount restarter for %i";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStartPre = "${pkgs.coreutils}/bin/sleep 10";
-          ExecStart = "${pkgs.systemd}/bin/systemctl restart %i.automount";
-        };
-      };
+        services = {
+          "automount-restarter@" = {
+            description = "automount restarter for %i";
+            serviceConfig = {
+              Type = "oneshot";
+              ExecStartPre = "${pkgs.coreutils}/bin/sleep 10";
+              ExecStart = "${pkgs.systemd}/bin/systemctl restart %i.automount";
+            };
+          };
 
-      systemd.services.${healthcheckFailureService} =
-        lib.mkIf (healthcheckFailureUrl != null)
-          (mkHealthcheckPingService {
+          ${healthcheckFailureService} = lib.mkIf (healthcheckFailureUrl != null) (mkHealthcheckPingService {
             name = healthcheckFailureService;
             url = healthcheckFailureUrl;
             description = "healthchecks.io ping for failed NFS mount ${where}";
           });
 
-      systemd.services.${healthcheckSuccessService} = lib.mkIf (healthcheckSuccessUrl != null) (
-        (mkHealthcheckPingService {
-          name = healthcheckSuccessService;
-          url = healthcheckSuccessUrl;
-          description = "healthchecks.io ping for successful NFS mount ${where}";
-        })
-        // {
-          wantedBy = [ "${unitName}.mount" ];
-          after = [ "${unitName}.mount" ];
-          unitConfig.ConditionPathIsMountPoint = where;
-        }
-      );
-
-      #  #### Make service depend on the mount
-      #  systemd.services.${serviceName} = {
-      #    after = [ "${unitName}.automount" "network-online.target" ];
-      #    wants = [ "network-online.target" ];
-      #    requires = [ "${unitName}.automount" ];
-      #    bindsTo = [ "${unitName}.mount" ];
-      #    wantedBy = [ "multi-user.target" ];
-      #    restartIfChanged = true;
-      #
-      #    serviceConfig = {
-      #      Restart = lib.mkForce "on-failure";
-      #      RestartSec = 60;
-      #    };
-      #  };
+          ${healthcheckSuccessService} = lib.mkIf (healthcheckSuccessUrl != null) (
+            (mkHealthcheckPingService {
+              name = healthcheckSuccessService;
+              url = healthcheckSuccessUrl;
+              description = "healthchecks.io ping for successful NFS mount ${where}";
+            })
+            // {
+              wantedBy = [ "${unitName}.mount" ];
+              after = [ "${unitName}.mount" ];
+              unitConfig.ConditionPathIsMountPoint = where;
+            }
+          );
+        };
+      };
     };
 
   # ------------------------------------------------------------
@@ -212,11 +199,11 @@ rec {
         services.homepage.external = [
           {
             "${name}" = {
-              description = description;
+              inherit description;
               href = homepageHref;
               siteMonitor = homepageMonitor;
-              icon = icon;
-              category = category;
+              inherit icon;
+              inherit category;
             };
           }
         ];
