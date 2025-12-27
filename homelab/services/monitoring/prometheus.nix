@@ -36,48 +36,48 @@ in
     services.prometheus = {
       enable = true;
       globalConfig.scrape_interval = "1m";
-      scrapeConfigs =
-        [
-          {
-            job_name = "node";
-            static_configs = [
-              {
-                targets = [
-                  "localhost:${toString config.services.${service}.exporters.node.port}"
-                ] ++ cfg.extraNodeTargets;
-              }
-            ];
-          }
-          {
-            job_name = "systemd";
-            static_configs = [
-              {
-                targets = [
-                  "localhost:${toString config.services.${service}.exporters.systemd.port}"
-                ];
-              }
-            ];
-          }
-          {
-            job_name = "prometheus";
-            scrape_interval = "5s";
-            static_configs = [
-              {
-                targets = [ "localhost:${toString config.services.${service}.port}" ];
-              }
-            ];
-          }
-        ]
-        ++ lib.optional config.services.comin.enable {
-          job_name = "comin";
+      scrapeConfigs = [
+        {
+          job_name = "node";
           static_configs = [
             {
               targets = [
-                "localhost:${toString config.services.comin.exporter.port}"
+                "localhost:${toString config.services.${service}.exporters.node.port}"
+              ]
+              ++ cfg.extraNodeTargets;
+            }
+          ];
+        }
+        {
+          job_name = "systemd";
+          static_configs = [
+            {
+              targets = [
+                "localhost:${toString config.services.${service}.exporters.systemd.port}"
               ];
             }
           ];
-        };
+        }
+        {
+          job_name = "prometheus";
+          scrape_interval = "5s";
+          static_configs = [
+            {
+              targets = [ "localhost:${toString config.services.${service}.port}" ];
+            }
+          ];
+        }
+      ]
+      ++ lib.optional config.customOption.comin.enable {
+        job_name = "comin";
+        static_configs = [
+          {
+            targets = [
+              "localhost:${toString config.services.comin.exporter.port}"
+            ];
+          }
+        ];
+      };
     };
 
     services.prometheus.exporters.node = {

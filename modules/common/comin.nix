@@ -29,40 +29,40 @@ in
       '';
     in
     {
-    sops.secrets = {
-      githubCominAccessToken = { };
-    };
-
-    services.comin = {
-      enable = true;
-      exporter.listen_address = "127.0.0.1";
-      remotes = [
-        {
-          name = "origin";
-          url = "https://github.com/jakobedvardsson/nix-config.git";
-          branches.main.name = "main";
-          auth.access_token_path = config.sops.secrets.githubCominAccessToken.path;
-        }
-      ];
-    };
-
-    systemd.services."${scriptName}" = {
-      description = "Reboot when comin reports a pending reboot";
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${rebootScript}/bin/${scriptName}";
+      sops.secrets = {
+        githubCominAccessToken = { };
       };
-      after = [ "comin.service" ];
-      requires = [ "comin.service" ];
-    };
 
-    systemd.timers."${scriptName}" = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnCalendar = "04:00";
-        Persistent = true;
+      services.comin = {
+        enable = true;
+        exporter.listen_address = "127.0.0.1";
+        remotes = [
+          {
+            name = "origin";
+            url = "https://github.com/jakobedvardsson/nix-config.git";
+            branches.main.name = "main";
+            auth.access_token_path = config.sops.secrets.githubCominAccessToken.path;
+          }
+        ];
       };
-    };
+
+      systemd.services."${scriptName}" = {
+        description = "Reboot when comin reports a pending reboot";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${rebootScript}/bin/${scriptName}";
+        };
+        after = [ "comin.service" ];
+        requires = [ "comin.service" ];
+      };
+
+      systemd.timers."${scriptName}" = {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = "04:00";
+          Persistent = true;
+        };
+      };
     }
   );
 }
