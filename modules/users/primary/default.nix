@@ -45,10 +45,11 @@ in
     enable = true;
     config.init.defaultBranch = "main";
   };
-  environment.systemPackages = [
-    pkgs.just
-    pkgs.rsync
-    pkgs.perf
+  environment.systemPackages = with pkgs; [
+    just
+    rsync
+    perf
+    busybox
   ];
 
   # Import the user's personal/home configurations, unless the environment is minimal
