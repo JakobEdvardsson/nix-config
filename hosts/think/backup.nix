@@ -7,6 +7,7 @@
 let
   healthcheck-restic-tower = "38badeb9-7644-4857-9758-67172f61b2af";
   healthcheck-restic-borgbase = "2c971425-4415-4bec-be2a-e029c4757186";
+  healthcheck-restic-ugreen = "2a6e2192-b868-404d-9561-57a5513cde1b";
   # Get all enabled homelab services with dataDirs
   enabledServices = lib.attrsets.filterAttrs (
     name: svc: svc ? enable && svc.enable && svc ? dataDirs
@@ -25,7 +26,15 @@ in
       owner = "restic";
       group = "users";
     };
-    resticThinkBorgbaseRepoURL = {
+    resticThinkBorgbaseURL = {
+      owner = "restic";
+      group = "users";
+    };
+    resticThinkUgreenRepo = {
+      owner = "restic";
+      group = "users";
+    };
+    resticThinkUgreenURL = {
       owner = "restic";
       group = "users";
     };
@@ -75,10 +84,30 @@ in
         backupPrepareCommand = "${pkgs.curl}/bin/curl -m 10 --retry 5 https://${config.homelab.services.healthchecks.url}/ping/${healthcheck-restic-tower}/start";
         backupCleanupCommand = "${pkgs.curl}/bin/curl -m 10 --retry 5 https://${config.homelab.services.healthchecks.url}/ping/${healthcheck-restic-tower}/$EXIT_STATUS";
       };
+      remote-ugreen-backup = {
+        initialize = true;
+        passwordFile = "${config.sops.secrets.resticThinkUgreenRepo.path}";
+        repositoryFile = "${config.sops.secrets.resticThinkUgreenURL.path}";
+        user = "restic";
+        package = pkgs.writeShellScriptBin "restic" ''
+          exec /run/wrappers/bin/restic "$@"
+        '';
+        paths = allDataDirs ++ [
+          "${config.services.mysqlBackup.location}"
+          "${config.services.postgresqlBackup.location}"
+          "${config.services.grafana.dataDir}"
+        ];
+        timerConfig = {
+          OnCalendar = "00:00";
+          RandomizedDelaySec = "5h";
+        };
+        backupPrepareCommand = "${pkgs.curl}/bin/curl -m 10 --retry 5 https://${config.homelab.services.healthchecks.url}/ping/${healthcheck-restic-ugreen}/start";
+        backupCleanupCommand = "${pkgs.curl}/bin/curl -m 10 --retry 5 https://${config.homelab.services.healthchecks.url}/ping/${healthcheck-restic-ugreen}/$EXIT_STATUS";
+      };
       remote-borgbase-backup = {
         initialize = true;
         passwordFile = "${config.sops.secrets.resticThinkBorgbaseRepo.path}";
-        repositoryFile = "${config.sops.secrets.resticThinkBorgbaseRepoURL.path}";
+        repositoryFile = "${config.sops.secrets.resticThinkBorgbaseURL.path}";
         user = "restic";
         package = pkgs.writeShellScriptBin "restic" ''
           exec /run/wrappers/bin/restic "$@"
