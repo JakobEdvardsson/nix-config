@@ -76,24 +76,52 @@ lib.mkMerge [
   (lib.custom.addHomelabExternalService {
     name = "Unraid";
     url = "unraid.${config.homelab.baseDomain}";
-    proxyTo = "http://10.0.0.42";
+    proxyTo = "http://tower";
     icon = "unraid";
     useACMEHost = config.homelab.baseDomain;
   })
   (lib.custom.addHomelabExternalService {
     name = "Unifi";
     url = "unifi.${config.homelab.baseDomain}";
-    proxyTo = "http://10.0.0.1";
+    proxyTo = "https://unifi";
     extraConfig = ''
       # UCG Fiber uses a self-signed cert
-      reverse_proxy https://10.0.0.1 {
+      reverse_proxy https://unifi {
+        transport http {
+          tls_insecure_skip_verify
+        }
+        header_up Host {host}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-Proto {scheme}
+        header_up X-Forwarded-Port {server_port}
+      }
+    '';
+    siteMonitor = "https://unifi";
+    icon = "unifi";
+    useACMEHost = config.homelab.baseDomain;
+  })
+  (lib.custom.addHomelabExternalService {
+    name = "Ugreen";
+    url = "ugreen.${config.homelab.baseDomain}";
+    proxyTo = "https://ugreen:9443";
+    extraConfig = ''
+      # Ugreen NAS uses a self-signed cert
+      reverse_proxy https://ugreen:9443 {
         transport http {
           tls_insecure_skip_verify
         }
       }
     '';
-    siteMonitor = "https://10.0.0.1";
-    icon = "unifi";
+    siteMonitor = "https://ugreen:9443";
+    icon = "ugreen-nas";
+    useACMEHost = config.homelab.baseDomain;
+  })
+  (lib.custom.addHomelabExternalService {
+    name = "Ugreen - Backrest";
+    url = "backrest.${config.homelab.baseDomain}";
+    proxyTo = "http://ugreen:9898";
+    siteMonitor = "http://ugreen:9898";
+    icon = "backrest";
     useACMEHost = config.homelab.baseDomain;
   })
   # --- Storage ---

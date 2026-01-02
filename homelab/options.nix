@@ -51,7 +51,7 @@ in
     };
     icon = lib.mkOption {
       type = lib.types.str;
-      default = homepage.icon or "${service}.svg";
+      default = homepage.icon or "${service}";
     };
     category = lib.mkOption {
       type = lib.types.str;
