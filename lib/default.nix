@@ -101,23 +101,22 @@ rec {
       healthchecks ? null,
     }:
     let
-      backup =
-        {
-          inherit
-            initialize
-            passwordFile
-            user
-            paths
-            package
-            ;
-        }
-        // (lib.optionalAttrs (repository != null) { inherit repository; })
-        // (lib.optionalAttrs (repositoryFile != null) { inherit repositoryFile; })
-        // (lib.optionalAttrs (timerConfig != null) { inherit timerConfig; })
-        // (lib.optionalAttrs (healthchecks != null) {
-          backupPrepareCommand = healthchecks.backupPrepareCommand;
-          backupCleanupCommand = healthchecks.backupCleanupCommand;
-        });
+      backup = {
+        inherit
+          initialize
+          passwordFile
+          user
+          paths
+          package
+          ;
+      }
+      // (lib.optionalAttrs (repository != null) { inherit repository; })
+      // (lib.optionalAttrs (repositoryFile != null) { inherit repositoryFile; })
+      // (lib.optionalAttrs (timerConfig != null) { inherit timerConfig; })
+      // (lib.optionalAttrs (healthchecks != null) {
+        backupPrepareCommand = healthchecks.backupPrepareCommand;
+        backupCleanupCommand = healthchecks.backupCleanupCommand;
+      });
       failureService = "restic-backups-${name}-failure";
     in
     {
@@ -131,8 +130,9 @@ rec {
           ExecStart = healthchecks.backupFailCommand;
         };
       };
-      systemd.services."restic-backups-${name}".unitConfig.OnFailure =
-        lib.mkAfter [ "${failureService}.service" ];
+      systemd.services."restic-backups-${name}".unitConfig.OnFailure = lib.mkAfter [
+        "${failureService}.service"
+      ];
     });
 
   # ------------------------------------------------------------

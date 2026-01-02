@@ -33,18 +33,19 @@ let
       healthchecksUrl = config.homelab.services.healthchecks.url;
     in
     {
-      backupPrepareCommand =
-        lib.custom.mkHealthcheckCommand "https://${healthchecksUrl}/ping/${healthcheckId}/start";
-      backupCleanupCommand =
-        lib.custom.mkHealthcheckCommand "https://${healthchecksUrl}/ping/${healthcheckId}/";
-      backupFailCommand =
-        lib.custom.mkHealthcheckCommand "https://${healthchecksUrl}/ping/${healthcheckId}/fail";
+      backupPrepareCommand = lib.custom.mkHealthcheckCommand "https://${healthchecksUrl}/ping/${healthcheckId}/start";
+      backupCleanupCommand = lib.custom.mkHealthcheckCommand "https://${healthchecksUrl}/ping/${healthcheckId}/";
+      backupFailCommand = lib.custom.mkHealthcheckCommand "https://${healthchecksUrl}/ping/${healthcheckId}/fail";
     };
 in
 lib.mkMerge [
   {
     sops.secrets = {
       resticThinkTowerRepo = {
+        owner = "restic";
+        group = "users";
+      };
+      resticThinkTowerURL = {
         owner = "restic";
         group = "users";
       };
@@ -96,34 +97,28 @@ lib.mkMerge [
       }
     ];
   }
-  (lib.custom.mkResticBackup (
-    {
-      name = "remote-tower-backup";
-      passwordFile = "${config.sops.secrets.resticThinkTowerRepo.path}";
-      repository = "rest:http://@tower:8000/think";
-      healthchecks = mkResticHealthcheckCommands healthcheck-restic-tower;
-      paths = resticPaths;
-      timerConfig = resticTimerConfig;
-    }
-  ))
-  (lib.custom.mkResticBackup (
-    {
-      name = "remote-ugreen-backup";
-      passwordFile = "${config.sops.secrets.resticThinkUgreenRepo.path}";
-      repositoryFile = "${config.sops.secrets.resticThinkUgreenURL.path}";
-      healthchecks = mkResticHealthcheckCommands healthcheck-restic-ugreen;
-      paths = resticPaths;
-      timerConfig = resticTimerConfig;
-    }
-  ))
-  (lib.custom.mkResticBackup (
-    {
-      name = "remote-borgbase-backup";
-      passwordFile = "${config.sops.secrets.resticThinkBorgbaseRepo.path}";
-      repositoryFile = "${config.sops.secrets.resticThinkBorgbaseURL.path}";
-      healthchecks = mkResticHealthcheckCommands healthcheck-restic-borgbase;
-      paths = resticPaths;
-      timerConfig = resticTimerConfig;
-    }
-  ))
+  (lib.custom.mkResticBackup ({
+    name = "remote-tower-backup";
+    passwordFile = "${config.sops.secrets.resticThinkTowerRepo.path}";
+    repositoryFile = "${config.sops.secrets.resticThinkTowerURL.path}";
+    healthchecks = mkResticHealthcheckCommands healthcheck-restic-tower;
+    paths = resticPaths;
+    timerConfig = resticTimerConfig;
+  }))
+  (lib.custom.mkResticBackup ({
+    name = "remote-ugreen-backup";
+    passwordFile = "${config.sops.secrets.resticThinkUgreenRepo.path}";
+    repositoryFile = "${config.sops.secrets.resticThinkUgreenURL.path}";
+    healthchecks = mkResticHealthcheckCommands healthcheck-restic-ugreen;
+    paths = resticPaths;
+    timerConfig = resticTimerConfig;
+  }))
+  (lib.custom.mkResticBackup ({
+    name = "remote-borgbase-backup";
+    passwordFile = "${config.sops.secrets.resticThinkBorgbaseRepo.path}";
+    repositoryFile = "${config.sops.secrets.resticThinkBorgbaseURL.path}";
+    healthchecks = mkResticHealthcheckCommands healthcheck-restic-borgbase;
+    paths = resticPaths;
+    timerConfig = resticTimerConfig;
+  }))
 ]
