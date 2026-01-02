@@ -51,6 +51,8 @@ rec {
   #     url = "https://healthchecks.example/ping/<uuid>";
   #   };
   # ------------------------------------------------------------
+  mkHealthcheckCommand = url: "${pkgs.curl}/bin/curl -m 10 --retry 5 ${url}";
+
   mkHealthcheckPingService =
     {
       name,
@@ -61,9 +63,77 @@ rec {
       description = if description != null then description else "healthchecks.io ping ${name}";
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = "${pkgs.curl}/bin/curl -m 10 --retry 5 ${url}";
+        ExecStart = mkHealthcheckCommand url;
       };
     };
+
+  # ------------------------------------------------------------
+  # mkResticBackup
+  # ------------------------------------------------------------
+  # Usage:
+  #   lib.custom.mkResticBackup {
+  #     name = "remote-tower-backup";
+  #     repository = "rest:http://@tower:8000/think";
+  #     passwordFile = config.sops.secrets.resticThinkTowerRepo.path;
+  #     paths = [ "/srv/data" ];
+  #     healthchecks = {
+  #       backupPrepareCommand = lib.custom.mkHealthcheckCommand "https://example/ping/<uuid>/start";
+  #       backupCleanupCommand = lib.custom.mkHealthcheckCommand "https://example/ping/<uuid>";
+  #       backupFailCommand = lib.custom.mkHealthcheckCommand "https://example/ping/<uuid>/fail";
+  #     };
+  #   };
+  # ------------------------------------------------------------
+  resticWrapper = pkgs.writeShellScriptBin "restic" ''
+    exec /run/wrappers/bin/restic "$@"
+  '';
+
+  mkResticBackup =
+    {
+      name,
+      repository ? null,
+      repositoryFile ? null,
+      passwordFile,
+      paths,
+      timerConfig ? null,
+      initialize ? true,
+      user ? "restic",
+      package ? resticWrapper,
+      healthchecks ? null,
+    }:
+    let
+      backup =
+        {
+          inherit
+            initialize
+            passwordFile
+            user
+            paths
+            package
+            ;
+        }
+        // (lib.optionalAttrs (repository != null) { inherit repository; })
+        // (lib.optionalAttrs (repositoryFile != null) { inherit repositoryFile; })
+        // (lib.optionalAttrs (timerConfig != null) { inherit timerConfig; })
+        // (lib.optionalAttrs (healthchecks != null) {
+          backupPrepareCommand = healthchecks.backupPrepareCommand;
+          backupCleanupCommand = healthchecks.backupCleanupCommand;
+        });
+      failureService = "restic-backups-${name}-failure";
+    in
+    {
+      services.restic.backups.${name} = backup;
+    }
+    // (lib.optionalAttrs (healthchecks != null) {
+      systemd.services.${failureService} = {
+        description = "restic backup failure ${name}";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = healthchecks.backupFailCommand;
+        };
+      };
+      systemd.services."restic-backups-${name}".unitConfig.OnFailure =
+        lib.mkAfter [ "${failureService}.service" ];
+    });
 
   # ------------------------------------------------------------
   # addNfsMountWithAutomount
