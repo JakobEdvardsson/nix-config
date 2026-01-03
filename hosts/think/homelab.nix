@@ -118,9 +118,17 @@ lib.mkMerge [
   })
   (lib.custom.addHomelabExternalService {
     name = "Ugreen - Backrest";
-    url = "backrest.${config.homelab.baseDomain}";
+    url = "ugreen-backrest.${config.homelab.baseDomain}";
     proxyTo = "http://ugreen:9898";
     siteMonitor = "http://ugreen:9898";
+    icon = "backrest";
+    useACMEHost = config.homelab.baseDomain;
+  })
+  (lib.custom.addHomelabExternalService {
+    name = "Tower - Backrest";
+    url = "tower-backrest.${config.homelab.baseDomain}";
+    proxyTo = "http://tower:9898";
+    siteMonitor = "http://tower:9898";
     icon = "backrest";
     useACMEHost = config.homelab.baseDomain;
   })
