@@ -185,3 +185,21 @@ Start the Tailscale daemon and authenticate:
 sudo tailscale up --accept-routes
 
 ```
+
+---
+
+### Restic Maintenance (Quarterly)
+
+Append-only repos require a brief maintenance window. Quarterly, redeploy the `rest-server` **without** `--append-only` for both `tower` and `ugreen`, run:
+
+```bash
+export RESTIC_REPOSITORY=/srv/restic/myrepo
+export RESTIC_PASSWORD=…
+
+restic unlock
+restic forget --keep-daily 7 --keep-weekly 4 --keep-monthly 12
+restic prune
+restic check
+```
+
+Then re-enable `--append-only` and redeploy the `rest-server`.
