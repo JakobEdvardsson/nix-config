@@ -48,6 +48,10 @@
     comin.enable = true;
     intel-quicksync.enable = true;
     openssh.enable = true;
+    tailscale = {
+      advertiseRoutes = true;
+      routeSubnets = [ "10.0.0.0/24" ];
+    };
   };
 
   services.tailscale.extraUpFlags = [
