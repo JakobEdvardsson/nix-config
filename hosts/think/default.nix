@@ -50,6 +50,10 @@
     openssh.enable = true;
   };
 
+  services.tailscale.extraUpFlags = [
+    "--advertise-routes=10.0.0.0/24"
+  ];
+
   networking = {
     enableIPv6 = false;
   };
