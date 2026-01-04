@@ -49,14 +49,10 @@
     intel-quicksync.enable = true;
     openssh.enable = true;
     tailscale = {
-      advertiseRoutes = true;
-      routeSubnets = [ "10.0.0.0/24" ];
+      enable = true;
+      advertiseRoutes = "10.0.0.0/24";
     };
   };
-
-  services.tailscale.extraUpFlags = [
-    "--advertise-routes=10.0.0.0/24"
-  ];
 
   networking = {
     enableIPv6 = false;

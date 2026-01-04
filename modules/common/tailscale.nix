@@ -1,98 +1,102 @@
 {
-  pkgs,
   lib,
+  pkgs,
   config,
   ...
 }:
 let
   cfg = config.customOption.tailscale;
 
-  routeSubnets = cfg.routeSubnets;
+  flags = builtins.filter (s: s != "") [
+    (if cfg.enableSshAgent then "--ssh" else "")
+    (if cfg.advertiseTags == null then "" else "--advertise-tags=${cfg.advertiseTags}")
+    (if cfg.exitNode then "--advertise-exit-node" else "")
+    (
+      if cfg.acceptDns == null then
+        ""
+      else if cfg.acceptDns then
+        "--accept-dns"
+      else
+        "--accept-dns=false"
+    )
+    (if cfg.advertiseRoutes == null then "" else "--advertise-routes=${cfg.advertiseRoutes}")
+    (if cfg.acceptRoutes then "--accept-routes" else "")
+    (if cfg.acceptRisk == null then "" else "--accept-risk=${cfg.acceptRisk}")
+  ];
 
   routingFeatures =
-    if cfg.acceptRoutes && cfg.advertiseRoutes then "both"
-    else if cfg.acceptRoutes then "client"
-    else if cfg.advertiseRoutes then "server"
-    else "none";
-
-  extraUpFlags =
-    lib.optionals cfg.acceptRoutes [ "--accept-routes" ]
-    ++ lib.optionals cfg.advertiseRoutes [
-      "--advertise-routes=${lib.concatStringsSep "," routeSubnets}"
-    ];
-
-  # Build an ExecStart list of commands for each subnet
-  ipRules = lib.concatStringsSep " && " (
-    builtins.map (
-      subnet: "${pkgs.iproute2}/bin/ip rule add to ${subnet} priority 2500 lookup main || true"
-    ) routeSubnets
-  );
+    if (cfg.exitNode || cfg.advertiseRoutes != null) && cfg.acceptRoutes then
+      "both"
+    else if (cfg.exitNode || cfg.advertiseRoutes != null) then
+      "server"
+    else if cfg.acceptRoutes then
+      "client"
+    else
+      "none";
 in
 {
-  options.customOption.tailscale = {
-    enable = lib.mkEnableOption "Enable tailscale";
+  options.customOption.tailscale = with lib; {
+    enable = mkEnableOption "Enable tailscale";
 
-    advertiseRoutes = lib.mkOption {
+    enableSshAgent = mkOption {
+      description = "Allow Tailscale to run an SSH server.";
+      type = types.bool;
       default = false;
-      type = lib.types.bool;
-      description = "Enable advertising local subnets via Tailscale.";
     };
 
-    acceptRoutes = lib.mkOption {
+    exitNode = mkOption {
+      description = "Allow current machine to be a Tailscale exit node.";
+      type = types.bool;
       default = false;
-      type = lib.types.bool;
-      description = "Enable accepting routes from other Tailscale nodes.";
     };
 
-    routeSubnets = lib.mkOption {
-      default = [ "10.0.0.0/24" ];
-      type = lib.types.listOf lib.types.str;
-      example = ''
-        [
-          "192.168.20.0/24"
-          "192.168.50.0/24"
-        ]
-      '';
-      description = ''
-        Route subnet for advertised route and/or accept-routes
-      '';
+    advertiseRoutes = mkOption {
+      description = "Advertise routes to the Tailscale network (subnet routing).";
+      type = types.nullOr types.str;
+      example = "192.168.1.0/24";
+      default = null;
+    };
+
+    acceptDns = mkOption {
+      description = "Accept DNS config from the Tailscale network (null to omit flag).";
+      type = types.nullOr types.bool;
+      default = null;
+    };
+
+    acceptRoutes = mkOption {
+      description = "Accept routes from the Tailscale network.";
+      type = types.bool;
+      default = false;
+    };
+
+    advertiseTags = mkOption {
+      description = "Advertise tags to the Tailscale network.";
+      type = types.nullOr types.str;
+      example = "tag:nixos";
+      default = null;
+    };
+
+    acceptRisk = mkOption {
+      description = "Accept risk when connecting to Tailscale.";
+      type = types.nullOr types.str;
+      example = "lose-ssh";
+      default = null;
     };
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = (!cfg.advertiseRoutes) || routeSubnets != [];
-        message = "customOption.tailscale.routeSubnets must be set when advertiseRoutes is enabled.";
-      }
-    ];
+    environment.systemPackages = [ config.services.tailscale.package ];
 
-    environment.systemPackages = [ pkgs.tailscale ];
-
-    networking.firewall.allowedUDPPorts = [ config.services.tailscale.port ];
     networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
     services.tailscale = {
       enable = true;
       openFirewall = true;
-    } // lib.optionalAttrs (cfg.acceptRoutes || cfg.advertiseRoutes) {
+      extraUpFlags = flags;
+      extraSetFlags = flags;
+    }
+    // lib.optionalAttrs (cfg.exitNode || cfg.advertiseRoutes != null || cfg.acceptRoutes) {
       useRoutingFeatures = routingFeatures;
-      extraUpFlags = extraUpFlags;
     };
-
-    # Add ip rules for advertised/accepted subnets via systemd
-    systemd.services.add-ip-routes = lib.mkIf
-      (routeSubnets != [] && (cfg.acceptRoutes || cfg.advertiseRoutes))
-      {
-        description = "Add custom IP rules for routed subnets (tailscale)";
-        after = [ "network-online.target" ];
-        wants = [ "network-online.target" ];
-        wantedBy = [ "multi-user.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.bash}/bin/bash -c ${lib.escapeShellArg ipRules}";
-          RemainAfterExit = true;
-        };
-      };
   };
 }
