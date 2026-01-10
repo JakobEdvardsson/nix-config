@@ -23,6 +23,10 @@ let
   stateDir = service;
   socketPath = "/run/${runtimeDir}/tailscaled.sock";
   statePath = "/var/lib/${stateDir}/tailscaled.state";
+  resolvConfPath = "/var/lib/${stateDir}/resolv.conf";
+  resolvConfSource = pkgs.writeText "tailscale-exit-vpn-resolv.conf" ''
+    nameserver ${homelab.services.wireguard-netns.dnsIP}
+  '';
 in
 {
   options.homelab.services.${service} =
@@ -124,6 +128,20 @@ in
         };
       };
 
+      systemd.services."${service}-resolvconf" = {
+        description = "Prepare resolv.conf for ${service}";
+        wantedBy = [ "multi-user.target" ];
+        before = [ "${service}.service" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart =
+            pkgs.writers.writeBash "tailscale-exit-vpn-resolvconf" ''
+              set -euo pipefail
+              ${pkgs.coreutils}/bin/install -Dm 0644 ${resolvConfSource} ${resolvConfPath}
+            '';
+        };
+      };
+
       systemd.services."${service}" = {
         description = "Tailscale in VPN netns (${ns})";
         bindsTo = [ "netns@${ns}.service" ];
@@ -132,6 +150,7 @@ in
             "network-online.target"
             "${ns}.service"
             "${service}-sysctl.service"
+            "${service}-resolvconf.service"
           ]
           ++ lib.optional enableLanBridge "${service}-veth.service";
         after =
@@ -139,6 +158,7 @@ in
             "netns@${ns}.service"
             "${ns}.service"
             "${service}-sysctl.service"
+            "${service}-resolvconf.service"
           ]
           ++ lib.optional enableLanBridge "${service}-veth.service";
         wantedBy = [ "multi-user.target" ];
@@ -147,6 +167,9 @@ in
           Restart = "on-failure";
           RuntimeDirectory = runtimeDir;
           StateDirectory = stateDir;
+          BindPaths = [
+            "${resolvConfPath}:/etc/resolv.conf"
+          ];
           NetworkNamespacePath = [ "/var/run/netns/${ns}" ];
           ExecStart = "${pkgs.tailscale}/bin/tailscaled --state=${statePath} --socket=${socketPath}";
         };
