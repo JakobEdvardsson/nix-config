@@ -1,0 +1,205 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+let
+  service = "tailscale-exit-vpn";
+  homelab = config.homelab;
+  cfg = homelab.services.${service};
+  optionsFn = import ../../options.nix;
+  ns = cfg.namespace;
+  vethHostIp = lib.head (lib.strings.splitString "/" cfg.vethHostAddress);
+  enableLanBridge = cfg.lanInterface != null && cfg.lanCidr != null;
+  baseFlags =
+    (lib.optional cfg.advertiseExitNode "--advertise-exit-node")
+    ++ (lib.optional (cfg.lanCidr != null) "--advertise-routes=${cfg.lanCidr}");
+  upFlags = baseFlags ++ cfg.extraUpFlags;
+  setFlags = baseFlags ++ cfg.extraSetFlags;
+  upFlagsText = lib.concatStringsSep " " (map lib.escapeShellArg upFlags);
+  setFlagsText = lib.concatStringsSep " " (map lib.escapeShellArg setFlags);
+  runtimeDir = service;
+  stateDir = service;
+  socketPath = "/run/${runtimeDir}/tailscaled.sock";
+  statePath = "/var/lib/${stateDir}/tailscaled.state";
+in
+{
+  options.homelab.services.${service} =
+    (optionsFn {
+      inherit
+        lib
+        service
+        config
+        homelab
+        ;
+      homepage = {
+        show = false;
+        description = "Tailscale exit node routed through VPN";
+      };
+    })
+    // {
+      namespace = lib.mkOption {
+        type = lib.types.str;
+        default = homelab.services.wireguard-netns.namespace;
+        description = "Network namespace to run tailscaled in.";
+      };
+      lanInterface = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "Host LAN interface used for homelab access (for NAT).";
+      };
+      lanCidr = lib.mkOption {
+        type = lib.types.nullOr lib.types.str;
+        default = null;
+        description = "Homelab LAN CIDR to route via the host.";
+      };
+      advertiseExitNode = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Advertise this instance as a Tailscale exit node.";
+      };
+      extraUpFlags = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "Extra flags passed to `tailscale up` for the exit VPN instance.";
+      };
+      extraSetFlags = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "Extra flags passed to `tailscale set` for the exit VPN instance.";
+      };
+      vethHost = lib.mkOption {
+        type = lib.types.str;
+        default = "ts-vpn0";
+        description = "Host-side veth name for the Tailscale netns bridge.";
+      };
+      vethNamespace = lib.mkOption {
+        type = lib.types.str;
+        default = "ts-vpn1";
+        description = "Namespace-side veth name for the Tailscale netns bridge.";
+      };
+      vethHostAddress = lib.mkOption {
+        type = lib.types.str;
+        default = "10.254.0.1/30";
+        description = "Host veth address (CIDR).";
+      };
+      vethNamespaceAddress = lib.mkOption {
+        type = lib.types.str;
+        default = "10.254.0.2/30";
+        description = "Namespace veth address (CIDR).";
+      };
+    };
+
+  config = lib.mkIf cfg.enable (lib.mkMerge [
+    {
+      assertions = [
+        {
+          assertion = homelab.services.wireguard-netns.enable;
+          message = "homelab.services.${service} requires homelab.services.wireguard-netns.enable = true.";
+        }
+      ];
+
+      environment.systemPackages = [ pkgs.tailscale ];
+
+      systemd.services."${service}-sysctl" = {
+        description = "Enable routing inside ${ns} for Tailscale";
+        bindsTo = [ "netns@${ns}.service" ];
+        after = [ "netns@${ns}.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart =
+            pkgs.writers.writeBash "tailscale-exit-vpn-sysctl" ''
+              set -euo pipefail
+              ${pkgs.iproute2}/bin/ip netns exec ${ns} ${pkgs.procps}/bin/sysctl -w net.ipv4.ip_forward=1
+            '';
+        };
+      };
+
+      systemd.services."${service}" = {
+        description = "Tailscale in VPN netns (${ns})";
+        bindsTo = [ "netns@${ns}.service" ];
+        requires =
+          [
+            "network-online.target"
+            "${ns}.service"
+            "${service}-sysctl.service"
+          ]
+          ++ lib.optional enableLanBridge "${service}-veth.service";
+        after =
+          [
+            "netns@${ns}.service"
+            "${ns}.service"
+            "${service}-sysctl.service"
+          ]
+          ++ lib.optional enableLanBridge "${service}-veth.service";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "notify";
+          Restart = "on-failure";
+          RuntimeDirectory = runtimeDir;
+          StateDirectory = stateDir;
+          NetworkNamespacePath = [ "/var/run/netns/${ns}" ];
+          ExecStart = "${pkgs.tailscale}/bin/tailscaled --state=${statePath} --socket=${socketPath}";
+        };
+      };
+
+      systemd.services."${service}-up" = {
+        description = "Configure Tailscale exit VPN instance";
+        after = [ "${service}.service" ];
+        requires = [ "${service}.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart =
+            pkgs.writers.writeBash "tailscale-exit-vpn-up" ''
+              set -euo pipefail
+              ${pkgs.tailscale}/bin/tailscale --socket=${socketPath} up ${upFlagsText}
+              if [ -n "${setFlagsText}" ]; then
+                ${pkgs.tailscale}/bin/tailscale --socket=${socketPath} set ${setFlagsText}
+              fi
+            '';
+        };
+      };
+    }
+    (lib.mkIf enableLanBridge {
+      boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+      networking.nat = {
+        enable = true;
+        internalInterfaces = [ cfg.vethHost ];
+        externalInterface = cfg.lanInterface;
+      };
+      networking.firewall.trustedInterfaces = [ cfg.vethHost ];
+
+      systemd.services."${service}-veth" = {
+        description = "Veth bridge from host to ${ns} for Tailscale LAN access";
+        bindsTo = [ "netns@${ns}.service" ];
+        after = [ "netns@${ns}.service" ];
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          RemainAfterExit = true;
+          ExecStart =
+            pkgs.writers.writeBash "tailscale-exit-vpn-veth-up" ''
+              set -euo pipefail
+              ${pkgs.iproute2}/bin/ip link del ${cfg.vethHost} 2>/dev/null || true
+              ${pkgs.iproute2}/bin/ip link add ${cfg.vethHost} type veth peer name ${cfg.vethNamespace}
+              ${pkgs.iproute2}/bin/ip link set ${cfg.vethNamespace} netns ${ns}
+              ${pkgs.iproute2}/bin/ip addr add ${cfg.vethHostAddress} dev ${cfg.vethHost}
+              ${pkgs.iproute2}/bin/ip link set ${cfg.vethHost} up
+              ${pkgs.iproute2}/bin/ip -n ${ns} addr add ${cfg.vethNamespaceAddress} dev ${cfg.vethNamespace}
+              ${pkgs.iproute2}/bin/ip -n ${ns} link set ${cfg.vethNamespace} up
+              ${pkgs.iproute2}/bin/ip -n ${ns} route replace ${cfg.lanCidr} via ${vethHostIp} dev ${cfg.vethNamespace}
+            '';
+          ExecStop =
+            pkgs.writers.writeBash "tailscale-exit-vpn-veth-down" ''
+              set -euo pipefail
+              ${pkgs.iproute2}/bin/ip link del ${cfg.vethHost} 2>/dev/null || true
+            '';
+        };
+      };
+    })
+  ]);
+}
