@@ -100,6 +100,11 @@ in
         }
       ];
 
+      boot.kernel.sysctl = {
+        "net.ipv4.ip_forward" = 1;
+        "net.ipv6.conf.all.forwarding" = 1;
+      };
+
       environment.systemPackages = [ pkgs.tailscale ];
 
       systemd.services."${service}-sysctl" = {
@@ -114,6 +119,7 @@ in
             pkgs.writers.writeBash "tailscale-exit-vpn-sysctl" ''
               set -euo pipefail
               ${pkgs.iproute2}/bin/ip netns exec ${ns} ${pkgs.procps}/bin/sysctl -w net.ipv4.ip_forward=1
+              ${pkgs.iproute2}/bin/ip netns exec ${ns} ${pkgs.procps}/bin/sysctl -w net.ipv6.conf.all.forwarding=1
             '';
         };
       };
@@ -165,7 +171,6 @@ in
       };
     }
     (lib.mkIf enableLanBridge {
-      boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
       networking.nat = {
         enable = true;
         internalInterfaces = [ cfg.vethHost ];
