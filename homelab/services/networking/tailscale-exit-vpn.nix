@@ -9,11 +9,15 @@ let
   homelab = config.homelab;
   cfg = homelab.services.${service};
   optionsFn = import ../../options.nix;
-  ns = cfg.namespace;
-  vethHostIp = lib.head (lib.strings.splitString "/" cfg.vethHostAddress);
+  ns = homelab.services.wireguard-netns.namespace;
+  vethHost = "ts-vpn0";
+  vethNamespace = "ts-vpn1";
+  vethHostAddress = "10.254.0.1/30";
+  vethNamespaceAddress = "10.254.0.2/30";
+  vethHostIp = lib.head (lib.strings.splitString "/" vethHostAddress);
   enableLanBridge = cfg.lanInterface != null && cfg.lanCidr != null;
   baseFlags =
-    (lib.optional cfg.advertiseExitNode "--advertise-exit-node")
+    [ "--advertise-exit-node" ]
     ++ (lib.optional (cfg.lanCidr != null) "--advertise-routes=${cfg.lanCidr}");
   upFlags = baseFlags ++ cfg.extraUpFlags;
   setFlags = baseFlags ++ cfg.extraSetFlags;
@@ -43,11 +47,6 @@ in
       };
     })
     // {
-      namespace = lib.mkOption {
-        type = lib.types.str;
-        default = homelab.services.wireguard-netns.namespace;
-        description = "Network namespace to run tailscaled in.";
-      };
       lanInterface = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
         default = null;
@@ -56,12 +55,7 @@ in
       lanCidr = lib.mkOption {
         type = lib.types.nullOr lib.types.str;
         default = null;
-        description = "Homelab LAN CIDR to route via the host.";
-      };
-      advertiseExitNode = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = "Advertise this instance as a Tailscale exit node.";
+        description = "Homelab LAN CIDR to route via the host and advertise to Tailscale.";
       };
       extraUpFlags = lib.mkOption {
         type = lib.types.listOf lib.types.str;
@@ -72,26 +66,6 @@ in
         type = lib.types.listOf lib.types.str;
         default = [ ];
         description = "Extra flags passed to `tailscale set` for the exit VPN instance.";
-      };
-      vethHost = lib.mkOption {
-        type = lib.types.str;
-        default = "ts-vpn0";
-        description = "Host-side veth name for the Tailscale netns bridge.";
-      };
-      vethNamespace = lib.mkOption {
-        type = lib.types.str;
-        default = "ts-vpn1";
-        description = "Namespace-side veth name for the Tailscale netns bridge.";
-      };
-      vethHostAddress = lib.mkOption {
-        type = lib.types.str;
-        default = "10.254.0.1/30";
-        description = "Host veth address (CIDR).";
-      };
-      vethNamespaceAddress = lib.mkOption {
-        type = lib.types.str;
-        default = "10.254.0.2/30";
-        description = "Namespace veth address (CIDR).";
       };
     };
 
@@ -196,10 +170,10 @@ in
     (lib.mkIf enableLanBridge {
       networking.nat = {
         enable = true;
-        internalInterfaces = [ cfg.vethHost ];
+        internalInterfaces = [ vethHost ];
         externalInterface = cfg.lanInterface;
       };
-      networking.firewall.trustedInterfaces = [ cfg.vethHost ];
+      networking.firewall.trustedInterfaces = [ vethHost ];
 
       systemd.services."${service}-veth" = {
         description = "Veth bridge from host to ${ns} for Tailscale LAN access";
@@ -212,19 +186,19 @@ in
           ExecStart =
             pkgs.writers.writeBash "tailscale-exit-vpn-veth-up" ''
               set -euo pipefail
-              ${pkgs.iproute2}/bin/ip link del ${cfg.vethHost} 2>/dev/null || true
-              ${pkgs.iproute2}/bin/ip link add ${cfg.vethHost} type veth peer name ${cfg.vethNamespace}
-              ${pkgs.iproute2}/bin/ip link set ${cfg.vethNamespace} netns ${ns}
-              ${pkgs.iproute2}/bin/ip addr add ${cfg.vethHostAddress} dev ${cfg.vethHost}
-              ${pkgs.iproute2}/bin/ip link set ${cfg.vethHost} up
-              ${pkgs.iproute2}/bin/ip -n ${ns} addr add ${cfg.vethNamespaceAddress} dev ${cfg.vethNamespace}
-              ${pkgs.iproute2}/bin/ip -n ${ns} link set ${cfg.vethNamespace} up
-              ${pkgs.iproute2}/bin/ip -n ${ns} route replace ${cfg.lanCidr} via ${vethHostIp} dev ${cfg.vethNamespace}
+              ${pkgs.iproute2}/bin/ip link del ${vethHost} 2>/dev/null || true
+              ${pkgs.iproute2}/bin/ip link add ${vethHost} type veth peer name ${vethNamespace}
+              ${pkgs.iproute2}/bin/ip link set ${vethNamespace} netns ${ns}
+              ${pkgs.iproute2}/bin/ip addr add ${vethHostAddress} dev ${vethHost}
+              ${pkgs.iproute2}/bin/ip link set ${vethHost} up
+              ${pkgs.iproute2}/bin/ip -n ${ns} addr add ${vethNamespaceAddress} dev ${vethNamespace}
+              ${pkgs.iproute2}/bin/ip -n ${ns} link set ${vethNamespace} up
+              ${pkgs.iproute2}/bin/ip -n ${ns} route replace ${cfg.lanCidr} via ${vethHostIp} dev ${vethNamespace}
             '';
           ExecStop =
             pkgs.writers.writeBash "tailscale-exit-vpn-veth-down" ''
               set -euo pipefail
-              ${pkgs.iproute2}/bin/ip link del ${cfg.vethHost} 2>/dev/null || true
+              ${pkgs.iproute2}/bin/ip link del ${vethHost} 2>/dev/null || true
             '';
         };
       };
