@@ -69,6 +69,13 @@ lib.mkMerge [
           privateIP = "10.2.0.2";
           dnsIP = "10.2.0.1";
         };
+        tailscale-exit-vpn = {
+          enable = true;
+          lanInterface = "enp2s0";
+          lanCidr = "10.0.0.0/24";
+          extraUpFlags = [ "--accept-dns=false" ];
+          extraSetFlags = [ "--accept-dns=false" ];
+        };
       };
     };
   }
