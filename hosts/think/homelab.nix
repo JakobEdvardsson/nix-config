@@ -70,7 +70,7 @@ lib.mkMerge [
           dnsIP = "10.2.0.1";
         };
         tailscale-exit-vpn = {
-          enable = true;
+          enable = false;
           lanInterface = "enp2s0";
           lanCidr = "10.0.0.0/24";
           extraUpFlags = [ "--accept-dns=false" ];
