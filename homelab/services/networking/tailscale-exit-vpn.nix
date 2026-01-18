@@ -23,6 +23,11 @@ let
   setFlags = baseFlags ++ cfg.extraSetFlags;
   upFlagsText = lib.concatStringsSep " " (map lib.escapeShellArg upFlags);
   setFlagsText = lib.concatStringsSep " " (map lib.escapeShellArg setFlags);
+  ipRulesText =
+    if cfg.lanCidr == null then
+      ""
+    else
+      "${pkgs.iproute2}/bin/ip -n ${ns} rule add to ${lib.escapeShellArg cfg.lanCidr} priority 2500 lookup main || true";
   runtimeDir = service;
   stateDir = service;
   socketPath = "/run/${runtimeDir}/tailscaled.sock";
@@ -162,6 +167,9 @@ in
               ${pkgs.tailscale}/bin/tailscale --socket=${socketPath} up ${upFlagsText}
               if [ -n "${setFlagsText}" ]; then
                 ${pkgs.tailscale}/bin/tailscale --socket=${socketPath} set ${setFlagsText}
+              fi
+              if [ -n "${ipRulesText}" ]; then
+                ${ipRulesText}
               fi
             '';
         };

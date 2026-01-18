@@ -23,6 +23,17 @@ let
     (if cfg.acceptRoutes then "--accept-routes" else "")
     (if cfg.acceptRisk == null then "" else "--accept-risk=${cfg.acceptRisk}")
   ];
+  advertisedRouteList =
+    if cfg.advertiseRoutes == null then
+      [ ]
+    else
+      lib.filter (s: s != "") (
+        map lib.strings.trim (lib.strings.splitString "," cfg.advertiseRoutes)
+      );
+  ipRulesText = lib.concatStringsSep " && " (map (
+    subnet:
+    "${pkgs.iproute2}/bin/ip rule add to ${lib.escapeShellArg subnet} priority 2500 lookup main || true"
+  ) advertisedRouteList);
 
   routingFeatures =
     if (cfg.exitNode || cfg.advertiseRoutes != null) && cfg.acceptRoutes then
@@ -97,6 +108,18 @@ in
     }
     // lib.optionalAttrs (cfg.exitNode || cfg.advertiseRoutes != null || cfg.acceptRoutes) {
       useRoutingFeatures = routingFeatures;
+    };
+
+    systemd.services.tailscale-ip-rules = lib.mkIf (advertisedRouteList != [ ]) {
+      description = "Add IP rules for advertised routes (tailscale)";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.bash}/bin/bash -c ${lib.escapeShellArg ipRulesText}";
+        RemainAfterExit = true;
+      };
     };
   };
 }
