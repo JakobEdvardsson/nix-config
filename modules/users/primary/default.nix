@@ -9,6 +9,7 @@
 let
   hostSpec = config.hostSpec;
   pubKeys = lib.filesystem.listFilesRecursive ./keys;
+  towerPubKey = builtins.readFile ./keys/tower.pub;
   ifTheyExist = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 
   sopsHashedPasswordFile = config.sops.secrets."passwords/${hostSpec.username}".path;
@@ -75,22 +76,5 @@ in
     ];
   };
 
-  # root's ssh key are mainly used for remote deployment, borg, and some other specific ops
-  # Not needed
-  /*
-    users.users.root = {
-      shell = pkgs.fish;
-        hashedPasswordFile = config.users.users.${hostSpec.username}.hashedPasswordFile;
-        password = lib.mkForce config.users.users.${hostSpec.username}.password; # This gets overridden if sops is working; it is only used if the hostSpec.hostName == "iso"
-      # root's ssh keys are mainly used for remote deployment.
-      openssh.authorizedKeys.keys = config.users.users.${hostSpec.username}.openssh.authorizedKeys.keys;
-    };
-
-      home-manager.users.root = lib.optionalAttrs (!hostSpec.isMinimal) {
-        home.stateVersion = "23.05"; # Avoid error
-        programs.fish = {
-          enable = true;
-        };
-      };
-  */
+  users.users.root.openssh.authorizedKeys.keys = [ towerPubKey ];
 }
